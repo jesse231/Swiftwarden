@@ -11,78 +11,53 @@ struct ContentView: View {
     @State var currentOption = 0
     var body: some View {
         NavigationView{
-            
-//            let options: [Option] = [
-//                .init(label:"All Items", icon: "house", destination: MainView),
-//                .init(label:"Favourites", icon: "star", ),
-//                .init(label:"Trash", icon: "trash.fill"),
-//            ]
-            
             SideBar()
-            
-            
-//
-//            SideView(options: options, currentSelection : $currentOption)
-            
-//            switch currentOption {
-//            case 1:
-//                MainView()
-//            default:
-//                Text("testing")
-//
-//            }
-            
         }
     }
 }
-//
-//struct Option : Hashable {
-//    let label: String
-//    let icon: String
-//}
     
 struct SideBar: View {
     
     var body: some View {
+        let menuItems: [(label: String, icon: String, color: Color, destination: AnyView)] = [
+            (label: "All Items", icon: "shield.lefthalf.fill", color: Color.blue, destination: AnyView(ItemsView())),
+            (label: "Favourites", icon: "star.fill", color: Color.yellow, destination: AnyView(FavouritesView())),
+            (label: "Trash", icon: "trash.fill", color: Color.red, destination: AnyView(TrashView())),
+        ]
+        
         VStack{
             Spacer().frame(height:10)
         List{
+            ForEach(0..<menuItems.count) { i in
                 NavigationLink(
-                    destination: ItemsView(),
+                    destination: menuItems[i].destination,
                     label: {
-                    Label("All Items", systemImage: "shield.lefthalf.fill")
-                   })
-            
-            NavigationLink(
-                destination: FavouritesView(),
-                label: {
-                Label("Favourites", systemImage: "star.fill")
-               })
-            
-            NavigationLink(
-                destination: TrashView(),
-                label: {
-                Label("Trash", systemImage: "trash.fill")
-               })
+                        Label {
+                            Text(menuItems[i].label)
+                        } icon: {
+                            Image(systemName: menuItems[i].icon).foregroundColor(menuItems[i].color)
+                        }
+                    }).padding(4)
+            }
             }.listStyle(.sidebar)
     }
     }
 }
 struct ItemsView: View {
     var body: some View {
-        Text("test")
+        Text("Items")
         
     }
 }
 struct FavouritesView: View {
     var body: some View {
-        Text("test")
+        Text("Favourites")
         
     }
 }
 struct TrashView: View {
     var body: some View {
-        Text("test")
+        Text("Trash")
         
     }
 }
