@@ -7,9 +7,11 @@
 
 import SwiftUI
 
+
+
 struct ContentView: View {
     
-    @State var currentOption = 0
+
     var body: some View {
 
         NavigationView{
@@ -39,15 +41,18 @@ struct SideBar: View {
         
         VStack{
             Spacer().frame(height:10)
-        List{
+        List {
             ForEach(0..<menuItems.count) { i in
                 NavigationLink(
                     destination: menuItems[i].destination,
+//                    isActive: {
+//                        currentSelection = i
+//                    }
                     label: {
                         Label {
                             Text(menuItems[i].label)
                         } icon: {
-                            Image(systemName: menuItems[i].icon).foregroundColor(menuItems[i].color)
+                            Image(systemName: menuItems[i].icon).accentColor(menuItems[i].color)
                         }
                     }).padding(4)
             }
@@ -61,7 +66,7 @@ struct SideBar: View {
                             Label {
                                 Text(types[i].label)
                             } icon: {
-                                Image(systemName: types[i].icon).foregroundColor(types[i].color)
+                                Image(systemName: types[i].icon).accentColor(types[i].color)
                             }
                         }).padding(4)
                 }
@@ -79,7 +84,27 @@ struct SideBar: View {
 struct AllItemsView: View {
     
     var body: some View {
-        List{
+    List {
+        ForEach(getPasswords(), id: \.self) {password in
+            NavigationLink(
+                destination: {
+                    ItemView()
+                },
+                label: {
+                    Image(systemName: "plus.square.fill").resizable().frame(width: 35, height: 35)
+                    Spacer().frame(width: 20)
+                    VStack{
+                        Text(password.name)
+                            .font(.system(size: 15)).fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                        Spacer().frame(height: 5)
+                        Text(verbatim: password.login.username).font(.system(size: 10))
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                    }
+                }
+            ).padding(5)
+            }
+        
             NavigationLink(
                 destination: {
                     ItemView()
@@ -98,6 +123,7 @@ struct AllItemsView: View {
                 }
             ).padding(5)
             
+            
             }
 
             
@@ -106,22 +132,24 @@ struct AllItemsView: View {
 //WIP
 struct ItemView : View {
     var body: some View {
-        List{
+        VStack{
             HStack{
                 Image(systemName: "plus.square.fill").resizable().frame(width: 35, height: 35)
                 VStack{
-                Text("Adobe")
-                        .font(.system(size: 15)).fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                    Spacer().frame(height: 5)
-                    Text(verbatim: "Login").font(.system(size: 10))
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
+                    Text("Adobe")
+                            .font(.system(size: 15)).fontWeight(.semibold)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                        Text(verbatim: "Login").font(.system(size: 10))
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                    }
                 Image(systemName: "star.fill")
             }
+            
         Divider()
             Text("username")
-        }
+        }.padding(20)
+
+        Spacer()
     }
 }
 
