@@ -93,7 +93,6 @@ class Api {
         Api.bearer = token.access_token
         try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)
         Api.base = base + "/"
-        print(Api.base)
         
     }
     
@@ -129,8 +128,6 @@ class Api {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
-        print(cipher)
-        print("--------------------")
         let encCipher = try Encryption.encryptCipher(cipher: cipher)
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -143,12 +140,13 @@ class Api {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         var parameters: [String: Any] = [
-            "email": "jesseseeligsohn@gmai.com",
+            "email": email,
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         
         var (data, response) = try await URLSession.shared.data(for: request)
+
         var responseDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
         
         let iterations = responseDict["KdfIterations"]
@@ -165,7 +163,7 @@ class Api {
         var components = URLComponents()
         components.queryItems = [
             URLQueryItem(name: "grant_type", value: "password"),
-            URLQueryItem(name: "username", value: "jesseseeligsohn@gmail.com"),
+            URLQueryItem(name: "username", value: email),
             URLQueryItem(name: "password", value: masterPasswordHash),
             URLQueryItem(name: "scope", value: "api offline_access"),
             URLQueryItem(name: "client_id", value: "browser"),
@@ -177,6 +175,7 @@ class Api {
         let query = components.url!.query?.removingPercentEncoding
         request.httpBody = Data(query!.utf8)
         (data, response) = try await URLSession.shared.data(for: request)
+
         let token = try JSONDecoder().decode(Token.self, from: data)
         return token
         
@@ -190,10 +189,6 @@ class Api {
         request.httpMethod = "GET"
         request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
-        print("--------------------")
-        
-        print(String(data: data, encoding: .utf8)!)
-        print("--------------------")
     }
     
     
