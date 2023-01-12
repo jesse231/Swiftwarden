@@ -42,7 +42,7 @@ struct PopupNew: View {
                 Task {
                     try await Api.createPassword(cipher: cipher)
                     allPasswords.passwords.append(cipher)
-                    allPasswords.searchResults.append(cipher)
+                    allPasswords.searchResults?.append(cipher)
                 }
                 show = false
                 

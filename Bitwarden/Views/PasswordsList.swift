@@ -14,6 +14,7 @@ struct PasswordsList: View {
     @State var searchText = ""
     @EnvironmentObject var allPasswords: Passwords
     var body: some View {
+        if let _ = allPasswords.searchResults {
         List {
             if let ciphers = ciphers {
                 ForEach(ciphers, id: \.self) { cipher in
@@ -23,13 +24,13 @@ struct PasswordsList: View {
                         destination: {
                             ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.Favorite ?? false).background(.white).onAppear(perform: {
                                 allPasswords.currentPassword = cipher
-                                print(allPasswords.currentPassword)
                             }).environmentObject(allPasswords)
                         },
                         label: {
                             Group {
                                 if (hostname != "null"){
                                     AsyncImage(url: URL(string: "https://vaultwarden.seeligsohn.com/icons/\(hostname)/icon.png")) { image in
+                                        image.resizable()
                                     } placeholder: {
                                         ProgressView()
                                     }
@@ -69,7 +70,10 @@ struct PasswordsList: View {
             } else {
                 allPasswords.searchResults =  allPasswords.passwords.filter({$0.Name?.lowercased().contains(searchText) ?? false})
             }
-         }
-}
+        }
+        }
+        } else {
+            Text("Loading...")
+        }
     }
 }

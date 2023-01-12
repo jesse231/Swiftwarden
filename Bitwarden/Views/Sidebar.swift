@@ -31,8 +31,8 @@ struct SideBar: View {
                 NavigationLink(
                     destination: menuItems[i].destination,
                     // Fix for allowing default to be selected
-                    //                    tag: i,
-                    //                    selection: $selection,
+                                        tag: i,
+                                        selection: $selection,
                     label: {
                         Label {
                             Text(menuItems[i].label)

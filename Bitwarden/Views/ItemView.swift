@@ -9,17 +9,18 @@ import Foundation
 import SwiftUI
 
 struct ItemView : View {
-    var cipher: Cipher
+    var cipher: Cipher?
     var hostname: String
     @EnvironmentObject var allPasswords: Passwords
     @State var favourite: Bool
     @State var showPassword = false
     var body: some View {
+        if let _ = cipher {
             List{
                 VStack{
-                    let name = cipher.Name ?? " "
-                    let username = cipher.Login?.Username ?? " "
-                    let password = cipher.Login?.Password ?? " "
+                    let name = cipher?.Name ?? " "
+                    let username = cipher?.Login?.Username ?? " "
+                    let password = cipher?.Login?.Password ?? " "
                     HStack{
                         if let hostname = hostname{
                             AsyncImage(url: URL(string: "https://vaultwarden.seeligsohn.com/icons/\(hostname)/icon.png")) { image in
@@ -62,7 +63,7 @@ struct ItemView : View {
                         
                     }
                     Divider()
-                    if let card = cipher.Card {
+                    if let card = cipher?.Card {
                         CardView(card: card)
                     } else {
                         Field(
@@ -93,6 +94,10 @@ struct ItemView : View {
                 .padding(20)
                 .frame(maxWidth: 400)
                 Spacer()
+            }
+        } else {
+            Text("Choose a password")
+            
         }
     }
 }
