@@ -1,10 +1,3 @@
-//
-//  ListView.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2022-08-02.
-//
-
 import Foundation
 import SwiftUI
 import CoreImage

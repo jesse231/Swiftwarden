@@ -1,13 +1,6 @@
-//
-//  BitwardenUITests.swift
-//  BitwardenUITests
-//
-//  Created by Jesse Seeligsohn on 2022-07-02.
-//
-
 import XCTest
 
-class BitwardenUITests: XCTestCase {
+class SwiftwardenUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

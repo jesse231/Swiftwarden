@@ -1,10 +1,3 @@
-//
-//  PopupView.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2022-08-07.
-//
-
 import SwiftUI
 
 struct PopupEdit: View {

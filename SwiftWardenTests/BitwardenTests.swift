@@ -6,9 +6,9 @@
 //
 
 import XCTest
-@testable import Bitwarden
+@testable import Swiftwarden
 
-class BitwardenTests: XCTestCase {
+class SwiftwardenTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2022-07-02.
-//
-
 import SwiftUI
 import UniformTypeIdentifiers
 

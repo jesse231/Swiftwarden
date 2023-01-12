@@ -1,13 +1,6 @@
-//
-//  BitwardenUITestsLaunchTests.swift
-//  BitwardenUITests
-//
-//  Created by Jesse Seeligsohn on 2022-07-02.
-//
-
 import XCTest
 
-class BitwardenUITestsLaunchTests: XCTestCase {
+class SwiftwardenUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

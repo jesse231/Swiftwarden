@@ -1,10 +1,3 @@
-//
-//  ItemView.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2022-08-03.
-//
-
 import Foundation
 import SwiftUI
 

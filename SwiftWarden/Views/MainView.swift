@@ -1,10 +1,3 @@
-//
-//  MainView.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2023-01-11.
-//
-
 import SwiftUI
 class Passwords: ObservableObject {
     @Published var currentPassword = Cipher()

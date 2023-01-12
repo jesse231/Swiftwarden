@@ -1,10 +1,3 @@
-//
-//  helpers.swift
-//  Bitwarden
-//
-//  Created by Jesse Seeligsohn on 2023-01-09.
-//
-
 import Foundation
 
 extension URLQueryItem {
