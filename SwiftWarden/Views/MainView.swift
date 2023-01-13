@@ -14,9 +14,7 @@ struct MainView: View {
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
     @State private var showNew = false
-    var email : String
-    var password : String
-    var base: String
+    
     var body: some View {
         NavigationView{
             SideBar().environmentObject(allPasswords)
@@ -33,11 +31,8 @@ struct MainView: View {
         }
         .task {
             do {
-                try await Api(username: email, password: password, base: base)
                 let passes = try await Api.getPasswords()
-                
                 passwords = Encryption.decryptPasswords(passwords: passes)
-                
                 allPasswords.trash = passwords!.filter({$0.DeletedDate != nil})
                 passwords = passwords?.filter({$0.DeletedDate == nil})
                 allPasswords.passwords = passwords ?? [Cipher()]

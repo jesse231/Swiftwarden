@@ -23,14 +23,11 @@ extension View {
 
 struct ContentView: View {
     @State var loginSuccess = false
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var server: String = ""
     var body: some View {
         if loginSuccess {
-            MainView(email: email, password: password, base: server)
+            MainView()
         } else {
-            LoginView(loginSuccess: $loginSuccess, email: $email, password: $password, server: $server)
+            LoginView(loginSuccess: $loginSuccess)
         }
 
     }
