@@ -70,7 +70,7 @@ class Encryption {
         }
         
         // Break the encrypted string into it's iv and data components
-        let split = str.components(separatedBy: "|")
+        let split = str.removePercentEncoding().components(separatedBy: "|")
         if split.count == 1 {
             return []
         }
