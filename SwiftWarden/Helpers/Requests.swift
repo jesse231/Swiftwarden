@@ -1,72 +1,16 @@
 import Foundation
 
 
-struct Uris : Encodable & Decodable& Hashable{
-    var match: Int?
-    var Uri: String
-    //    func encode(to encoder: Encoder) throws {
-    //        var container = encoder.container(keyedBy: CodingKeys.self)
-    //        try container.encode(Uri.percentEncoding(), forKey: .Uri)
-    //        }
-}
-
-struct Login : Encodable & Decodable & Hashable{
-    var Uris : [Uris]?
-    var Username: String?
-    var Password: String?
-    var Totp: String?
-    var PasswordRevisionDate: String?
-    //    func encode(to encoder: Encoder) throws {
-    //        var container = encoder.container(keyedBy: CodingKeys.self)
-    //        try container.encode(Uris, forKey: .Uris)
-    //        try container.encode(Username?.percentEncoding(), forKey: .Username)
-    //        try container.encode(Password?.percentEncoding(), forKey: .Password)
-    //        }
-}
 extension String{
-    func percentEncoding() -> String{
+    func removePercentEncoding() -> String{
         return (self)
-        //.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)?
-        //.replacingOccurrences(of: "+", with: "%2B")
-        //.replacingOccurrences(of: "@", with: "%40")
-        //.replacingOccurrences(of: "=", with: "%3D"))
+            .replacingOccurrences(of: "%2B", with: "+")
+            .replacingOccurrences(of: "%40", with: "@")
+            .replacingOccurrences(of: "%3D", with: "=")
     }
     
 }
-struct Cipher : Encodable & Decodable & Hashable{
-    var Id: String?
-    var OrganizationId: String?
-    var FolderId: String?
-    var Name: String?
-    var Notes: String?
-    var `Type`: Int?
-    var Favorite: Bool?
-    var ViewPassword: Bool?
-    var RevisionDate: String?
-    var Login: Login?
-    var CollectionIds: [String]?
-    var DeletedDate: String?
-    var Reprompt: Int?
-    var Card: Card?
-    
-    
-    
-    //    func encode(to encoder: Encoder) throws {
-    //            var container = encoder.container(keyedBy: CodingKeys.self)
-    //
-    //        try container.encode(OrganizationId?.percentEncoding(), forKey: .OrganizationId)
-    //        try container.encode(`Type`, forKey: .`Type`)
-    //            try container.encode(Favorite, forKey: .Favorite)
-    //            try container.encode(Name, forKey: .Name)
-    //            try container.encode(Login, forKey: .Login)
-    //            try container.encode(Notes, forKey: .Notes)
-    //            try container.encode(FolderId, forKey: .FolderId)
-    //        }
-}
-struct Card : Encodable & Decodable & Hashable{
-    var Brand, CardholderName, Code, ExpMonth: String?
-    var ExpYear, Number: String?
-}
+
 
 struct Token: Decodable {
     var Kdf: Int
@@ -78,11 +22,6 @@ struct Token: Decodable {
     var expires_in: Int
     var token_type: String
     var unofficialServer: Bool
-}
-
-struct Response : Decodable {
-    var ContinuationToken: String?
-    var Data: [Cipher]?
 }
 
 class Api {
@@ -123,15 +62,14 @@ class Api {
         return (token.access_token, token.Key)
     }
     
-    static func updatePassword(cipher: Cipher) async throws{
-        let url = URL(string: Api.base + "/api/ciphers/" + (cipher.Id ?? ""))!
+    static func updatePassword(cipher: Datum) async throws{
+        let url = URL(string: Api.base + "/api/ciphers/" + (cipher.id ?? ""))!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
         let encCipher = try Encryption.encryptCipher(cipher: cipher)
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
     }
     
     static func login (email: String, password: String) async throws -> Token {
@@ -146,7 +84,7 @@ class Api {
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         
         var (data, response) = try await URLSession.shared.data(for: request)
-
+        
         var responseDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
         
         let iterations = responseDict["KdfIterations"]
@@ -175,7 +113,7 @@ class Api {
         let query = components.url!.query?.removingPercentEncoding
         request.httpBody = Data(query!.utf8)
         (data, response) = try await URLSession.shared.data(for: request)
-
+        
         let token = try JSONDecoder().decode(Token.self, from: data)
         return token
         
@@ -193,7 +131,7 @@ class Api {
     
     
     
-    static func getPasswords() async throws -> [Cipher]{
+    static func getPasswords() async throws -> [Datum]{
         
         let bearer = Api.bearer
         
@@ -206,7 +144,7 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request)
         
         let cipher = try JSONDecoder().decode(Response.self, from: data)
-        return cipher.Data!
+        return cipher.data!
         
     }
     
@@ -220,11 +158,12 @@ class Api {
         
         request.addValue(bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
         
         return true
     }
-    static func createPassword(cipher: Cipher) async throws -> Bool{
+    
+    
+    static func createPassword(cipher: Datum) async throws -> Bool{
         let bearer = Api.bearer
         let url = URL(string: Api.base + "api/ciphers/")!
         
@@ -240,6 +179,22 @@ class Api {
         print(String(data: data, encoding: .utf8)!)
         
         return true
+    }
+    
+    
+    static func getFolders() async throws -> [Datum]{
+        let bearer = Api.bearer
+        let url = URL(string: Api.base + "api/folders/")!
+        
+        var request = URLRequest(url: url)
+        request.addValue(bearer, forHTTPHeaderField: "Authorization")
+        
+        request.httpMethod = "GET"
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        //        let folders = try JSONDecoder().decode(Response.self, from: data)
+        let folders = try Response(data: data)
+        return folders.data!
     }
 }
 

@@ -158,47 +158,47 @@ class Encryption {
         return okm
     }
     
-    static func encryptCipher(cipher: Cipher) throws -> Cipher {
+    static func encryptCipher(cipher: Datum) throws -> Datum {
         var dec = cipher
-        dec.Name = try Encryption.encrypt(str: cipher.Name ?? "")
-        if let pass = dec.Login?.Password {
-            dec.Login?.Password = try encrypt(str: pass)
+        dec.name = try Encryption.encrypt(str: cipher.name ?? "")
+        if let pass = dec.login?.password {
+            dec.login?.password = try encrypt(str: pass)
         }
-        if let user = dec.Login?.Username{
-            dec.Login?.Username = try encrypt(str: user)
+        if let user = dec.login?.username{
+            dec.login?.username = try encrypt(str: user)
         }
         
-        if let uris = dec.Login?.Uris {
+        if let uris = dec.login?.uris {
             for (i,uri) in uris.enumerated() {
-                dec.Login?.Uris?[i].Uri = try encrypt(str: uri.Uri)
+                dec.login?.uris?[i].uri = try encrypt(str: uri.uri!)
             }
         }
         return dec
     }
     
-     static func decryptCipher(cipher: Cipher) throws  -> Cipher {
+     static func decryptCipher(cipher: Datum) throws  -> Datum {
         var dec = cipher
-        dec.Name = String(bytes: try decrypt(str: cipher.Name ?? ""), encoding: .utf8)
-        if let pass = dec.Login?.Password {
-            dec.Login?.Password = String(bytes: try decrypt(str: pass), encoding: .utf8)
+        dec.name = String(bytes: try decrypt(str: cipher.name ?? ""), encoding: .utf8)
+        if let pass = dec.login?.password {
+            dec.login?.password = String(bytes: try decrypt(str: pass), encoding: .utf8)
         }
-        if let user = dec.Login?.Username{
-            dec.Login?.Username = String(bytes: try decrypt(str: user), encoding: .utf8)
+        if let user = dec.login?.username{
+            dec.login?.username = String(bytes: try decrypt(str: user), encoding: .utf8)
         }
         
-        if let uris = dec.Login?.Uris {
+        if let uris = dec.login?.uris {
             for (i,uri) in uris.enumerated() {
-                dec.Login?.Uris?[i].Uri = String(bytes: try decrypt(str: uri.Uri), encoding: .utf8) ?? uri.Uri
+                dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri!), encoding: .utf8) ?? uri.uri
             }
         }
-         if let card = dec.Card {
-             print(card)
-             dec.Card?.Brand = String(bytes: try decrypt(str: card.Brand ??  ""), encoding: .utf8) ?? card.Brand
-             dec.Card?.CardholderName = String(bytes: try decrypt(str: card.CardholderName ??  ""), encoding: .utf8) ?? card.CardholderName
-             dec.Card?.Code = String(bytes: try decrypt(str: card.Code ??  ""), encoding: .utf8) ?? card.Code
-             dec.Card?.ExpMonth = String(bytes: try decrypt(str: card.ExpMonth ??  ""), encoding: .utf8) ?? card.ExpMonth
-             dec.Card?.ExpYear = String(bytes: try decrypt(str: card.ExpYear ?? ""), encoding: .utf8) ?? card.ExpYear
-             dec.Card?.Number = String(bytes: try decrypt(str: card.Number ?? ""), encoding: .utf8) ?? card.Number
+         if let card = dec.card {
+             
+             dec.card?.brand = String(bytes: try decrypt(str: card.brand ??  ""), encoding: .utf8) ?? card.brand
+             dec.card?.cardholderName = String(bytes: try decrypt(str: card.cardholderName ??  ""), encoding: .utf8) ?? card.cardholderName
+             dec.card?.code = String(bytes: try decrypt(str: card.code ??  ""), encoding: .utf8) ?? card.code
+             dec.card?.expMonth = String(bytes: try decrypt(str: card.expMonth ??  ""), encoding: .utf8) ?? card.expMonth
+             dec.card?.expYear = String(bytes: try decrypt(str: card.expYear ?? ""), encoding: .utf8) ?? card.expYear
+             dec.card?.number = String(bytes: try decrypt(str: card.number ?? ""), encoding: .utf8) ?? card.number
 
          }
          
@@ -206,7 +206,7 @@ class Encryption {
         return dec
     }
     
-    static func decryptPasswords(passwords: [Cipher]) -> [Cipher]{
+    static func decryptPasswords(passwords: [Datum]) -> [Datum]{
         var decPasswords = passwords
         for (i,cipher) in passwords.enumerated(){
             do {

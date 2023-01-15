@@ -7,38 +7,38 @@ struct CardView: View {
     var body: some View {
         Field(
             title: "Cardholder Name",
-            content: card.CardholderName ?? "",
+            content: card.cardholderName ?? "",
             buttons: {
-                Copy(content: card.CardholderName ?? "")
+                Copy(content: card.cardholderName ?? "")
             })
         
         Field(
             title: "Number",
-            content: (showNumber ? card.Number ?? "" : String(repeating: "•", count: card.Number?.count ?? 0)),
+            content: (showNumber ? card.number ?? "" : String(repeating: "•", count: card.number?.count ?? 0)),
             buttons: {
                 Hide(toggle: $showNumber)
-                Copy(content: card.Number ?? "")
+                Copy(content: card.number ?? "")
             })
         
         Field(
             title: "Brand",
-            content: card.Brand ?? "",
+            content: card.brand ?? "",
             buttons: {
             })
         
         Field(
             title: "Expiration",
-            content: card.ExpMonth ?? "" + "/" + (card.ExpYear ?? ""),
+            content: card.expMonth ?? "" + "/" + (card.expYear ?? ""),
             buttons: {
             })
         
         
         Field(
             title: "Code",
-            content: (showCode ? card.Code ?? "" : String(repeating: "•", count: card.Code?.count ?? 0)),
+            content: (showCode ? card.code ?? "" : String(repeating: "•", count: card.code?.count ?? 0)),
             buttons: {
                 Hide(toggle: $showCode)
-                Copy(content: card.Code ?? "")
+                Copy(content: card.code ?? "")
             })
     }
 }

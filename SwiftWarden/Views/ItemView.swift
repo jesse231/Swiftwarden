@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct ItemView : View {
-    var cipher: Cipher?
+    var cipher: Datum?
     var hostname: String
     @EnvironmentObject var allPasswords: Passwords
     @State var favourite: Bool
@@ -11,9 +11,9 @@ struct ItemView : View {
         if let _ = cipher {
             List{
                 VStack{
-                    let name = cipher?.Name ?? " "
-                    let username = cipher?.Login?.Username ?? " "
-                    let password = cipher?.Login?.Password ?? " "
+                    let name = cipher?.name ?? " "
+                    let username = cipher?.login?.username ?? " "
+                    let password = cipher?.login?.password ?? " "
                     HStack{
                         if let hostname = hostname{
                             AsyncImage(url: URL(string: "https://vaultwarden.seeligsohn.com/icons/\(hostname)/icon.png")) { image in
@@ -40,9 +40,9 @@ struct ItemView : View {
                         }
                         Button (action: {
                             favourite = !favourite
-                            allPasswords.currentPassword.Favorite = favourite
+                            allPasswords.currentPassword?.favorite = favourite
                             Task {
-                                try await Api.updatePassword(cipher: allPasswords.currentPassword)
+                                try await Api.updatePassword(cipher: allPasswords.currentPassword!)
                             }
                         } ){
                             if (favourite) {
@@ -53,10 +53,11 @@ struct ItemView : View {
                                 
                             }
                         }.buttonStyle(.plain)
+                       
                         
                     }
                     Divider()
-                    if let card = cipher?.Card {
+                    if let card = cipher?.card {
                         CardView(card: card)
                     } else {
                         Field(
@@ -65,7 +66,6 @@ struct ItemView : View {
                             buttons: {
                                 Copy(content: username)
                             })
-                        
                         Field(
                             title: "Password",
                             content: (showPassword ? password : String(repeating: "•", count: password.count)),
@@ -73,7 +73,6 @@ struct ItemView : View {
                                 Hide(toggle: $showPassword)
                                 Copy(content: password)
                             })
-                        
                         Field(
                             title: "Website",
                             content: hostname,
@@ -89,7 +88,9 @@ struct ItemView : View {
                 Spacer()
             }
         } else {
-            Text("Choose a password")
+            List{
+                Spacer()
+            }
             
         }
     }

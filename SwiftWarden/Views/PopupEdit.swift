@@ -19,7 +19,9 @@ struct PopupEdit: View {
                 }
                 HStack{
                     Text("Password:")
-                    TextField("", text: $password).textFieldStyle(.roundedBorder)
+                    TextField("", text: $password)
+                        .textFieldStyle(.roundedBorder)
+                        .background()
                 }
                 Spacer()
                 HStack{
@@ -27,16 +29,19 @@ struct PopupEdit: View {
                         show = false
                     }
                     Button("Submit") {
-                        Task {
-                            allPasswords.currentPassword.Name = name
-                            allPasswords.currentPassword.Login?.Username = username
-                            allPasswords.currentPassword.Login?.Password = password
-                            try await Api.updatePassword(cipher: allPasswords.currentPassword)
-                            
-                            let i = allPasswords.passwords.firstIndex(of: allPasswords.currentPassword)
-                            allPasswords.passwords[i!] = allPasswords.currentPassword
-                        }
-                        show = false
+//                        Task {
+//                            allPasswords.currentPassword?.name = name
+//                            allPasswords.currentPassword?.login?.username = username
+//                            allPasswords.currentPassword?.login?.password = password
+//                            
+//                            try await Api.updatePassword(cipher: allPasswords.currentPassword!)
+//                            
+//                            let index = allPasswords.passwords.firstIndex(of: allPasswords.currentPassword!)
+//                            if let i = index{
+//                                allPasswords.passwords[i] = allPasswords.currentPassword
+//                            }
+//                        }
+//                        show = false
                     }
                 }
             }.padding()

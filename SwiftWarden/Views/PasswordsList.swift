@@ -3,7 +3,7 @@ import SwiftUI
 import CoreImage
 
 struct PasswordsList: View {
-    var ciphers: [Cipher]?
+    var ciphers: [Datum]?
     @State var searchText = ""
     @EnvironmentObject var allPasswords: Passwords
     var body: some View {
@@ -11,11 +11,11 @@ struct PasswordsList: View {
         List {
             if let ciphers = ciphers {
                 ForEach(ciphers, id: \.self) { cipher in
-                    let url = URL(string: cipher.Login?.Uris?[0].Uri ?? " ")
+                    let url = URL(string: cipher.login?.uris?[0].uri ?? " ")
                     let hostname = url?.host ?? "null"
                     NavigationLink(
                         destination: {
-                            ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.Favorite ?? false).background(.white).onAppear(perform: {
+                            ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).background(.white).onAppear(perform: {
                                 allPasswords.currentPassword = cipher
                             }).environmentObject(allPasswords)
                         },
@@ -37,13 +37,13 @@ struct PasswordsList: View {
                             }
                             Spacer().frame(width: 20)
                             VStack{
-                                if let name = cipher.Name {
+                                if let name = cipher.name {
                                     Text(name)
                                         .font(.system(size: 15)).fontWeight(.semibold)
                                         .frame(maxWidth: .infinity, alignment: .topLeading)
                                 }
                                 
-                                if let username = cipher.Login?.Username {
+                                if let username = cipher.login?.username {
                                     Spacer().frame(height: 5)
                                     Text(verbatim: username)
                                         .font(.system(size: 10))
@@ -61,7 +61,7 @@ struct PasswordsList: View {
             if searchText.isEmpty{
                 allPasswords.searchResults = allPasswords.passwords
             } else {
-                allPasswords.searchResults =  allPasswords.passwords.filter({$0.Name?.lowercased().contains(searchText) ?? false})
+                allPasswords.searchResults =  allPasswords.passwords?.filter({$0.name?.lowercased().contains(searchText) ?? false})
             }
         }
         }
