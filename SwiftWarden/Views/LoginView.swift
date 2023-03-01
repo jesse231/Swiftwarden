@@ -2,9 +2,9 @@ import SwiftUI
 
 struct LoginView: View {
     @Binding var loginSuccess : Bool
-    @State var email: String = "jesseseeligsohn@gmail.com"
-    @State var password: String = "SfhboF19@"
-    @State var server: String = "https://vaultwarden.seeligsohn.com"
+    @State var email: String = (ProcessInfo.processInfo.environment["Username"] ?? "")
+    @State var password: String = (ProcessInfo.processInfo.environment["Password"] ?? "")
+    @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
     var body: some View {
         VStack{
             Text("Log in").font(.title).bold()
@@ -33,12 +33,14 @@ struct LoginView: View {
             Button(action: {
                 Task {
                     do {
-                        
+
                         try await Api(username: email, password: password, base: server)
+                        
                         loginSuccess = true
                         
                     } catch {
                         print(error)
+
                     }
                 }
             }) {
