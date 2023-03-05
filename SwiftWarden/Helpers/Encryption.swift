@@ -4,12 +4,14 @@ import CryptoSwift
 class Encryption {
     static private var symcKey : [UInt8] = []
     static private var key : [UInt8] = []
+    static var privateKey : SecKey?
     static private var iterations : Int = 0
     
     init(email: String, password: String, encKey: String, iterations: Int) throws {
         Encryption.iterations = iterations
         Encryption.symcKey = Encryption.makeKey(password: password, salt: email.lowercased(), iterations: Encryption.iterations)
         Encryption.key = try Encryption.decrypt(encKey: Encryption.symcKey, str: encKey)
+//        print(Encryption.key.toBase64())
     }
     static func hashedPassword(password : String, salt: String, iterations: Int) throws -> String {
         let key = makeKey(password: password, salt: salt, iterations: iterations)
@@ -57,23 +59,26 @@ class Encryption {
         
     }
 
-    static func decrypt(encKey: [UInt8]? = nil, str: String) throws -> [UInt8]{
+    static func decrypt(decKey: [UInt8]? = nil, encKey: [UInt8]? = nil, str: String) throws -> [UInt8]{
         // Break the encKey into the private key and mac digest
         var key: [UInt8]
         var macKey: [UInt8] = []
         
-        if encKey != nil{
-            key = Array(encKey!.prefix(32))
-            macKey = Array(encKey!.suffix(32))
+        if let encKey{
+            key = Array(encKey.prefix(32))
+            macKey = Array(encKey.suffix(32))
+        } else if let decKey {
+            key = decKey
         } else {
             key = Encryption.key
         }
         
         // Break the encrypted string into it's iv and data components
-        let split = str.removePercentEncoding().components(separatedBy: "|")
+        let split = str.components(separatedBy: "|")
         if split.count == 1 {
             return []
         }
+        
         let iv = (Data(base64Encoded: String(split[0].dropFirst(2)))?.bytes)
         let ct = (Data(base64Encoded: split[1])?.bytes)
         let mac2 = (Data(base64Encoded: split[2])?.bytes)
@@ -88,17 +93,23 @@ class Encryption {
         }
         do{
             let mac1 = try HMAC(key: macKey, variant: .sha2(.sha256)).authenticate((iv ?? []) + (ct ?? []))
-//            if !Encryption.macsEqual(macKey: macKey, mac1: mac1, mac2: mac2 ?? []){
-//                return []
-//            }
-            
+            if !Encryption.macsEqual(macKey: macKey, mac1: mac1, mac2: mac2 ?? []){
+                return []
+            }
+
             let aes = try AES(key: key, blockMode: CBC(iv: iv ?? []))
             let pt = try aes.decrypt(ct ?? [])
+            
             return pt
         } catch {
             print("Error decrypting: \(error).")
             return []
         }
+    }
+    
+    static func decryptRSA() throws {
+        
+        
     }
     
     static func encrypt(encKey: [UInt8]? = nil, str: String) throws -> String {
@@ -158,7 +169,7 @@ class Encryption {
         return okm
     }
     
-    static func encryptCipher(cipher: Datum) throws -> Datum {
+    static func encryptCipher(cipher: Cipher) throws -> Cipher {
         var dec = cipher
         dec.name = try Encryption.encrypt(str: cipher.name ?? "")
         if let pass = dec.login?.password {
@@ -176,43 +187,79 @@ class Encryption {
         return dec
     }
     
-     static func decryptCipher(cipher: Datum) throws  -> Datum {
-        var dec = cipher
-        dec.name = String(bytes: try decrypt(str: cipher.name ?? ""), encoding: .utf8)
-        if let pass = dec.login?.password {
-            dec.login?.password = String(bytes: try decrypt(str: pass), encoding: .utf8)
-        }
-        if let user = dec.login?.username{
-            dec.login?.username = String(bytes: try decrypt(str: user), encoding: .utf8)
-        }
-        
-        if let uris = dec.login?.uris {
-            for (i,uri) in uris.enumerated() {
-                dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri!), encoding: .utf8) ?? uri.uri
-            }
-        }
-         if let card = dec.card {
+    static func decryptCipher(data: Cipher) throws  -> Cipher {
+        var dec = data
+         dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
+         if data.object! == "cipherDetails"{
+             if let pass = dec.login?.password {
+                 dec.login?.password = String(bytes: try decrypt(str: pass), encoding: .utf8)
+             }
+             if let user = dec.login?.username{
+                 dec.login?.username = String(bytes: try decrypt(str: user), encoding: .utf8)
+             }
              
-             dec.card?.brand = String(bytes: try decrypt(str: card.brand ??  ""), encoding: .utf8) ?? card.brand
-             dec.card?.cardholderName = String(bytes: try decrypt(str: card.cardholderName ??  ""), encoding: .utf8) ?? card.cardholderName
-             dec.card?.code = String(bytes: try decrypt(str: card.code ??  ""), encoding: .utf8) ?? card.code
-             dec.card?.expMonth = String(bytes: try decrypt(str: card.expMonth ??  ""), encoding: .utf8) ?? card.expMonth
-             dec.card?.expYear = String(bytes: try decrypt(str: card.expYear ?? ""), encoding: .utf8) ?? card.expYear
-             dec.card?.number = String(bytes: try decrypt(str: card.number ?? ""), encoding: .utf8) ?? card.number
-
+             if let uris = dec.login?.uris {
+                 for (i,uri) in uris.enumerated() {
+                     dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri!), encoding: .utf8) ?? uri.uri
+                 }
+             }
+             if let card = dec.card {
+                 dec.card?.brand = String(bytes: try decrypt(str: card.brand ??  ""), encoding: .utf8) ?? card.brand
+                 dec.card?.cardholderName = String(bytes: try decrypt(str: card.cardholderName ??  ""), encoding: .utf8) ?? card.cardholderName
+                 dec.card?.code = String(bytes: try decrypt(str: card.code ??  ""), encoding: .utf8) ?? card.code
+                 dec.card?.expMonth = String(bytes: try decrypt(str: card.expMonth ??  ""), encoding: .utf8) ?? card.expMonth
+                 dec.card?.expYear = String(bytes: try decrypt(str: card.expYear ?? ""), encoding: .utf8) ?? card.expYear
+                 dec.card?.number = String(bytes: try decrypt(str: card.number ?? ""), encoding: .utf8) ?? card.number
+                 
+             }
          }
-         
          
         return dec
     }
     
-    static func decryptPasswords(passwords: [Datum]) -> [Datum]{
-        var decPasswords = passwords
-        for (i,cipher) in passwords.enumerated(){
+    static func decryptFolder(data: Folder) throws  -> Folder {
+       var dec = data
+       dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
+       return dec
+   }
+    
+    static func decryptPasswords(dataList: [Cipher]) -> [Cipher]{
+        var decDataList = dataList
+        for (i,data) in dataList.enumerated(){
             do {
-                decPasswords[i] = try decryptCipher(cipher: cipher)
+                decDataList[i] = try decryptCipher(data: data)
             } catch {}
         }
-        return decPasswords
+        return decDataList
     }
+    
+    
+    static func decryptFolders(dataList: [Folder]) -> [Folder]{
+        var decDataList = dataList
+        for (i,data) in dataList.enumerated(){
+            do {
+                decDataList[i] = try decryptFolder(data: data)
+            } catch {}
+        }
+        return decDataList
+    }
+    
+    static func decOrg(org: Organization) throws  -> [UInt8] {
+        var decOrg = org
+        let key = String(org.key!.split(separator: ".")[1])
+        print(key)
+        print(Encryption.privateKey)
+        let dk = SecKeyCreateDecryptedData(Encryption.privateKey!, .rsaEncryptionOAEPSHA1, Data(base64Encoded: key ?? "")! as CFData, nil) as? Data
+        return dk!.bytes
+   }
+    
+//    static func decryptOrganizations(orgs: [Organization]) -> [Organization]{
+//        var decOrgs = orgs
+//        for (i,data) in orgs.enumerated(){
+//            do {
+//                decOrgs[i] = try decOrg(org: data)
+//            } catch {}
+//        }
+//        return decOrgs
+//    }
 }

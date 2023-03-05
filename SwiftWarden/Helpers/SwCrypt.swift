@@ -2205,7 +2205,7 @@ extension Data {
     fileprivate func bytesViewRange(_ range: NSRange) -> BytesView {
         return BytesView(self, range: range)
     }
-
+    
     fileprivate struct BytesView: Collection {
         // The view retains the Data. That's on purpose.
         // Data doesn't retain the view, so there's no loop.

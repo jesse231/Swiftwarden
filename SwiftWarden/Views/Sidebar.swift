@@ -1,19 +1,22 @@
 import SwiftUI
 
 struct SideBar: View {
+    @EnvironmentObject var appState : AppState
+    @Binding var searchResults : String
     @EnvironmentObject var allPasswords : Passwords
     @State var selection: Int? = 0
     
     var body: some View {
+//        let _ = print(searchResults)
         let menuItems: [(label: String, icon: String, color: Color, destination: AnyView)] = [
-            (label: "All Items", icon: "shield.lefthalf.fill", color: Color.blue, destination: AnyView(PasswordsList(ciphers: allPasswords.searchResults).environmentObject(allPasswords))),
-            (label: "Favorites", icon: "star.fill", color: Color.yellow, destination: AnyView(PasswordsList(ciphers: allPasswords.favourites).environmentObject(allPasswords))),
-            (label: "Trash", icon: "trash.fill", color: Color.red, destination: AnyView(PasswordsList(ciphers: allPasswords.trash).environmentObject(allPasswords))),
+            (label: "All Items", icon: "shield.lefthalf.fill", color: Color.blue, destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(appState))),
+            (label: "Favorites", icon: "star.fill", color: Color.yellow, destination: AnyView(PasswordsList(searchText: $searchResults, display: .favorite).environmentObject(appState))),
+            (label: "Trash", icon: "trash.fill", color: Color.red, destination: AnyView(PasswordsList(searchText: $searchResults, display: .trash).environmentObject(appState))),
         ]
         
         let types: [(label: String, icon: String, color: Color, destination: AnyView)] = [
-            (label: "Login", icon: "arrow.right.square.fill", color: Color.gray, destination: AnyView(PasswordsList(ciphers: allPasswords.passwords).environmentObject(allPasswords))),
-            (label: "Card", icon: "creditcard.fill", color: Color.gray, destination: AnyView(PasswordsList(ciphers: allPasswords.cards).environmentObject(allPasswords))),
+            (label: "Login", icon: "arrow.right.square.fill", color: Color.gray, destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(appState))),
+            (label: "Card", icon: "creditcard.fill", color: Color.gray, destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(appState))),
             //            (label: "Identity", icon: "person.crop.square.fill", color: Color.gray, destination: AnyView(TrashView())),
             //            (label: "Secure Note", icon: "lock.fill", color: Color.gray, destination: AnyView(PasswordsList(ciphers: allPasswords.passwords).environmentObject(allPasswords))),
         ]
@@ -51,7 +54,14 @@ struct SideBar: View {
                 }
             }
             Section(header: Text("Folders")) {
-                Text("test")
+                if let folders = appState.account.getFolders() {
+                    ForEach(folders) {folder in
+                        HStack {
+                            Image(systemName: "folder")
+                            Text(folder.name!)
+                        }
+                    }
+                }
             }
         }.listStyle(SidebarListStyle())
     }
@@ -59,6 +69,7 @@ struct SideBar: View {
 
 struct SidebarView_Previews: PreviewProvider {
     static var previews: some View {
-        SideBar()
+        Text("")
+//        SideBar().environmentObject(<#T##object: ObservableObject##ObservableObject#>)
     }
 }

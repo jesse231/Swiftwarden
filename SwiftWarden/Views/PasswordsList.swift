@@ -3,21 +3,42 @@ import SwiftUI
 import CoreImage
 
 struct PasswordsList: View {
-    var ciphers: [Datum]?
-    @State var searchText = ""
-    @EnvironmentObject var allPasswords: Passwords
+    @Binding var searchText : String
+    @EnvironmentObject var appState: AppState
+    @State var deleteDialog = false
+    var display : PasswordListType
+    func passwordsToDisplay() -> [Cipher] {
+            switch display {
+            case .normal:
+                return appState.account.getCiphers()
+            case .trash:
+                return appState.account.getTrash()
+            case .favorite:
+                return appState.account.getFavorites()
+            case .card:
+                return appState.account.getCards()
+            }
+        }
+    
+    enum PasswordListType {
+        case normal
+        case trash
+        case favorite
+        case card
+    }
+    
     var body: some View {
-        if let _ = allPasswords.searchResults {
         List {
-            if let ciphers = ciphers {
-                ForEach(ciphers, id: \.self) { cipher in
+                ForEach(passwordsToDisplay().filter { cipher in
+                    cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
+                }, id: \.self) { cipher in
                     let url = URL(string: cipher.login?.uris?[0].uri ?? " ")
                     let hostname = url?.host ?? "null"
                     NavigationLink(
                         destination: {
                             ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).background(.white).onAppear(perform: {
-                                allPasswords.currentPassword = cipher
-                            }).environmentObject(allPasswords)
+                                appState.selectedCipher = cipher
+                            }).environmentObject(appState)
                         },
                         label: {
                             Group {
@@ -44,29 +65,36 @@ struct PasswordsList: View {
                                 }
                                 
                                 if let username = cipher.login?.username {
-                                    Spacer().frame(height: 5)
-                                    Text(verbatim: username)
-                                        .font(.system(size: 10))
-                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                    if username != ""{
+                                        Spacer().frame(height: 5)
+                                        Text(verbatim: username)
+                                            .font(.system(size: 10))
+                                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                                    }
                                 }
                             }
                         }
                     ).padding(5)
                 }
-            } else {
-                Text("Loading...")
-                
+        }.toolbar(content: {
+            ToolbarItem{
+                Button (action: {
+                    deleteDialog = true
+                }){
+                    Label("Delete", systemImage: "trash").labelStyle(.titleAndIcon)
+                }.confirmationDialog("Are you sure you would like to delete the password?", isPresented: $deleteDialog) {
+                    Button("Delete") {
+                                Task {
+                                    do {
+                                        try await appState.account.deleteCipher(cipher: appState.selectedCipher)
+                                        appState.selectedCipher = Cipher()
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            }
+                }
             }
-        }.searchable(text: $searchText).onChange(of: searchText) {_ in do {
-            if searchText.isEmpty{
-                allPasswords.searchResults = allPasswords.passwords
-            } else {
-                allPasswords.searchResults =  allPasswords.passwords?.filter({$0.name?.lowercased().contains(searchText) ?? false})
-            }
-        }
-        }
-        } else {
-            Text("Loading...")
-        }
+        })
     }
 }

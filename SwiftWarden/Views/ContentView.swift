@@ -23,11 +23,12 @@ extension View {
 
 struct ContentView: View {
     @State var loginSuccess = false
+    @State var account : Account = Account(sync: Response())
     var body: some View {
         if loginSuccess {
             MainView()
         } else {
-            LoginView(loginSuccess: $loginSuccess)
+            LoginView(loginSuccess: $loginSuccess, account: $account)
         }
 
     }

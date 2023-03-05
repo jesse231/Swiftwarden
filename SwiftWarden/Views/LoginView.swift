@@ -5,6 +5,7 @@ struct LoginView: View {
     @State var email: String = (ProcessInfo.processInfo.environment["Username"] ?? "")
     @State var password: String = (ProcessInfo.processInfo.environment["Password"] ?? "")
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
+    @Binding var account : Account
     var body: some View {
         VStack{
             Text("Log in").font(.title).bold()
@@ -36,7 +37,21 @@ struct LoginView: View {
 
                         try await Api(username: email, password: password, base: server)
                         
+                        let sync = try await Api.sync()
+                        let privateKey = sync.profile?.privateKey
+                        var privateKeyDec = try Encryption.decrypt(str: privateKey!).toBase64()
+                        
+                        // Turn the private key into PEM formatted key
+                        privateKeyDec = "-----BEGIN PRIVATE KEY-----\n" + privateKeyDec + "\n-----END PRIVATE KEY-----"
+
+                        let pk = try SwKeyConvert.PrivateKey.pemToPKCS1DER(privateKeyDec)
+                        Encryption.privateKey = try SecKeyCreateWithData(pk as CFData, [kSecAttrKeyType: kSecAttrKeyTypeRSA, kSecAttrKeyClass: kSecAttrKeyClassPrivate] as CFDictionary, nil)
+                        
+                        
+                        account = Account(sync: sync)
+                        
                         loginSuccess = true
+                        
                         
                     } catch {
                         print(error)
@@ -65,6 +80,7 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     @State static var show = true
     static var previews: some View {
-        LoginView(loginSuccess: $show)
+        Text("test")
+        //LoginView(loginSuccess: $show, account: Account())
     }
 }

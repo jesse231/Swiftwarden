@@ -7,14 +7,26 @@ import Foundation
 
 // MARK: - Response
 struct Response: Codable & Hashable {
-    var continuationToken: JSONNull?
-    var data: [Datum]?
+    var ciphers: [Cipher]?
+    var collections: [CollectionStructs.Collection]?
+    var domains: Domains?
+    var folders: [Folder]?
     var object: String?
+//    var policies: [JSONAny]?
+    var profile: Profile?
+//    var sends: [JSONAny]?
+    var unofficialServer: Bool?
 
     enum CodingKeys: String, CodingKey {
-        case continuationToken = "ContinuationToken"
-        case data = "Data"
+        case ciphers = "Ciphers"
+        case collections = "Collections"
+        case domains = "Domains"
+        case folders = "Folders"
         case object = "Object"
+//        case policies = "Policies"
+        case profile = "Profile"
+//        case sends = "Sends"
+        case unofficialServer
     }
 }
 
@@ -37,14 +49,26 @@ extension Response {
     }
 
     func with(
-        continuationToken: JSONNull?? = nil,
-        data: [Datum]?? = nil,
-        object: String?? = nil
+        ciphers: [Cipher]?? = nil,
+        collections: [CollectionStructs.Collection]?? = nil,
+        domains: Domains?? = nil,
+        folders: [Folder]?? = nil,
+        object: String?? = nil,
+//        policies: [JSONAny]?? = nil,
+        profile: Profile?? = nil,
+//        sends: [JSONAny]?? = nil,
+        unofficialServer: Bool?? = nil
     ) -> Response {
         return Response(
-            continuationToken: continuationToken ?? self.continuationToken,
-            data: data ?? self.data,
-            object: object ?? self.object
+            ciphers: ciphers ?? self.ciphers,
+            collections: collections ?? self.collections,
+            domains: domains ?? self.domains,
+            folders: folders ?? self.folders,
+            object: object ?? self.object,
+//            policies: policies ?? self.policies,
+            profile: profile ?? self.profile,
+//            sends: sends ?? self.sends,
+            unofficialServer: unofficialServer ?? self.unofficialServer
         )
     }
 
@@ -57,8 +81,8 @@ extension Response {
     }
 }
 
-// MARK: - Datum
-struct Datum: Codable & Hashable {
+// MARK: - Cipher
+struct Cipher: Codable & Hashable {
     var attachments: JSONNull?
     var card: Card?
     var collectionIDS: [String]?
@@ -73,7 +97,7 @@ struct Datum: Codable & Hashable {
     var login: Login?
     var name: String?
     var notes: JSONNull?
-    var object: Object?
+    var object: String?
     var organizationID: String?
     var organizationUseTotp: Bool?
     var passwordHistory: [PasswordHistory]?
@@ -111,11 +135,11 @@ struct Datum: Codable & Hashable {
     }
 }
 
-// MARK: Datum convenience initializers and mutators
+// MARK: Cipher convenience initializers and mutators
 
-extension Datum {
+extension Cipher {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Datum.self, from: data)
+        self = try newJSONDecoder().decode(Cipher.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
@@ -145,7 +169,7 @@ extension Datum {
         login: Login?? = nil,
         name: String?? = nil,
         notes: JSONNull?? = nil,
-        object: Object?? = nil,
+        object: String?? = nil,
         organizationID: String?? = nil,
         organizationUseTotp: Bool?? = nil,
         passwordHistory: [PasswordHistory]?? = nil,
@@ -154,8 +178,8 @@ extension Datum {
         secureNote: SecureNote?? = nil,
         type: Int?? = nil,
         viewPassword: Bool?? = nil
-    ) -> Datum {
-        return Datum(
+    ) -> Cipher {
+        return Cipher(
             attachments: attachments ?? self.attachments,
             card: card ?? self.card,
             collectionIDS: collectionIDS ?? self.collectionIDS,
@@ -679,11 +703,6 @@ extension Login {
     }
 }
 
-enum Object: String, Codable & Hashable {
-    case cipherDetails = "cipherDetails"
-    case folder = "folder"
-}
-
 // MARK: - SecureNote
 struct SecureNote: Codable & Hashable {
     var autofillOnPageLoad: JSONNull?
@@ -747,6 +766,469 @@ extension SecureNote {
     }
 }
 
+// MARK: - Collection
+enum CollectionStructs {
+    struct Collection: Codable & Hashable {
+        var externalID: JSONNull?
+        var hidePasswords: Bool?
+        var id, name, object, organizationID: String?
+        var readOnly: Bool?
+        
+        enum CodingKeys: String, CodingKey {
+            case externalID = "ExternalId"
+            case hidePasswords = "HidePasswords"
+            case id = "Id"
+            case name = "Name"
+            case object = "Object"
+            case organizationID = "OrganizationId"
+            case readOnly = "ReadOnly"
+        }
+    }
+}
+    
+    // MARK: Collection convenience initializers and mutators
+    
+extension CollectionStructs.Collection {
+        init(data: Data) throws {
+            self = try newJSONDecoder().decode(CollectionStructs.Collection.self, from: data)
+        }
+        
+        init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+            guard let data = json.data(using: encoding) else {
+                throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+            }
+            try self.init(data: data)
+        }
+        
+        init(fromURL url: URL) throws {
+            try self.init(data: try Data(contentsOf: url))
+        }
+        
+        func with(
+            externalID: JSONNull?? = nil,
+            hidePasswords: Bool?? = nil,
+            id: String?? = nil,
+            name: String?? = nil,
+            object: String?? = nil,
+            organizationID: String?? = nil,
+            readOnly: Bool?? = nil
+        ) -> CollectionStructs.Collection {
+            return CollectionStructs.Collection(
+                externalID: externalID ?? self.externalID,
+                hidePasswords: hidePasswords ?? self.hidePasswords,
+                id: id ?? self.id,
+                name: name ?? self.name,
+                object: object ?? self.object,
+                organizationID: organizationID ?? self.organizationID,
+                readOnly: readOnly ?? self.readOnly
+            )
+        }
+        
+        func jsonData() throws -> Data {
+            return try newJSONEncoder().encode(self)
+        }
+        
+        func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+            return String(data: try self.jsonData(), encoding: encoding)
+        }
+    }
+
+// MARK: - Domains
+struct Domains: Codable & Hashable {
+//    var equivalentDomains: [JSONAny]?
+    var globalEquivalentDomains: [GlobalEquivalentDomain]?
+    var object: String?
+
+    enum CodingKeys: String, CodingKey {
+//        case equivalentDomains = "EquivalentDomains"
+        case globalEquivalentDomains = "GlobalEquivalentDomains"
+        case object = "Object"
+    }
+}
+
+// MARK: Domains convenience initializers and mutators
+
+extension Domains {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(Domains.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+//        equivalentDomains: [JSONAny]?? = nil,
+        globalEquivalentDomains: [GlobalEquivalentDomain]?? = nil,
+        object: String?? = nil
+    ) -> Domains {
+        return Domains(
+//            equivalentDomains: equivalentDomains ?? self.equivalentDomains,
+            globalEquivalentDomains: globalEquivalentDomains ?? self.globalEquivalentDomains,
+            object: object ?? self.object
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - GlobalEquivalentDomain
+struct GlobalEquivalentDomain: Codable & Hashable {
+    var domains: [String]?
+    var excluded: Bool?
+    var type: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case domains = "Domains"
+        case excluded = "Excluded"
+        case type = "Type"
+    }
+}
+
+// MARK: GlobalEquivalentDomain convenience initializers and mutators
+
+extension GlobalEquivalentDomain {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(GlobalEquivalentDomain.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        domains: [String]?? = nil,
+        excluded: Bool?? = nil,
+        type: Int?? = nil
+    ) -> GlobalEquivalentDomain {
+        return GlobalEquivalentDomain(
+            domains: domains ?? self.domains,
+            excluded: excluded ?? self.excluded,
+            type: type ?? self.type
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - Folder
+struct Folder: Codable & Hashable & Identifiable {
+    var id, name, object, revisionDate: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id = "Id"
+        case name = "Name"
+        case object = "Object"
+        case revisionDate = "RevisionDate"
+    }
+}
+
+// MARK: Folder convenience initializers and mutators
+
+extension Folder {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(Folder.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        id: String?? = nil,
+        name: String?? = nil,
+        object: String?? = nil,
+        revisionDate: String?? = nil
+    ) -> Folder {
+        return Folder(
+            id: id ?? self.id,
+            name: name ?? self.name,
+            object: object ?? self.object,
+            revisionDate: revisionDate ?? self.revisionDate
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - Profile
+struct Profile: Codable & Hashable {
+    var culture, email: String?
+    var emailVerified, forcePasswordReset: Bool?
+    var id, key: String?
+    var masterPasswordHint: JSONNull?
+    var name, object: String?
+    var organizations: [Organization]?
+    var premium: Bool?
+    var privateKey: String?
+//    var providerOrganizations, providers: [JSONAny]?
+    var securityStamp: String?
+    var twoFactorEnabled: Bool?
+    var status: Int?
+
+    enum CodingKeys: String, CodingKey {
+        case culture = "Culture"
+        case email = "Email"
+        case emailVerified = "EmailVerified"
+        case forcePasswordReset = "ForcePasswordReset"
+        case id = "Id"
+        case key = "Key"
+        case masterPasswordHint = "MasterPasswordHint"
+        case name = "Name"
+        case object = "Object"
+        case organizations = "Organizations"
+        case premium = "Premium"
+        case privateKey = "PrivateKey"
+//        case providerOrganizations = "ProviderOrganizations"
+//        case providers = "Providers"
+        case securityStamp = "SecurityStamp"
+        case twoFactorEnabled = "TwoFactorEnabled"
+        case status = "_Status"
+    }
+}
+
+// MARK: Profile convenience initializers and mutators
+
+extension Profile {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(Profile.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        culture: String?? = nil,
+        email: String?? = nil,
+        emailVerified: Bool?? = nil,
+        forcePasswordReset: Bool?? = nil,
+        id: String?? = nil,
+        key: String?? = nil,
+        masterPasswordHint: JSONNull?? = nil,
+        name: String?? = nil,
+        object: String?? = nil,
+        organizations: [Organization]?? = nil,
+        premium: Bool?? = nil,
+        privateKey: String?? = nil,
+//        providerOrganizations: [JSONAny]?? = nil,
+//        providers: [JSONAny]?? = nil,
+        securityStamp: String?? = nil,
+        twoFactorEnabled: Bool?? = nil,
+        status: Int?? = nil
+    ) -> Profile {
+        return Profile(
+            culture: culture ?? self.culture,
+            email: email ?? self.email,
+            emailVerified: emailVerified ?? self.emailVerified,
+            forcePasswordReset: forcePasswordReset ?? self.forcePasswordReset,
+            id: id ?? self.id,
+            key: key ?? self.key,
+            masterPasswordHint: masterPasswordHint ?? self.masterPasswordHint,
+            name: name ?? self.name,
+            object: object ?? self.object,
+            organizations: organizations ?? self.organizations,
+            premium: premium ?? self.premium,
+            privateKey: privateKey ?? self.privateKey,
+//            providerOrganizations: providerOrganizations ?? self.providerOrganizations,
+//            providers: providers ?? self.providers,
+            securityStamp: securityStamp ?? self.securityStamp,
+            twoFactorEnabled: twoFactorEnabled ?? self.twoFactorEnabled,
+            status: status ?? self.status
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
+// MARK: - Organization
+struct Organization: Codable & Hashable {
+    var enabled, hasPublicAndPrivateKeys: Bool?
+    var id: String?
+    var identifier: JSONNull?
+    var key: String?
+    var maxCollections, maxStorageGB: Int?
+    var name, object: String?
+    var providerID, providerName: JSONNull?
+    var resetPasswordEnrolled: Bool?
+    var seats: Int?
+    var selfHost, ssoBound: Bool?
+    var status, type: Int?
+    var use2Fa, useAPI, useDirectory, useEvents: Bool?
+    var useGroups, usePolicies, useSso, useTotp: Bool?
+    var userID: String?
+    var usersGetPremium: Bool?
+
+    enum CodingKeys: String, CodingKey {
+        case enabled = "Enabled"
+        case hasPublicAndPrivateKeys = "HasPublicAndPrivateKeys"
+        case id = "Id"
+        case identifier = "Identifier"
+        case key = "Key"
+        case maxCollections = "MaxCollections"
+        case maxStorageGB = "MaxStorageGb"
+        case name = "Name"
+        case object = "Object"
+        case providerID = "ProviderId"
+        case providerName = "ProviderName"
+        case resetPasswordEnrolled = "ResetPasswordEnrolled"
+        case seats = "Seats"
+        case selfHost = "SelfHost"
+        case ssoBound = "SsoBound"
+        case status = "Status"
+        case type = "Type"
+        case use2Fa = "Use2fa"
+        case useAPI = "UseApi"
+        case useDirectory = "UseDirectory"
+        case useEvents = "UseEvents"
+        case useGroups = "UseGroups"
+        case usePolicies = "UsePolicies"
+        case useSso = "UseSso"
+        case useTotp = "UseTotp"
+        case userID = "UserId"
+        case usersGetPremium = "UsersGetPremium"
+    }
+}
+
+// MARK: Organization convenience initializers and mutators
+
+extension Organization {
+    init(data: Data) throws {
+        self = try newJSONDecoder().decode(Organization.self, from: data)
+    }
+
+    init(_ json: String, using encoding: String.Encoding = .utf8) throws {
+        guard let data = json.data(using: encoding) else {
+            throw NSError(domain: "JSONDecoding", code: 0, userInfo: nil)
+        }
+        try self.init(data: data)
+    }
+
+    init(fromURL url: URL) throws {
+        try self.init(data: try Data(contentsOf: url))
+    }
+
+    func with(
+        enabled: Bool?? = nil,
+        hasPublicAndPrivateKeys: Bool?? = nil,
+        id: String?? = nil,
+        identifier: JSONNull?? = nil,
+        key: String?? = nil,
+        maxCollections: Int?? = nil,
+        maxStorageGB: Int?? = nil,
+        name: String?? = nil,
+        object: String?? = nil,
+        providerID: JSONNull?? = nil,
+        providerName: JSONNull?? = nil,
+        resetPasswordEnrolled: Bool?? = nil,
+        seats: Int?? = nil,
+        selfHost: Bool?? = nil,
+        ssoBound: Bool?? = nil,
+        status: Int?? = nil,
+        type: Int?? = nil,
+        use2Fa: Bool?? = nil,
+        useAPI: Bool?? = nil,
+        useDirectory: Bool?? = nil,
+        useEvents: Bool?? = nil,
+        useGroups: Bool?? = nil,
+        usePolicies: Bool?? = nil,
+        useSso: Bool?? = nil,
+        useTotp: Bool?? = nil,
+        userID: String?? = nil,
+        usersGetPremium: Bool?? = nil
+    ) -> Organization {
+        return Organization(
+            enabled: enabled ?? self.enabled,
+            hasPublicAndPrivateKeys: hasPublicAndPrivateKeys ?? self.hasPublicAndPrivateKeys,
+            id: id ?? self.id,
+            identifier: identifier ?? self.identifier,
+            key: key ?? self.key,
+            maxCollections: maxCollections ?? self.maxCollections,
+            maxStorageGB: maxStorageGB ?? self.maxStorageGB,
+            name: name ?? self.name,
+            object: object ?? self.object,
+            providerID: providerID ?? self.providerID,
+            providerName: providerName ?? self.providerName,
+            resetPasswordEnrolled: resetPasswordEnrolled ?? self.resetPasswordEnrolled,
+            seats: seats ?? self.seats,
+            selfHost: selfHost ?? self.selfHost,
+            ssoBound: ssoBound ?? self.ssoBound,
+            status: status ?? self.status,
+            type: type ?? self.type,
+            use2Fa: use2Fa ?? self.use2Fa,
+            useAPI: useAPI ?? self.useAPI,
+            useDirectory: useDirectory ?? self.useDirectory,
+            useEvents: useEvents ?? self.useEvents,
+            useGroups: useGroups ?? self.useGroups,
+            usePolicies: usePolicies ?? self.usePolicies,
+            useSso: useSso ?? self.useSso,
+            useTotp: useTotp ?? self.useTotp,
+            userID: userID ?? self.userID,
+            usersGetPremium: usersGetPremium ?? self.usersGetPremium
+        )
+    }
+
+    func jsonData() throws -> Data {
+        return try newJSONEncoder().encode(self)
+    }
+
+    func jsonString(encoding: String.Encoding = .utf8) throws -> String? {
+        return String(data: try self.jsonData(), encoding: encoding)
+    }
+}
+
 // MARK: - Helper functions for creating encoders and decoders
 
 func newJSONDecoder() -> JSONDecoder {
@@ -791,3 +1273,24 @@ class JSONNull: Codable & Hashable {
         try container.encodeNil()
     }
 }
+
+class JSONCodingKey: CodingKey {
+    let key: String
+
+    required init?(intValue: Int) {
+        return nil
+    }
+
+    required init?(stringValue: String) {
+        key = stringValue
+    }
+
+    var intValue: Int? {
+        return nil
+    }
+
+    var stringValue: String {
+        return key
+    }
+}
+

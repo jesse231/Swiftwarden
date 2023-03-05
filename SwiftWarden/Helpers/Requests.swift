@@ -30,8 +30,11 @@ class Api {
     init (username: String, password: String, base: String) async throws{
         let token: Token = try await Api.login(email: username, password: password)
         Api.bearer = token.access_token
+        print(Api.bearer)
         try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)
         Api.base = base + "/"
+        
+//        let sync = Api.sync()
         
     }
     
@@ -62,7 +65,7 @@ class Api {
         return (token.access_token, token.Key)
     }
     
-    static func updatePassword(cipher: Datum) async throws{
+    static func updatePassword(cipher: Cipher) async throws{
         let url = URL(string: Api.base + "/api/ciphers/" + (cipher.id ?? ""))!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -121,32 +124,35 @@ class Api {
         
     }
     
-    static func sync () async throws {
-        let url = URL(string: Api.base + "/api/sync?excludeDomains=true")!
+    static func sync () async throws -> Response {
+        let url = URL(string: Api.base + "/api/sync?excludeDomains=false")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
+        let syncData = try Response(data: data)
+//        print(syncData)
+        return syncData
     }
     
     
     
-    static func getPasswords() async throws -> [Datum]{
-        
-        let bearer = Api.bearer
-        
-        let url = URL(string: Api.base + "api/ciphers")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue(bearer, forHTTPHeaderField: "Authorization")
-        
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        
-        let cipher = try JSONDecoder().decode(Response.self, from: data)
-        return cipher.data!
-        
-    }
+//    static func getPasswords() async throws -> [Cipher]{
+//
+//        let bearer = Api.bearer
+//
+//        let url = URL(string: Api.base + "api/ciphers")!
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.addValue(bearer, forHTTPHeaderField: "Authorization")
+//
+//
+//        let (data, response) = try await URLSession.shared.data(for: request)
+//
+//        let cipher = try JSONDecoder().decode(Response.self, from: data)
+//        return cipher.data!
+//
+//    }
     
     static func deletePassword(id: String) async throws -> Bool{
         let bearer = Api.bearer
@@ -158,12 +164,13 @@ class Api {
         
         request.addValue(bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
-        
+        print(String(data: data, encoding: .utf8)!)
+        print("api/ciphers/" + id + "/delete")
         return true
     }
     
     
-    static func createPassword(cipher: Datum) async throws -> Bool{
+    static func createPassword(cipher: Cipher) async throws -> Bool{
         let bearer = Api.bearer
         let url = URL(string: Api.base + "api/ciphers/")!
         
@@ -182,20 +189,7 @@ class Api {
     }
     
     
-    static func getFolders() async throws -> [Datum]{
-        let bearer = Api.bearer
-        let url = URL(string: Api.base + "api/folders/")!
-        
-        var request = URLRequest(url: url)
-        request.addValue(bearer, forHTTPHeaderField: "Authorization")
-        
-        request.httpMethod = "GET"
-        
-        let (data, response) = try await URLSession.shared.data(for: request)
-        //        let folders = try JSONDecoder().decode(Response.self, from: data)
-        let folders = try Response(data: data)
-        return folders.data!
-    }
+
 }
 
 func getIcons(website: String) async throws{

@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 struct ItemView : View {
-    var cipher: Datum?
+    var cipher: Cipher?
     var hostname: String
     @EnvironmentObject var allPasswords: Passwords
     @State var favourite: Bool
@@ -41,6 +41,7 @@ struct ItemView : View {
                         Button (action: {
                             favourite = !favourite
                             allPasswords.currentPassword?.favorite = favourite
+//                            allPasswords.favourites.append(allPasswords.currentPassworzd)
                             Task {
                                 try await Api.updatePassword(cipher: allPasswords.currentPassword!)
                             }
