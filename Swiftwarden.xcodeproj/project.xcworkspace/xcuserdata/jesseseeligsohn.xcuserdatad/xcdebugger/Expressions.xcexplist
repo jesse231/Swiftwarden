@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "closure #3 in ContentView.body.getter:ContentView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.macsEqual(macKey:mac1:mac2:):Encryption.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in closure #1 in ContentView.body.getter:ContentView.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.decryptPasswords(passwords:):Encryption.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.decryptCipher(cipher:encKey:):Encryption.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.decryptPasswords(passwords:encKey:):Encryption.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.hkdfStretch(prk:info:size:):Encryption.swift">
+      </ContextState>
+      <ContextState
+         contextName = "closure #2 in ContentView.body.getter:ContentView.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "selectedItem">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static Encryption.decryptCipher(cipher:):Encryption.swift">
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

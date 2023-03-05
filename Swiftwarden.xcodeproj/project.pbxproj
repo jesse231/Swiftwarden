@@ -1,0 +1,708 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3B0486E02875018C007CCC5A /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Requests.swift */; };
+		3B0A8E04296209830055DA2D /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A8E03296209830055DA2D /* Encryption.swift */; };
+		3B2EC3C4296F27F6003A04A1 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3C3296F27F6003A04A1 /* CardView.swift */; };
+		3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3C6296F30FC003A04A1 /* LoginView.swift */; };
+		3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CB296F315E003A04A1 /* MainView.swift */; };
+		3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */; };
+		3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */; };
+		3B2EC3D2296F4AD5003A04A1 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Requests.swift */; };
+		3B2EC3D3296F4AD5003A04A1 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Requests.swift */; };
+		3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48412870F673000D0D0C /* Swiftwarden.swift */; };
+		3B3E48442870F673000D0D0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48432870F673000D0D0C /* ContentView.swift */; };
+		3B3E48462870F674000D0D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B3E48452870F674000D0D0C /* Assets.xcassets */; };
+		3B3E48492870F674000D0D0C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B3E48482870F674000D0D0C /* Preview Assets.xcassets */; };
+		3B3E48542870F674000D0D0C /* BitwardenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48532870F674000D0D0C /* BitwardenTests.swift */; };
+		3B3E485E2870F674000D0D0C /* BitwardenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E485D2870F674000D0D0C /* BitwardenUITests.swift */; };
+		3B3E48602870F674000D0D0C /* BitwardenUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E485F2870F674000D0D0C /* BitwardenUITestsLaunchTests.swift */; };
+		3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513A62899DAAB002164C9 /* PasswordsList.swift */; };
+		3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513A8289AF29F002164C9 /* ItemView.swift */; };
+		3B4513AC289AF380002164C9 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AB289AF380002164C9 /* Field.swift */; };
+		3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AE289B78E5002164C9 /* Buttons.swift */; };
+		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
+		3B977D2429732A1B00C7F482 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B977D2329732A1B00C7F482 /* Response.swift */; };
+		3B977D2529732A1B00C7F482 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B977D2329732A1B00C7F482 /* Response.swift */; };
+		3B977D2629732A1B00C7F482 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B977D2329732A1B00C7F482 /* Response.swift */; };
+		3BB5594229B1A27400AB9DAC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* Account.swift */; };
+		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
+		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
+		3BF9B588296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
+		3BF9B589296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
+		3BF9B58A296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
+		3BF9B58F296CC40B0095B557 /* query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9B58E296CC40B0095B557 /* query.swift */; };
+		3BF9B590296CC40B0095B557 /* query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9B58E296CC40B0095B557 /* query.swift */; };
+		3BF9B591296CC40B0095B557 /* query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9B58E296CC40B0095B557 /* query.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3B3E48502870F674000D0D0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3B3E48362870F673000D0D0C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B3E483D2870F673000D0D0C;
+			remoteInfo = Bitwarden;
+		};
+		3B3E485A2870F674000D0D0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3B3E48362870F673000D0D0C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3B3E483D2870F673000D0D0C;
+			remoteInfo = Bitwarden;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3B0486DF2875018C007CCC5A /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
+		3B0A8E03296209830055DA2D /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
+		3B112FB72982F9940018F53B /* SwCrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
+		3B2EC3C3296F27F6003A04A1 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		3B2EC3C6296F30FC003A04A1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		3B2EC3CB296F315E003A04A1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
+		3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupNew.swift; sourceTree = "<group>"; };
+		3B2EC3D4296F520E003A04A1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3B3E483E2870F673000D0D0C /* Swiftwarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftwarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B3E48412870F673000D0D0C /* Swiftwarden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swiftwarden.swift; sourceTree = "<group>"; };
+		3B3E48432870F673000D0D0C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3B3E48452870F674000D0D0C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3B3E48482870F674000D0D0C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3B3E484A2870F674000D0D0C /* Swiftwarden.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Swiftwarden.entitlements; sourceTree = "<group>"; };
+		3B3E484F2870F674000D0D0C /* SwiftwardenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftwardenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B3E48532870F674000D0D0C /* BitwardenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitwardenTests.swift; sourceTree = "<group>"; };
+		3B3E48592870F674000D0D0C /* SwiftwardenUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftwardenUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3B3E485D2870F674000D0D0C /* BitwardenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitwardenUITests.swift; sourceTree = "<group>"; };
+		3B3E485F2870F674000D0D0C /* BitwardenUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitwardenUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		3B4513A62899DAAB002164C9 /* PasswordsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordsList.swift; sourceTree = "<group>"; };
+		3B4513A8289AF29F002164C9 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
+		3B4513AB289AF380002164C9 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
+		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		3B977D2329732A1B00C7F482 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Swiftwarden/Helpers/Response.swift; sourceTree = SOURCE_ROOT; };
+		3BB5594129B1A27400AB9DAC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Swiftwarden/Models/Account.swift; sourceTree = SOURCE_ROOT; };
+		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
+		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
+		3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CryptoSwift.xcframework; sourceTree = "<group>"; };
+		3BF9B58E296CC40B0095B557 /* query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = query.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3B3E483B2870F673000D0D0C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BF9B588296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E484C2870F674000D0D0C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BF9B589296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E48562870F674000D0D0C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3BF9B58A296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3B2EC3CD296F389E003A04A1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3B4513AA289AF36F002164C9 /* Components */,
+				3B4513A8289AF29F002164C9 /* ItemView.swift */,
+				3BD0746728A0829F00812AAB /* PopupEdit.swift */,
+				3B3E48432870F673000D0D0C /* ContentView.swift */,
+				3B2EC3C6296F30FC003A04A1 /* LoginView.swift */,
+				3B2EC3CB296F315E003A04A1 /* MainView.swift */,
+				3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */,
+				3B4513A62899DAAB002164C9 /* PasswordsList.swift */,
+				3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		3B3BF8EF296B740A002B1C95 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		3B3E48352870F673000D0D0C = {
+			isa = PBXGroup;
+			children = (
+				3B2EC3D4296F520E003A04A1 /* README.md */,
+				3B3BF8EF296B740A002B1C95 /* Frameworks */,
+				3B3E48402870F673000D0D0C /* SwiftWarden */,
+				3B3E48522870F674000D0D0C /* SwiftWardenTests */,
+				3B3E485C2870F674000D0D0C /* SwiftWardenUITests */,
+				3B3E483F2870F673000D0D0C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3B3E483F2870F673000D0D0C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3B3E483E2870F673000D0D0C /* Swiftwarden.app */,
+				3B3E484F2870F674000D0D0C /* SwiftwardenTests.xctest */,
+				3B3E48592870F674000D0D0C /* SwiftwardenUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3B3E48402870F673000D0D0C /* SwiftWarden */ = {
+			isa = PBXGroup;
+			children = (
+				3BB5594029B1A26800AB9DAC /* Models */,
+				3B2EC3CD296F389E003A04A1 /* Views */,
+				3BF9B58D296CC3FC0095B557 /* Helpers */,
+				3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */,
+				3B3E48412870F673000D0D0C /* Swiftwarden.swift */,
+				3B3E48452870F674000D0D0C /* Assets.xcassets */,
+				3B3E484A2870F674000D0D0C /* Swiftwarden.entitlements */,
+				3B3E48472870F674000D0D0C /* Preview Content */,
+			);
+			path = SwiftWarden;
+			sourceTree = "<group>";
+		};
+		3B3E48472870F674000D0D0C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				3B3E48482870F674000D0D0C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		3B3E48522870F674000D0D0C /* SwiftWardenTests */ = {
+			isa = PBXGroup;
+			children = (
+				3B3E48532870F674000D0D0C /* BitwardenTests.swift */,
+			);
+			path = SwiftWardenTests;
+			sourceTree = "<group>";
+		};
+		3B3E485C2870F674000D0D0C /* SwiftWardenUITests */ = {
+			isa = PBXGroup;
+			children = (
+				3B3E485D2870F674000D0D0C /* BitwardenUITests.swift */,
+				3B3E485F2870F674000D0D0C /* BitwardenUITestsLaunchTests.swift */,
+			);
+			path = SwiftWardenUITests;
+			sourceTree = "<group>";
+		};
+		3B4513AA289AF36F002164C9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				3B4513AB289AF380002164C9 /* Field.swift */,
+				3B4513AE289B78E5002164C9 /* Buttons.swift */,
+				3BD0746528A01FC000812AAB /* TestField.swift */,
+				3B2EC3C3296F27F6003A04A1 /* CardView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		3BB5594029B1A26800AB9DAC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3BB5594129B1A27400AB9DAC /* Account.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3BF9B58D296CC3FC0095B557 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				3B112FB72982F9940018F53B /* SwCrypt.swift */,
+				3B0486DF2875018C007CCC5A /* Requests.swift */,
+				3B0A8E03296209830055DA2D /* Encryption.swift */,
+				3BF9B58E296CC40B0095B557 /* query.swift */,
+				3B977D2329732A1B00C7F482 /* Response.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3B3E483D2870F673000D0D0C /* Swiftwarden */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B3E48632870F674000D0D0C /* Build configuration list for PBXNativeTarget "Swiftwarden" */;
+			buildPhases = (
+				3B3E483A2870F673000D0D0C /* Sources */,
+				3B3E483B2870F673000D0D0C /* Frameworks */,
+				3B3E483C2870F673000D0D0C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Swiftwarden;
+			packageProductDependencies = (
+			);
+			productName = Bitwarden;
+			productReference = 3B3E483E2870F673000D0D0C /* Swiftwarden.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3B3E484E2870F674000D0D0C /* SwiftwardenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B3E48662870F674000D0D0C /* Build configuration list for PBXNativeTarget "SwiftwardenTests" */;
+			buildPhases = (
+				3B3E484B2870F674000D0D0C /* Sources */,
+				3B3E484C2870F674000D0D0C /* Frameworks */,
+				3B3E484D2870F674000D0D0C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B3E48512870F674000D0D0C /* PBXTargetDependency */,
+			);
+			name = SwiftwardenTests;
+			productName = BitwardenTests;
+			productReference = 3B3E484F2870F674000D0D0C /* SwiftwardenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		3B3E48582870F674000D0D0C /* SwiftwardenUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B3E48692870F674000D0D0C /* Build configuration list for PBXNativeTarget "SwiftwardenUITests" */;
+			buildPhases = (
+				3B3E48552870F674000D0D0C /* Sources */,
+				3B3E48562870F674000D0D0C /* Frameworks */,
+				3B3E48572870F674000D0D0C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3B3E485B2870F674000D0D0C /* PBXTargetDependency */,
+			);
+			name = SwiftwardenUITests;
+			productName = BitwardenUITests;
+			productReference = 3B3E48592870F674000D0D0C /* SwiftwardenUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3B3E48362870F673000D0D0C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1330;
+				LastUpgradeCheck = 1330;
+				TargetAttributes = {
+					3B3E483D2870F673000D0D0C = {
+						CreatedOnToolsVersion = 13.3.1;
+					};
+					3B3E484E2870F674000D0D0C = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = 3B3E483D2870F673000D0D0C;
+					};
+					3B3E48582870F674000D0D0C = {
+						CreatedOnToolsVersion = 13.3.1;
+						TestTargetID = 3B3E483D2870F673000D0D0C;
+					};
+				};
+			};
+			buildConfigurationList = 3B3E48392870F673000D0D0C /* Build configuration list for PBXProject "Swiftwarden" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3B3E48352870F673000D0D0C;
+			packageReferences = (
+			);
+			productRefGroup = 3B3E483F2870F673000D0D0C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3B3E483D2870F673000D0D0C /* Swiftwarden */,
+				3B3E484E2870F674000D0D0C /* SwiftwardenTests */,
+				3B3E48582870F674000D0D0C /* SwiftwardenUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3B3E483C2870F673000D0D0C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B3E48492870F674000D0D0C /* Preview Assets.xcassets in Resources */,
+				3B3E48462870F674000D0D0C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E484D2870F674000D0D0C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E48572870F674000D0D0C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B3E483A2870F673000D0D0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */,
+				3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */,
+				3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */,
+				3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */,
+				3B977D2429732A1B00C7F482 /* Response.swift in Sources */,
+				3BF9B58F296CC40B0095B557 /* query.swift in Sources */,
+				3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */,
+				3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */,
+				3B0486E02875018C007CCC5A /* Requests.swift in Sources */,
+				3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */,
+				3B4513AC289AF380002164C9 /* Field.swift in Sources */,
+				3B3E48442870F673000D0D0C /* ContentView.swift in Sources */,
+				3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */,
+				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
+				3B0A8E04296209830055DA2D /* Encryption.swift in Sources */,
+				3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */,
+				3B2EC3C4296F27F6003A04A1 /* CardView.swift in Sources */,
+				3BB5594229B1A27400AB9DAC /* Account.swift in Sources */,
+				3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E484B2870F674000D0D0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B977D2529732A1B00C7F482 /* Response.swift in Sources */,
+				3B2EC3D2296F4AD5003A04A1 /* Requests.swift in Sources */,
+				3B3E48542870F674000D0D0C /* BitwardenTests.swift in Sources */,
+				3BF9B590296CC40B0095B557 /* query.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3B3E48552870F674000D0D0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B3E485E2870F674000D0D0C /* BitwardenUITests.swift in Sources */,
+				3B2EC3D3296F4AD5003A04A1 /* Requests.swift in Sources */,
+				3B3E48602870F674000D0D0C /* BitwardenUITestsLaunchTests.swift in Sources */,
+				3BF9B591296CC40B0095B557 /* query.swift in Sources */,
+				3B977D2629732A1B00C7F482 /* Response.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3B3E48512870F674000D0D0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B3E483D2870F673000D0D0C /* Swiftwarden */;
+			targetProxy = 3B3E48502870F674000D0D0C /* PBXContainerItemProxy */;
+		};
+		3B3E485B2870F674000D0D0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3B3E483D2870F673000D0D0C /* Swiftwarden */;
+			targetProxy = 3B3E485A2870F674000D0D0C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3B3E48612870F674000D0D0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		3B3E48622870F674000D0D0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		3B3E48642870F674000D0D0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swiftwarden/Swiftwarden.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Swiftwarden/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.Swiftwarden;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		3B3E48652870F674000D0D0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Swiftwarden/Swiftwarden.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Swiftwarden/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.Swiftwarden;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		3B3E48672870F674000D0D0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.SwiftwardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swiftwarden.app/Contents/MacOS/Swiftwarden";
+			};
+			name = Debug;
+		};
+		3B3E48682870F674000D0D0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.SwiftwardenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swiftwarden.app/Contents/MacOS/Swiftwarden";
+			};
+			name = Release;
+		};
+		3B3E486A2870F674000D0D0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.SwiftwardenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Swiftwarden;
+			};
+			name = Debug;
+		};
+		3B3E486B2870F674000D0D0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.SwiftwardenUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = Swiftwarden;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3B3E48392870F673000D0D0C /* Build configuration list for PBXProject "Swiftwarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3E48612870F674000D0D0C /* Debug */,
+				3B3E48622870F674000D0D0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B3E48632870F674000D0D0C /* Build configuration list for PBXNativeTarget "Swiftwarden" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3E48642870F674000D0D0C /* Debug */,
+				3B3E48652870F674000D0D0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B3E48662870F674000D0D0C /* Build configuration list for PBXNativeTarget "SwiftwardenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3E48672870F674000D0D0C /* Debug */,
+				3B3E48682870F674000D0D0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3B3E48692870F674000D0D0C /* Build configuration list for PBXNativeTarget "SwiftwardenUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3B3E486A2870F674000D0D0C /* Debug */,
+				3B3E486B2870F674000D0D0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3B3E48362870F673000D0D0C /* Project object */;
+}
