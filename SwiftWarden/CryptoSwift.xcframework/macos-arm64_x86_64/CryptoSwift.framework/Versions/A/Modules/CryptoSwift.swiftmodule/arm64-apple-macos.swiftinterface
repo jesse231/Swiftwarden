@@ -1,0 +1,2283 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+// swift-module-flags: -target arm64-apple-macos10.12 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=unchecked -O -module-name CryptoSwift
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+@_exported import CryptoSwift
+import Darwin
+import Foundation
+import Swift
+import _Concurrency
+import _StringProcessing
+@_hasMissingDesignatedInitializers final public class RSA {
+  public enum Error : Swift.Error {
+    case noPrivateKey
+    case invalidInverseNotCoprimes
+    case unsupportedRSAVersion
+    case invalidPrimes
+    case noPrimes
+    case unableToCalculateCoefficient
+    case invalidSignatureLength
+    case invalidMessageLengthForSigning
+    case invalidMessageLengthForEncryption
+    case invalidDecryption
+    public static func == (a: CryptoSwift.RSA.Error, b: CryptoSwift.RSA.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let n: CryptoSwift.BigUInteger
+  final public let e: CryptoSwift.BigUInteger
+  final public let d: CryptoSwift.BigUInteger?
+  final public let keySize: Swift.Int
+  final public let keySizeBytes: Swift.Int
+  public init(n: CryptoSwift.BigUInteger, e: CryptoSwift.BigUInteger, d: CryptoSwift.BigUInteger? = nil)
+  convenience public init(n: Swift.Array<Swift.UInt8>, e: Swift.Array<Swift.UInt8>, d: Swift.Array<Swift.UInt8>? = nil)
+  convenience public init(keySize: Swift.Int) throws
+  @objc deinit
+}
+extension CryptoSwift.RSA {
+  convenience public init(rawRepresentation raw: Foundation.Data) throws
+}
+extension CryptoSwift.RSA {
+  final public func externalRepresentation() throws -> Foundation.Data
+  final public func publicKeyExternalRepresentation() throws -> Foundation.Data
+}
+extension CryptoSwift.CS.BigUInt {
+  public static func generatePrime(_ width: Swift.Int) -> CryptoSwift.BigUInteger
+}
+extension CryptoSwift.RSA : Swift.CustomStringConvertible {
+  final public var description: Swift.String {
+    get
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public init?<S>(_ text: S, radix: Swift.Int = 10) where S : Swift.StringProtocol
+}
+extension CryptoSwift.CS.BigInt {
+  public init?<S>(_ text: S, radix: Swift.Int = 10) where S : Swift.StringProtocol
+}
+extension Swift.String {
+  public init(_ v: CryptoSwift.CS.BigUInt)
+  public init(_ v: CryptoSwift.CS.BigUInt, radix: Swift.Int, uppercase: Swift.Bool = false)
+  public init(_ value: CryptoSwift.CS.BigInt, radix: Swift.Int = 10, uppercase: Swift.Bool = false)
+}
+extension CryptoSwift.CS.BigUInt : Swift.ExpressibleByStringLiteral {
+  public init(unicodeScalarLiteral value: Swift.UnicodeScalar)
+  public init(extendedGraphemeClusterLiteral value: Swift.String)
+  public init(stringLiteral value: Swift.StringLiteralType)
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.String
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.UnicodeScalar
+}
+extension CryptoSwift.CS.BigInt : Swift.ExpressibleByStringLiteral {
+  public init(unicodeScalarLiteral value: Swift.UnicodeScalar)
+  public init(extendedGraphemeClusterLiteral value: Swift.String)
+  public init(stringLiteral value: Swift.StringLiteralType)
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.String
+  public typealias StringLiteralType = Swift.StringLiteralType
+  public typealias UnicodeScalarLiteralType = Swift.UnicodeScalar
+}
+extension CryptoSwift.CS.BigUInt : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension CryptoSwift.CS.BigInt : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
+extension CryptoSwift.CS.BigUInt : Swift.CustomPlaygroundDisplayConvertible {
+  public var playgroundDescription: Any {
+    get
+  }
+}
+extension CryptoSwift.CS.BigInt : Swift.CustomPlaygroundDisplayConvertible {
+  public var playgroundDescription: Any {
+    get
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public mutating func multiply(byWord y: CryptoSwift.CS.BigUInt.Word)
+  public func multiplied(byWord y: CryptoSwift.CS.BigUInt.Word) -> CryptoSwift.CS.BigUInt
+  public mutating func multiplyAndAdd(_ x: CryptoSwift.CS.BigUInt, _ y: CryptoSwift.CS.BigUInt.Word, shiftedBy shift: Swift.Int = 0)
+  public func multiplied(by y: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static var directMultiplicationLimit: Swift.Int
+  public static func * (x: CryptoSwift.CS.BigUInt, y: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func *= (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+}
+extension CryptoSwift.CS.BigInt {
+  public static func * (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func *= (a: inout CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt)
+}
+public struct CFB : CryptoSwift.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: CryptoSwift.CFB.Error, b: CryptoSwift.CFB.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum SegmentSize : Swift.Int {
+    case cfb8
+    case cfb128
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init(iv: Swift.Array<Swift.UInt8>, segmentSize: CryptoSwift.CFB.SegmentSize = .cfb128)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+extension CryptoSwift.CS.BigUInt {
+  public subscript(bitAt index: Swift.Int) -> Swift.Bool {
+    get
+    set
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public var bitWidth: Swift.Int {
+    get
+  }
+  public var leadingZeroBitCount: Swift.Int {
+    get
+  }
+  public var trailingZeroBitCount: Swift.Int {
+    get
+  }
+}
+extension CryptoSwift.CS.BigInt {
+  public var bitWidth: Swift.Int {
+    get
+  }
+  public var trailingZeroBitCount: Swift.Int {
+    get
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public struct Words : Swift.RandomAccessCollection {
+    public var startIndex: Swift.Int {
+      get
+    }
+    public var endIndex: Swift.Int {
+      get
+    }
+    public subscript(index: Swift.Int) -> CryptoSwift.CS.BigUInt.Word {
+      get
+    }
+    public typealias Element = CryptoSwift.CS.BigUInt.Word
+    public typealias Index = Swift.Int
+    public typealias Indices = Swift.Range<Swift.Int>
+    public typealias Iterator = Swift.IndexingIterator<CryptoSwift.CS.BigUInt.Words>
+    public typealias SubSequence = Swift.Slice<CryptoSwift.CS.BigUInt.Words>
+  }
+  public var words: CryptoSwift.CS.BigUInt.Words {
+    get
+  }
+  public init<Words>(words: Words) where Words : Swift.Sequence, Words.Element == Swift.UInt
+}
+extension CryptoSwift.CS.BigInt {
+  public struct Words : Swift.RandomAccessCollection {
+    public typealias Indices = Swift.CountableRange<Swift.Int>
+    public var count: Swift.Int {
+      get
+    }
+    public var indices: CryptoSwift.CS.BigInt.Words.Indices {
+      get
+    }
+    public var startIndex: Swift.Int {
+      get
+    }
+    public var endIndex: Swift.Int {
+      get
+    }
+    public subscript(index: Swift.Int) -> Swift.UInt {
+      get
+    }
+    public typealias Element = Swift.UInt
+    public typealias Index = Swift.Int
+    public typealias Iterator = Swift.IndexingIterator<CryptoSwift.CS.BigInt.Words>
+    public typealias SubSequence = Swift.Slice<CryptoSwift.CS.BigInt.Words>
+  }
+  public var words: CryptoSwift.CS.BigInt.Words {
+    get
+  }
+  public init<S>(words: S) where S : Swift.Sequence, S.Element == Swift.UInt
+}
+extension Swift.Collection where Self.Element == Swift.UInt8, Self.Index == Swift.Int {
+  @inlinable internal func toUInt32Array() -> Swift.Array<Swift.UInt32> {
+    guard !isEmpty else {
+      return []
+    }
+
+    let c = strideCount(from: startIndex, to: endIndex, by: 4)
+    return Array<UInt32>(unsafeUninitializedCapacity: c) { buf, count in
+      var counter = 0
+      for idx in stride(from: startIndex, to: endIndex, by: 4) {
+        let val = UInt32(bytes: self, fromIndex: idx).bigEndian
+        buf[counter] = val
+        counter += 1
+      }
+      count = counter
+      assert(counter == c)
+    }
+  }
+  @inlinable internal func toUInt64Array() -> Swift.Array<Swift.UInt64> {
+    guard !isEmpty else {
+      return []
+    }
+
+    let c = strideCount(from: startIndex, to: endIndex, by: 8)
+    return Array<UInt64>(unsafeUninitializedCapacity: c) { buf, count in
+      var counter = 0
+      for idx in stride(from: startIndex, to: endIndex, by: 8) {
+        let val = UInt64(bytes: self, fromIndex: idx).bigEndian
+        buf[counter] = val
+        counter += 1
+      }
+      count = counter
+      assert(counter == c)
+    }
+  }
+}
+@usableFromInline
+internal func strideCount(from: Swift.Int, to: Swift.Int, by: Swift.Int) -> Swift.Int
+public class CMAC : CryptoSwift.Authenticator {
+  public enum Error : Swift.Error {
+    case wrongKeyLength
+    public static func == (a: CryptoSwift.CMAC.Error, b: CryptoSwift.CMAC.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public init(key: Swift.Array<Swift.UInt8>) throws
+  public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public func authenticate(_ bytes: Swift.Array<Swift.UInt8>, cipher: CryptoSwift.Cipher) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+final public class GCM : CryptoSwift.BlockMode {
+  public enum Mode {
+    case combined
+    case detached
+    public static func == (a: CryptoSwift.GCM.Mode, b: CryptoSwift.GCM.Mode) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let options: CryptoSwift.BlockModeOption
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    case fail
+    public static func == (a: CryptoSwift.GCM.Error, b: CryptoSwift.GCM.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let customBlockSize: Swift.Int?
+  final public var authenticationTag: Swift.Array<Swift.UInt8>?
+  public init(iv: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, tagLength: Swift.Int = 16, mode: CryptoSwift.GCM.Mode = .detached)
+  convenience public init(iv: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, mode: CryptoSwift.GCM.Mode = .detached)
+  final public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+  @objc deinit
+}
+@_inheritsConvenienceInitializers final public class CBCMAC : CryptoSwift.CMAC {
+  override final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  override public init(key: Swift.Array<Swift.UInt8>) throws
+  @objc deinit
+}
+extension CryptoSwift.AES {
+  convenience public init(key: Swift.String, iv: Swift.String, padding: CryptoSwift.Padding = .pkcs7) throws
+}
+public struct HKDF {
+  public enum Error : Swift.Error {
+    case invalidInput
+    case derivedKeyTooLong
+    public static func == (a: CryptoSwift.HKDF.Error, b: CryptoSwift.HKDF.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>? = nil, info: Swift.Array<Swift.UInt8>? = nil, keyLength: Swift.Int? = nil, variant: CryptoSwift.HMAC.Variant = .sha2(.sha256)) throws
+  public func calculate() throws -> Swift.Array<Swift.UInt8>
+  public func callAsFunction() throws -> Swift.Array<Swift.UInt8>
+}
+final public class HMAC : CryptoSwift.Authenticator {
+  public enum Error : Swift.Error {
+    case authenticateError
+    case invalidInput
+    public static func == (a: CryptoSwift.HMAC.Error, b: CryptoSwift.HMAC.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Variant {
+    case md5
+    case sha1
+    case sha2(CryptoSwift.SHA2.Variant)
+    case sha3(CryptoSwift.SHA3.Variant)
+    @available(*, deprecated, message: "Use sha2(variant) instead.")
+    case sha256, sha384, sha512
+  }
+  public init(key: Swift.Array<Swift.UInt8>, variant: CryptoSwift.HMAC.Variant = .md5)
+  final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class AEADChaCha20Poly1305 : CryptoSwift.AEAD {
+  public static let kLen: Swift.Int
+  public static var ivRange: Swift.Range<Swift.Int>
+  public static func encrypt(_ plainText: Swift.Array<Swift.UInt8>, key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>, authenticationHeader: Swift.Array<Swift.UInt8>) throws -> (cipherText: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>)
+  public static func decrypt(_ cipherText: Swift.Array<Swift.UInt8>, key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>, authenticationHeader: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>) throws -> (plainText: Swift.Array<Swift.UInt8>, success: Swift.Bool)
+  @objc deinit
+}
+extension CryptoSwift.CS.BigUInt : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension CryptoSwift.CS.BigInt : Swift.Hashable {
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@_specialize(exported: false, kind: full, where T == Swift.Int)
+@_specialize(exported: false, kind: full, where T == Swift.UInt)
+@_specialize(exported: false, kind: full, where T == Swift.UInt8)
+@_specialize(exported: false, kind: full, where T == Swift.UInt16)
+@_specialize(exported: false, kind: full, where T == Swift.UInt32)
+@_specialize(exported: false, kind: full, where T == Swift.UInt64)
+@inlinable internal func arrayOfBytes<T>(value: T, length totalBytes: Swift.Int = MemoryLayout<T>.size) -> Swift.Array<Swift.UInt8> where T : Swift.FixedWidthInteger {
+  let valuePointer = UnsafeMutablePointer<T>.allocate(capacity: 1)
+  valuePointer.pointee = value
+
+  let bytesPointer = UnsafeMutablePointer<UInt8>(OpaquePointer(valuePointer))
+  var bytes = Array<UInt8>(repeating: 0, count: totalBytes)
+  for j in 0..<min(MemoryLayout<T>.size, totalBytes) {
+    bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
+  }
+
+  valuePointer.deinitialize(count: 1)
+  valuePointer.deallocate()
+
+  return bytes
+}
+final public class Poly1305 : CryptoSwift.Authenticator {
+  public enum Error : Swift.Error {
+    case authenticateError
+    public static func == (a: CryptoSwift.Poly1305.Error, b: CryptoSwift.Poly1305.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static let blockSize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>)
+  final public func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+public protocol Cryptor {
+  mutating func seek(to: Swift.Int) throws
+}
+public typealias CipherOperationOnBlock = (_ block: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>?
+public protocol BlockMode {
+  var options: CryptoSwift.BlockModeOption { get }
+  @inlinable func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+  var customBlockSize: Swift.Int? { get }
+}
+extension CryptoSwift.CS.BigInt : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension CryptoSwift.CS.BigUInt : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension CryptoSwift.CS.BigUInt {
+  public init(_ buffer: Swift.UnsafeRawBufferPointer)
+  public init(_ data: Foundation.Data)
+  public func serialize() -> Foundation.Data
+}
+extension CryptoSwift.CS.BigInt {
+  public init(_ buffer: Swift.UnsafeRawBufferPointer)
+  public init(_ data: Foundation.Data)
+  public func serialize() -> Foundation.Data
+}
+public enum CipherError : Swift.Error {
+  case encrypt
+  case decrypt
+  public static func == (a: CryptoSwift.CipherError, b: CryptoSwift.CipherError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol Cipher : AnyObject {
+  var keySize: Swift.Int { get }
+  func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func encrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func decrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+extension CryptoSwift.Cipher {
+  public func encrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public func decrypt(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+@usableFromInline
+final internal class BlockEncryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+  @usableFromInline
+  internal init(blockSize: Swift.Int, padding: CryptoSwift.Padding, _ worker: CryptoSwift.CipherModeWorker) throws
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool) throws -> Swift.Array<Swift.UInt8>
+  @usableFromInline
+  final internal func seek(to: Swift.Int) throws
+  @objc @usableFromInline
+  deinit
+}
+extension Swift.FixedWidthInteger {
+  @inlinable internal func bytes(totalBytes: Swift.Int = MemoryLayout<Self>.size) -> Swift.Array<Swift.UInt8> {
+    arrayOfBytes(value: self.littleEndian, length: totalBytes)
+    // TODO: adjust bytes order
+    // var value = self.littleEndian
+    // return withUnsafeBytes(of: &value, Array.init).reversed()
+  }
+}
+extension CryptoSwift.RSA : CryptoSwift.Signature {
+  final public func sign(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func sign(_ bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.RSA.SignatureVariant) throws -> Swift.Array<Swift.UInt8>
+  final public func verify(signature: Swift.ArraySlice<Swift.UInt8>, for expectedData: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Bool
+  final public func verify(signature: Swift.Array<Swift.UInt8>, for bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.RSA.SignatureVariant) throws -> Swift.Bool
+}
+extension CryptoSwift.RSA {
+  public enum SignatureVariant {
+    case raw
+    case message_pkcs1v15_MD5
+    case message_pkcs1v15_SHA1
+    case message_pkcs1v15_SHA224
+    case message_pkcs1v15_SHA256
+    case message_pkcs1v15_SHA384
+    case message_pkcs1v15_SHA512
+    case message_pkcs1v15_SHA512_224
+    case message_pkcs1v15_SHA512_256
+    case digest_pkcs1v15_RAW
+    case digest_pkcs1v15_MD5
+    case digest_pkcs1v15_SHA1
+    case digest_pkcs1v15_SHA224
+    case digest_pkcs1v15_SHA256
+    case digest_pkcs1v15_SHA384
+    case digest_pkcs1v15_SHA512
+    case digest_pkcs1v15_SHA512_224
+    case digest_pkcs1v15_SHA512_256
+    public static func == (a: CryptoSwift.RSA.SignatureVariant, b: CryptoSwift.RSA.SignatureVariant) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+final public class SHA2 {
+  @usableFromInline
+  final internal let variant: CryptoSwift.SHA2.Variant
+  @usableFromInline
+  final internal let size: Swift.Int
+  @usableFromInline
+  final internal let blockSize: Swift.Int
+  @usableFromInline
+  final internal let digestLength: Swift.Int
+  @usableFromInline
+  final internal var accumulated: [Swift.UInt8]
+  @usableFromInline
+  final internal var processedBytesTotalCount: Swift.Int
+  @usableFromInline
+  final internal var accumulatedHash32: [Swift.UInt32]
+  @usableFromInline
+  final internal var accumulatedHash64: [Swift.UInt64]
+  @frozen public enum Variant : Swift.RawRepresentable {
+    case sha224, sha256, sha384, sha512
+    public var digestLength: Swift.Int {
+      get
+    }
+    public var blockSize: Swift.Int {
+      get
+    }
+    public typealias RawValue = Swift.Int
+    public var rawValue: CryptoSwift.SHA2.Variant.RawValue {
+      get
+    }
+    public init?(rawValue: CryptoSwift.SHA2.Variant.RawValue)
+    @usableFromInline
+    internal var h: Swift.Array<Swift.UInt64> {
+      get
+    }
+    @usableFromInline
+    internal var finalLength: Swift.Int {
+      get
+    }
+  }
+  public init(variant: CryptoSwift.SHA2.Variant)
+  @inlinable final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8> {
+    do {
+      return try update(withBytes: bytes.slice, isLast: true)
+    } catch {
+      return []
+    }
+  }
+  final public func callAsFunction(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @usableFromInline
+  final internal func process64(block chunk: Swift.ArraySlice<Swift.UInt8>, currentHash hh: inout Swift.Array<Swift.UInt64>)
+  @usableFromInline
+  final internal func process32(block chunk: Swift.ArraySlice<Swift.UInt8>, currentHash hh: inout Swift.Array<Swift.UInt32>)
+  @objc deinit
+}
+extension CryptoSwift.SHA2 : CryptoSwift.Updatable {
+  @inlinable final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    self.accumulated += bytes
+
+    if isLast {
+      let lengthInBits = (processedBytesTotalCount + self.accumulated.count) * 8
+      let lengthBytes = lengthInBits.bytes(totalBytes: self.blockSize / 8) // A 64-bit/128-bit representation of b. blockSize fit by accident.
+
+      // Step 1. Append padding
+      bitPadding(to: &self.accumulated, blockSize: self.blockSize, allowance: self.blockSize / 8)
+
+      // Step 2. Append Length a 64-bit representation of lengthInBits
+      self.accumulated += lengthBytes
+    }
+
+    var processedBytes = 0
+    for chunk in self.accumulated.batched(by: self.blockSize) {
+      if isLast || (self.accumulated.count - processedBytes) >= self.blockSize {
+        switch self.variant {
+          case .sha224, .sha256:
+            self.process32(block: chunk, currentHash: &self.accumulatedHash32)
+          case .sha384, .sha512:
+            self.process64(block: chunk, currentHash: &self.accumulatedHash64)
+          }
+        processedBytes += chunk.count
+      }
+    }
+    self.accumulated.removeFirst(processedBytes)
+    self.processedBytesTotalCount += processedBytes
+
+    // output current hash
+    var result = Array<UInt8>(repeating: 0, count: variant.digestLength)
+    switch self.variant {
+      case .sha224, .sha256:
+        var pos = 0
+        for idx in 0..<self.accumulatedHash32.count where idx < self.variant.finalLength {
+          let h = accumulatedHash32[idx]
+          result[pos + 0] = UInt8((h >> 24) & 0xff)
+          result[pos + 1] = UInt8((h >> 16) & 0xff)
+          result[pos + 2] = UInt8((h >> 8) & 0xff)
+          result[pos + 3] = UInt8(h & 0xff)
+          pos += 4
+        }
+      case .sha384, .sha512:
+        var pos = 0
+        for idx in 0..<self.accumulatedHash64.count where idx < self.variant.finalLength {
+          let h = accumulatedHash64[idx]
+          result[pos + 0] = UInt8((h >> 56) & 0xff)
+          result[pos + 1] = UInt8((h >> 48) & 0xff)
+          result[pos + 2] = UInt8((h >> 40) & 0xff)
+          result[pos + 3] = UInt8((h >> 32) & 0xff)
+          result[pos + 4] = UInt8((h >> 24) & 0xff)
+          result[pos + 5] = UInt8((h >> 16) & 0xff)
+          result[pos + 6] = UInt8((h >> 8) & 0xff)
+          result[pos + 7] = UInt8(h & 0xff)
+          pos += 8
+        }
+    }
+
+    // reset hash value for instance
+    if isLast {
+      switch self.variant {
+        case .sha224, .sha256:
+          self.accumulatedHash32 = self.variant.h.lazy.map { UInt32($0) } // FIXME: UInt64 for process64
+        case .sha384, .sha512:
+          self.accumulatedHash64 = self.variant.h
+      }
+    }
+
+    return result
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public static func + (a: CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func += (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+}
+extension CryptoSwift.CS.BigInt {
+  public static func + (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func += (a: inout CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt)
+}
+extension CryptoSwift.Blowfish {
+  convenience public init(key: Swift.String, iv: Swift.String, padding: CryptoSwift.Padding = .pkcs7) throws
+}
+public protocol Updatable {
+  mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool) throws -> Swift.Array<Swift.UInt8>
+  mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool, output: (_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Void) throws
+}
+extension CryptoSwift.Updatable {
+  @inlinable public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false, output: (_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Void) throws {
+    let processed = try update(withBytes: bytes, isLast: isLast)
+    if !processed.isEmpty {
+      output(processed)
+    }
+  }
+  @inlinable public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    try self.update(withBytes: bytes, isLast: isLast)
+  }
+  @inlinable public mutating func update(withBytes bytes: Swift.Array<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    try self.update(withBytes: bytes.slice, isLast: isLast)
+  }
+  @inlinable public mutating func update(withBytes bytes: Swift.Array<Swift.UInt8>, isLast: Swift.Bool = false, output: (_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Void) throws {
+    try self.update(withBytes: bytes.slice, isLast: isLast, output: output)
+  }
+  @inlinable public mutating func finish(withBytes bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    try self.update(withBytes: bytes, isLast: true)
+  }
+  @inlinable public mutating func finish(withBytes bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    try self.finish(withBytes: bytes.slice)
+  }
+  @inlinable public mutating func finish() throws -> Swift.Array<Swift.UInt8> {
+    try self.update(withBytes: [], isLast: true)
+  }
+  @inlinable public mutating func finish(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, output: (_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Void) throws {
+    let processed = try update(withBytes: bytes, isLast: true)
+    if !processed.isEmpty {
+      output(processed)
+    }
+  }
+  @inlinable public mutating func finish(withBytes bytes: Swift.Array<Swift.UInt8>, output: (_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Void) throws {
+    try self.finish(withBytes: bytes.slice, output: output)
+  }
+  @inlinable public mutating func finish(output: (Swift.Array<Swift.UInt8>) -> Swift.Void) throws {
+    try self.finish(withBytes: [], output: output)
+  }
+}
+final public class Checksum {
+  @usableFromInline
+  internal static let table32: [Swift.UInt32]
+  @usableFromInline
+  internal static let table32c: [Swift.UInt32]
+  @usableFromInline
+  internal static let table16: [Swift.UInt16]
+  @usableFromInline
+  internal init()
+  @inlinable final internal func crc32(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32 {
+    var crc: UInt32 = seed != nil ? seed! : 0xFFFF_FFFF
+    for chunk in message.batched(by: 256) {
+      for b in chunk {
+        let idx = Int((crc ^ UInt32(reflect ? b : reversed(b))) & 0xFF)
+        crc = (crc >> 8) ^ Checksum.table32[idx]
+      }
+    }
+    return (reflect ? crc : reversed(crc)) ^ 0xFFFF_FFFF
+  }
+  @inlinable final internal func crc32c(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32 {
+    var crc: UInt32 = seed != nil ? seed! : 0xFFFF_FFFF
+    for chunk in message.batched(by: 256) {
+      for b in chunk {
+        let idx = Int((crc ^ UInt32(reflect ? b : reversed(b))) & 0xFF)
+        crc = (crc >> 8) ^ Checksum.table32c[idx]
+      }
+    }
+    return (reflect ? crc : reversed(crc)) ^ 0xFFFF_FFFF
+  }
+  @inlinable final internal func crc16(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt16? = nil) -> Swift.UInt16 {
+    var crc: UInt16 = seed != nil ? seed! : 0x0000
+    for chunk in message.batched(by: 256) {
+      for b in chunk {
+        crc = (crc >> 8) ^ Checksum.table16[Int((crc ^ UInt16(b)) & 0xFF)]
+      }
+    }
+    return crc
+  }
+  @objc deinit
+}
+extension CryptoSwift.Checksum {
+  @inlinable public static func crc32(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32 {
+    Checksum().crc32(message, seed: seed, reflect: reflect)
+  }
+  @inlinable public static func crc32c(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32 {
+    Checksum().crc32c(message, seed: seed, reflect: reflect)
+  }
+  @inlinable public static func crc16(_ message: Swift.Array<Swift.UInt8>, seed: Swift.UInt16? = nil) -> Swift.UInt16 {
+    Checksum().crc16(message, seed: seed)
+  }
+}
+extension CryptoSwift.Rabbit {
+  convenience public init(key: Swift.String) throws
+  convenience public init(key: Swift.String, iv: Swift.String) throws
+}
+extension CryptoSwift.CS.BigUInt : Swift.Comparable {
+  public static func compare(_ a: CryptoSwift.CS.BigUInt, _ b: CryptoSwift.CS.BigUInt) -> Foundation.ComparisonResult
+  public static func == (a: CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt) -> Swift.Bool
+  public static func < (a: CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt) -> Swift.Bool
+}
+extension CryptoSwift.CS.BigInt {
+  public static func == (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> Swift.Bool
+  public static func < (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> Swift.Bool
+}
+@usableFromInline
+final internal class StreamEncryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+  @usableFromInline
+  final internal let blockSize: Swift.Int
+  @usableFromInline
+  final internal var worker: CryptoSwift.CipherModeWorker
+  @usableFromInline
+  final internal let padding: CryptoSwift.Padding
+  @usableFromInline
+  final internal var lastBlockRemainder: Swift.Int
+  @usableFromInline
+  internal init(blockSize: Swift.Int, padding: CryptoSwift.Padding, _ worker: CryptoSwift.CipherModeWorker) throws
+  @inlinable final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool) throws -> Swift.Array<Swift.UInt8> {
+    var accumulated = Array(bytes)
+    if isLast {
+      // CTR doesn't need padding. Really. Add padding to the last block if really want. but... don't.
+      accumulated = self.padding.add(to: accumulated, blockSize: self.blockSize - self.lastBlockRemainder)
+    }
+
+    var encrypted = Array<UInt8>(reserveCapacity: bytes.count)
+    for chunk in accumulated.batched(by: self.blockSize) {
+      encrypted += self.worker.encrypt(block: chunk)
+    }
+
+    // omit unecessary calculation if not needed
+    if self.padding != .noPadding {
+      self.lastBlockRemainder = encrypted.count.quotientAndRemainder(dividingBy: self.blockSize).remainder
+    }
+
+    if var finalizingWorker = worker as? FinalizingEncryptModeWorker, isLast == true {
+      encrypted = Array(try finalizingWorker.finalize(encrypt: encrypted.slice))
+    }
+
+    return encrypted
+  }
+  @usableFromInline
+  final internal func seek(to: Swift.Int) throws
+  @objc @usableFromInline
+  deinit
+}
+extension CryptoSwift.CS.BigUInt {
+  public func power(_ exponent: Swift.Int) -> CryptoSwift.CS.BigUInt
+  public func power(_ exponent: CryptoSwift.CS.BigUInt, modulus: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+}
+extension CryptoSwift.CS.BigInt {
+  public func power(_ exponent: Swift.Int) -> CryptoSwift.CS.BigInt
+  public func power(_ exponent: CryptoSwift.CS.BigInt, modulus: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+}
+extension CryptoSwift.CS.BigUInt {
+  public mutating func subtractReportingOverflow(_ b: CryptoSwift.CS.BigUInt, shiftedBy shift: Swift.Int = 0) -> Swift.Bool
+  public func subtractingReportingOverflow(_ other: CryptoSwift.CS.BigUInt, shiftedBy shift: Swift.Int) -> (partialValue: CryptoSwift.CS.BigUInt, overflow: Swift.Bool)
+  public func subtractingReportingOverflow(_ other: CryptoSwift.CS.BigUInt) -> (partialValue: CryptoSwift.CS.BigUInt, overflow: Swift.Bool)
+  public mutating func subtract(_ other: CryptoSwift.CS.BigUInt, shiftedBy shift: Swift.Int = 0)
+  public func subtracting(_ other: CryptoSwift.CS.BigUInt, shiftedBy shift: Swift.Int = 0) -> CryptoSwift.CS.BigUInt
+  public mutating func decrement(shiftedBy shift: Swift.Int = 0)
+  public static func - (a: CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func -= (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+}
+extension CryptoSwift.CS.BigInt {
+  public mutating func negate()
+  public static func - (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func -= (a: inout CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt)
+}
+extension CryptoSwift.PKCS5 {
+  public struct PBKDF1 {
+    public enum Error : Swift.Error {
+      case invalidInput
+      case derivedKeyTooLong
+      public static func == (a: CryptoSwift.PKCS5.PBKDF1.Error, b: CryptoSwift.PKCS5.PBKDF1.Error) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    public enum Variant {
+      case md5, sha1
+      @usableFromInline
+      internal var size: Swift.Int {
+        get
+      }
+      @usableFromInline
+      internal func calculateHash(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+      public static func == (a: CryptoSwift.PKCS5.PBKDF1.Variant, b: CryptoSwift.PKCS5.PBKDF1.Variant) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    @usableFromInline
+    internal let iterations: Swift.Int
+    @usableFromInline
+    internal let variant: CryptoSwift.PKCS5.PBKDF1.Variant
+    @usableFromInline
+    internal let keyLength: Swift.Int
+    @usableFromInline
+    internal let t1: Swift.Array<Swift.UInt8>
+    public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, variant: CryptoSwift.PKCS5.PBKDF1.Variant = .sha1, iterations: Swift.Int = 4096, keyLength: Swift.Int? = nil) throws
+    @inlinable public func calculate() -> Swift.Array<Swift.UInt8> {
+      var t = self.t1
+      for _ in 2...self.iterations {
+        t = self.variant.calculateHash(t)
+      }
+      return Array(t[0..<self.keyLength])
+    }
+    public func callAsFunction() -> Swift.Array<Swift.UInt8>
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  prefix public static func ~ (a: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func |= (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+  public static func &= (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+  public static func ^= (a: inout CryptoSwift.CS.BigUInt, b: CryptoSwift.CS.BigUInt)
+}
+extension CryptoSwift.CS.BigInt {
+  prefix public static func ~ (x: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func & (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func | (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func ^ (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func &= (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt)
+  public static func |= (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt)
+  public static func ^= (lhs: inout CryptoSwift.CS.BigInt, rhs: CryptoSwift.CS.BigInt)
+}
+extension Swift.UInt32 {
+  @_specialize(exported: false, kind: full, where T == Swift.ArraySlice<Swift.UInt8>)
+  @inlinable internal init<T>(bytes: T, fromIndex index: T.Index) where T : Swift.Collection, T.Element == Swift.UInt8, T.Index == Swift.Int {
+    if bytes.isEmpty {
+      self = 0
+      return
+    }
+
+    let count = bytes.count
+
+    let val0 = count > 0 ? UInt32(bytes[index.advanced(by: 0)]) << 24 : 0
+    let val1 = count > 1 ? UInt32(bytes[index.advanced(by: 1)]) << 16 : 0
+    let val2 = count > 2 ? UInt32(bytes[index.advanced(by: 2)]) << 8 : 0
+    let val3 = count > 3 ? UInt32(bytes[index.advanced(by: 3)]) : 0
+
+    self = val0 | val1 | val2 | val3
+  }
+}
+extension CryptoSwift.CS.BigUInt : Swift.Strideable {
+  public typealias Stride = CryptoSwift.CS.BigInt
+  public func advanced(by n: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigUInt
+  public func distance(to other: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigInt
+}
+extension CryptoSwift.CS.BigInt : Swift.Strideable {
+  public typealias Stride = CryptoSwift.CS.BigInt
+  public func advanced(by n: CryptoSwift.CS.BigInt.Stride) -> CryptoSwift.CS.BigInt
+  public func distance(to other: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt.Stride
+}
+public protocol Cryptors : AnyObject {
+  func makeEncryptor() throws -> CryptoSwift.Cryptor & CryptoSwift.Updatable
+  func makeDecryptor() throws -> CryptoSwift.Cryptor & CryptoSwift.Updatable
+  static func randomIV(_ blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+}
+extension CryptoSwift.Cryptors {
+  public static func randomIV(_ count: Swift.Int) -> Swift.Array<Swift.UInt8>
+}
+extension CryptoSwift.CS.BigUInt {
+  public func squareRoot() -> CryptoSwift.CS.BigUInt
+}
+extension CryptoSwift.CS.BigInt {
+  public func squareRoot() -> CryptoSwift.CS.BigInt
+}
+public struct ECB : CryptoSwift.BlockMode {
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init()
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+public protocol CipherModeWorker {
+  var cipherOperation: CryptoSwift.CipherOperationOnBlock { get }
+  var additionalBufferSize: Swift.Int { get }
+  @inlinable mutating func encrypt(block plaintext: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @inlinable mutating func decrypt(block ciphertext: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+}
+public protocol BlockModeWorker : CryptoSwift.CipherModeWorker {
+  var blockSize: Swift.Int { get }
+}
+public protocol CounterModeWorker : CryptoSwift.CipherModeWorker {
+  associatedtype Counter
+  var counter: Self.Counter { get set }
+}
+public protocol SeekableModeWorker : CryptoSwift.CipherModeWorker {
+  mutating func seek(to position: Swift.Int) throws
+}
+public protocol StreamModeWorker : CryptoSwift.CipherModeWorker {
+}
+public protocol FinalizingEncryptModeWorker : CryptoSwift.CipherModeWorker {
+  mutating func finalize(encrypt ciphertext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+}
+public protocol FinalizingDecryptModeWorker : CryptoSwift.CipherModeWorker {
+  @discardableResult
+  mutating func willDecryptLast(bytes ciphertext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+  mutating func didDecryptLast(bytes plaintext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+  mutating func finalize(decrypt plaintext: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.ArraySlice<Swift.UInt8>
+}
+extension CryptoSwift.HMAC {
+  convenience public init(key: Swift.String, variant: CryptoSwift.HMAC.Variant = .md5) throws
+}
+extension CryptoSwift.CS.BigUInt {
+  public static func randomInteger<RNG>(withMaximumWidth width: Swift.Int, using generator: inout RNG) -> CryptoSwift.CS.BigUInt where RNG : Swift.RandomNumberGenerator
+  public static func randomInteger(withMaximumWidth width: Swift.Int) -> CryptoSwift.CS.BigUInt
+  public static func randomInteger<RNG>(withExactWidth width: Swift.Int, using generator: inout RNG) -> CryptoSwift.CS.BigUInt where RNG : Swift.RandomNumberGenerator
+  public static func randomInteger(withExactWidth width: Swift.Int) -> CryptoSwift.CS.BigUInt
+  public static func randomInteger<RNG>(lessThan limit: CryptoSwift.CS.BigUInt, using generator: inout RNG) -> CryptoSwift.CS.BigUInt where RNG : Swift.RandomNumberGenerator
+  public static func randomInteger(lessThan limit: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+}
+extension Swift.String {
+  @inlinable public var bytes: Swift.Array<Swift.UInt8> {
+    get {
+    data(using: String.Encoding.utf8, allowLossyConversion: true)?.bytes ?? Array(utf8)
+  }
+  }
+  @inlinable public func md5() -> Swift.String {
+    self.bytes.md5().toHexString()
+  }
+  @inlinable public func sha1() -> Swift.String {
+    self.bytes.sha1().toHexString()
+  }
+  @inlinable public func sha224() -> Swift.String {
+    self.bytes.sha224().toHexString()
+  }
+  @inlinable public func sha256() -> Swift.String {
+    self.bytes.sha256().toHexString()
+  }
+  @inlinable public func sha384() -> Swift.String {
+    self.bytes.sha384().toHexString()
+  }
+  @inlinable public func sha512() -> Swift.String {
+    self.bytes.sha512().toHexString()
+  }
+  @inlinable public func sha3(_ variant: CryptoSwift.SHA3.Variant) -> Swift.String {
+    self.bytes.sha3(variant).toHexString()
+  }
+  @inlinable public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.String {
+    self.bytes.crc32(seed: seed, reflect: reflect).bytes().toHexString()
+  }
+  @inlinable public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.String {
+    self.bytes.crc32c(seed: seed, reflect: reflect).bytes().toHexString()
+  }
+  @inlinable public func crc16(seed: Swift.UInt16? = nil) -> Swift.String {
+    self.bytes.crc16(seed: seed).bytes().toHexString()
+  }
+  @inlinable public func encrypt(cipher: CryptoSwift.Cipher) throws -> Swift.String {
+    try self.bytes.encrypt(cipher: cipher).toHexString()
+  }
+  @inlinable public func encryptToBase64(cipher: CryptoSwift.Cipher) throws -> Swift.String {
+    try self.bytes.encrypt(cipher: cipher).toBase64()
+  }
+  @inlinable public func authenticate<A>(with authenticator: A) throws -> Swift.String where A : CryptoSwift.Authenticator {
+    try self.bytes.authenticate(with: authenticator).toHexString()
+  }
+}
+public enum PKCS7 {
+}
+extension Swift.UInt64 {
+  @_specialize(exported: false, kind: full, where T == Swift.ArraySlice<Swift.UInt8>)
+  @inlinable internal init<T>(bytes: T, fromIndex index: T.Index) where T : Swift.Collection, T.Element == Swift.UInt8, T.Index == Swift.Int {
+    if bytes.isEmpty {
+      self = 0
+      return
+    }
+
+    let count = bytes.count
+
+    let val0 = count > 0 ? UInt64(bytes[index.advanced(by: 0)]) << 56 : 0
+    let val1 = count > 1 ? UInt64(bytes[index.advanced(by: 1)]) << 48 : 0
+    let val2 = count > 2 ? UInt64(bytes[index.advanced(by: 2)]) << 40 : 0
+    let val3 = count > 3 ? UInt64(bytes[index.advanced(by: 3)]) << 32 : 0
+    let val4 = count > 4 ? UInt64(bytes[index.advanced(by: 4)]) << 24 : 0
+    let val5 = count > 5 ? UInt64(bytes[index.advanced(by: 5)]) << 16 : 0
+    let val6 = count > 6 ? UInt64(bytes[index.advanced(by: 6)]) << 8 : 0
+    let val7 = count > 7 ? UInt64(bytes[index.advanced(by: 7)]) : 0
+
+    self = val0 | val1 | val2 | val3 | val4 | val5 | val6 | val7
+  }
+}
+public enum SignatureError : Swift.Error {
+  case sign
+  case verify
+  public static func == (a: CryptoSwift.SignatureError, b: CryptoSwift.SignatureError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol Signature : AnyObject {
+  var keySize: Swift.Int { get }
+  func sign(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func sign(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  func verify(signature: Swift.ArraySlice<Swift.UInt8>, for expectedData: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Bool
+  func verify(signature: Swift.Array<Swift.UInt8>, for expectedData: Swift.Array<Swift.UInt8>) throws -> Swift.Bool
+}
+extension CryptoSwift.Signature {
+  public func sign(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  public func verify(signature: Swift.Array<Swift.UInt8>, for expectedData: Swift.Array<Swift.UInt8>) throws -> Swift.Bool
+}
+final public class SHA1 {
+  @usableFromInline
+  internal static let digestLength: Swift.Int
+  @usableFromInline
+  internal static let blockSize: Swift.Int
+  @usableFromInline
+  internal static let hashInitialValue: Swift.ContiguousArray<Swift.UInt32>
+  @usableFromInline
+  final internal var accumulated: [Swift.UInt8]
+  @usableFromInline
+  final internal var processedBytesTotalCount: Swift.Int
+  @usableFromInline
+  final internal var accumulatedHash: Swift.ContiguousArray<Swift.UInt32>
+  public init()
+  @inlinable final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8> {
+    do {
+      return try update(withBytes: bytes.slice, isLast: true)
+    } catch {
+      return []
+    }
+  }
+  final public func callAsFunction(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @usableFromInline
+  final internal func process(block chunk: Swift.ArraySlice<Swift.UInt8>, currentHash hh: inout Swift.ContiguousArray<Swift.UInt32>)
+  @objc deinit
+}
+extension CryptoSwift.SHA1 : CryptoSwift.Updatable {
+  @discardableResult
+  @inlinable final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    self.accumulated += bytes
+
+    if isLast {
+      let lengthInBits = (processedBytesTotalCount + self.accumulated.count) * 8
+      let lengthBytes = lengthInBits.bytes(totalBytes: 64 / 8) // A 64-bit representation of b
+
+      // Step 1. Append padding
+      bitPadding(to: &self.accumulated, blockSize: SHA1.blockSize, allowance: 64 / 8)
+
+      // Step 2. Append Length a 64-bit representation of lengthInBits
+      self.accumulated += lengthBytes
+    }
+
+    var processedBytes = 0
+    for chunk in self.accumulated.batched(by: SHA1.blockSize) {
+      if isLast || (self.accumulated.count - processedBytes) >= SHA1.blockSize {
+        self.process(block: chunk, currentHash: &self.accumulatedHash)
+        processedBytes += chunk.count
+      }
+    }
+    self.accumulated.removeFirst(processedBytes)
+    self.processedBytesTotalCount += processedBytes
+
+    // output current hash
+    var result = Array<UInt8>(repeating: 0, count: SHA1.digestLength)
+    var pos = 0
+    for idx in 0..<self.accumulatedHash.count {
+      let h = self.accumulatedHash[idx]
+      result[pos + 0] = UInt8((h >> 24) & 0xff)
+      result[pos + 1] = UInt8((h >> 16) & 0xff)
+      result[pos + 2] = UInt8((h >> 8) & 0xff)
+      result[pos + 3] = UInt8(h & 0xff)
+      pos += 4
+    }
+
+    // reset hash value for instance
+    if isLast {
+      self.accumulatedHash = SHA1.hashInitialValue
+    }
+
+    return result
+  }
+}
+public enum Bit : Swift.Int {
+  case zero
+  case one
+  public init?(rawValue: Swift.Int)
+  public typealias RawValue = Swift.Int
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+extension CryptoSwift.Bit {
+  @inlinable internal func inverted() -> CryptoSwift.Bit {
+    self == .zero ? .one : .zero
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public init?<T>(exactly source: T) where T : Swift.BinaryInteger
+  public init<T>(_ source: T) where T : Swift.BinaryInteger
+  public init<T>(truncatingIfNeeded source: T) where T : Swift.BinaryInteger
+  public init<T>(clamping source: T) where T : Swift.BinaryInteger
+}
+extension CryptoSwift.CS.BigInt {
+  public init()
+  public init(_ integer: CryptoSwift.CS.BigUInt)
+  public init<T>(_ source: T) where T : Swift.BinaryInteger
+  public init?<T>(exactly source: T) where T : Swift.BinaryInteger
+  public init<T>(clamping source: T) where T : Swift.BinaryInteger
+  public init<T>(truncatingIfNeeded source: T) where T : Swift.BinaryInteger
+}
+extension CryptoSwift.CS.BigUInt : Swift.ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: Swift.UInt64)
+  public typealias IntegerLiteralType = Swift.UInt64
+}
+extension CryptoSwift.CS.BigInt : Swift.ExpressibleByIntegerLiteral {
+  public init(integerLiteral value: Swift.Int64)
+  public typealias IntegerLiteralType = Swift.Int64
+}
+extension CryptoSwift.ChaCha20 {
+  convenience public init(key: Swift.String, iv: Swift.String) throws
+}
+public struct CCM {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    case invalidParameter
+    case fail
+    public static func == (a: CryptoSwift.CCM.Error, b: CryptoSwift.CCM.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public var authenticationTag: Swift.Array<Swift.UInt8>?
+  public init(iv: Swift.Array<Swift.UInt8>, tagLength: Swift.Int, messageLength: Swift.Int, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil)
+  public init(iv: Swift.Array<Swift.UInt8>, tagLength: Swift.Int, messageLength: Swift.Int, authenticationTag: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+public struct CTR {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: CryptoSwift.CTR.Error, b: CryptoSwift.CTR.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init(iv: Swift.Array<Swift.UInt8>, counter: Swift.Int = 0)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+extension CryptoSwift.CS.BigUInt {
+  public static func >>= <Other>(lhs: inout CryptoSwift.CS.BigUInt, rhs: Other) where Other : Swift.BinaryInteger
+  public static func <<= <Other>(lhs: inout CryptoSwift.CS.BigUInt, rhs: Other) where Other : Swift.BinaryInteger
+  public static func >> <Other>(lhs: CryptoSwift.CS.BigUInt, rhs: Other) -> CryptoSwift.CS.BigUInt where Other : Swift.BinaryInteger
+  public static func << <Other>(lhs: CryptoSwift.CS.BigUInt, rhs: Other) -> CryptoSwift.CS.BigUInt where Other : Swift.BinaryInteger
+}
+extension CryptoSwift.CS.BigInt {
+  public static func &<< (left: CryptoSwift.CS.BigInt, right: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func &<<= (left: inout CryptoSwift.CS.BigInt, right: CryptoSwift.CS.BigInt)
+  public static func &>> (left: CryptoSwift.CS.BigInt, right: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func &>>= (left: inout CryptoSwift.CS.BigInt, right: CryptoSwift.CS.BigInt)
+  public static func << <Other>(lhs: CryptoSwift.CS.BigInt, rhs: Other) -> CryptoSwift.CS.BigInt where Other : Swift.BinaryInteger
+  public static func <<= <Other>(lhs: inout CryptoSwift.CS.BigInt, rhs: Other) where Other : Swift.BinaryInteger
+  public static func >> <Other>(lhs: CryptoSwift.CS.BigInt, rhs: Other) -> CryptoSwift.CS.BigInt where Other : Swift.BinaryInteger
+  public static func >>= <Other>(lhs: inout CryptoSwift.CS.BigInt, rhs: Other) where Other : Swift.BinaryInteger
+}
+final public class MD5 {
+  public init()
+  final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  final public func callAsFunction(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+extension CryptoSwift.MD5 : CryptoSwift.Updatable {
+  final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+}
+final public class AES {
+  public enum Error : Swift.Error {
+    case invalidKeySize
+    case dataPaddingRequired
+    case invalidData
+    public static func == (a: CryptoSwift.AES.Error, b: CryptoSwift.AES.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public enum Variant : Swift.Int {
+    case aes128, aes192, aes256
+    public init?(rawValue: Swift.Int)
+    public typealias RawValue = Swift.Int
+    public var rawValue: Swift.Int {
+      get
+    }
+  }
+  @usableFromInline
+  final internal let variantNr: Swift.Int
+  @usableFromInline
+  final internal let variantNb: Swift.Int
+  @usableFromInline
+  final internal let variantNk: Swift.Int
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  final public let variant: CryptoSwift.AES.Variant
+  @usableFromInline
+  final internal let blockMode: CryptoSwift.BlockMode
+  @usableFromInline
+  final internal let padding: CryptoSwift.Padding
+  @usableFromInline
+  final internal var expandedKey: Swift.Array<Swift.Array<Swift.UInt32>> {
+    get
+    set
+  }
+  @usableFromInline
+  final internal var expandedKeyInv: Swift.Array<Swift.Array<Swift.UInt32>> {
+    get
+    set
+  }
+  @usableFromInline
+  internal static let T0: [Swift.UInt32]
+  @usableFromInline
+  internal static let T0_INV: [Swift.UInt32]
+  @usableFromInline
+  internal static let T1: [Swift.UInt32]
+  @usableFromInline
+  internal static let T1_INV: [Swift.UInt32]
+  @usableFromInline
+  internal static let T2: [Swift.UInt32]
+  @usableFromInline
+  internal static let T2_INV: [Swift.UInt32]
+  @usableFromInline
+  internal static let T3: [Swift.UInt32]
+  @usableFromInline
+  internal static let T3_INV: [Swift.UInt32]
+  @usableFromInline
+  internal static let U1: [Swift.UInt32]
+  @usableFromInline
+  internal static let U2: [Swift.UInt32]
+  @usableFromInline
+  internal static let U3: [Swift.UInt32]
+  @usableFromInline
+  internal static let U4: [Swift.UInt32]
+  public init(key: Swift.Array<Swift.UInt8>, blockMode: CryptoSwift.BlockMode, padding: CryptoSwift.Padding = .pkcs7) throws
+  @inlinable final internal func encrypt(block: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>? {
+    if self.blockMode.options.contains(.paddingRequired) && block.count != AES.blockSize {
+      return Array(block)
+    }
+
+    let rounds = self.variantNr
+    let rk = self.expandedKey
+
+    let b00 = UInt32(block[block.startIndex.advanced(by: 0)])
+    let b01 = UInt32(block[block.startIndex.advanced(by: 1)]) << 8
+    let b02 = UInt32(block[block.startIndex.advanced(by: 2)]) << 16
+    let b03 = UInt32(block[block.startIndex.advanced(by: 3)]) << 24
+    var b0 = b00 | b01 | b02 | b03
+
+    let b10 = UInt32(block[block.startIndex.advanced(by: 4)])
+    let b11 = UInt32(block[block.startIndex.advanced(by: 5)]) << 8
+    let b12 = UInt32(block[block.startIndex.advanced(by: 6)]) << 16
+    let b13 = UInt32(block[block.startIndex.advanced(by: 7)]) << 24
+    var b1 = b10 | b11 | b12 | b13
+
+    let b20 = UInt32(block[block.startIndex.advanced(by: 8)])
+    let b21 = UInt32(block[block.startIndex.advanced(by: 9)]) << 8
+    let b22 = UInt32(block[block.startIndex.advanced(by: 10)]) << 16
+    let b23 = UInt32(block[block.startIndex.advanced(by: 11)]) << 24
+    var b2 = b20 | b21 | b22 | b23
+
+    let b30 = UInt32(block[block.startIndex.advanced(by: 12)])
+    let b31 = UInt32(block[block.startIndex.advanced(by: 13)]) << 8
+    let b32 = UInt32(block[block.startIndex.advanced(by: 14)]) << 16
+    let b33 = UInt32(block[block.startIndex.advanced(by: 15)]) << 24
+    var b3 = b30 | b31 | b32 | b33
+
+    let tLength = 4
+    let t = UnsafeMutablePointer<UInt32>.allocate(capacity: tLength)
+    t.initialize(repeating: 0, count: tLength)
+    defer {
+      t.deinitialize(count: tLength)
+      t.deallocate()
+    }
+
+    for r in 0..<rounds - 1 {
+      t[0] = b0 ^ rk[r][0]
+      t[1] = b1 ^ rk[r][1]
+      t[2] = b2 ^ rk[r][2]
+      t[3] = b3 ^ rk[r][3]
+
+      let lb00 = AES.T0[Int(t[0] & 0xff)]
+      let lb01 = AES.T1[Int((t[1] >> 8) & 0xff)]
+      let lb02 = AES.T2[Int((t[2] >> 16) & 0xff)]
+      let lb03 = AES.T3[Int(t[3] >> 24)]
+      b0 = lb00 ^ lb01 ^ lb02 ^ lb03
+
+      let lb10 = AES.T0[Int(t[1] & 0xff)]
+      let lb11 = AES.T1[Int((t[2] >> 8) & 0xff)]
+      let lb12 = AES.T2[Int((t[3] >> 16) & 0xff)]
+      let lb13 = AES.T3[Int(t[0] >> 24)]
+      b1 = lb10 ^ lb11 ^ lb12 ^ lb13
+
+      let lb20 = AES.T0[Int(t[2] & 0xff)]
+      let lb21 = AES.T1[Int((t[3] >> 8) & 0xff)]
+      let lb22 = AES.T2[Int((t[0] >> 16) & 0xff)]
+      let lb23 = AES.T3[Int(t[1] >> 24)]
+      b2 = lb20 ^ lb21 ^ lb22 ^ lb23
+
+      let lb30 = AES.T0[Int(t[3] & 0xff)]
+      let lb31 = AES.T1[Int((t[0] >> 8) & 0xff)]
+      let lb32 = AES.T2[Int((t[1] >> 16) & 0xff)]
+      let lb33 = AES.T3[Int(t[2] >> 24)]
+      b3 = lb30 ^ lb31 ^ lb32 ^ lb33
+    }
+
+    // last round
+    let r = rounds - 1
+
+    t[0] = b0 ^ rk[r][0]
+    t[1] = b1 ^ rk[r][1]
+    t[2] = b2 ^ rk[r][2]
+    t[3] = b3 ^ rk[r][3]
+
+    // rounds
+    b0 = F1(t[0], t[1], t[2], t[3]) ^ rk[rounds][0]
+    b1 = F1(t[1], t[2], t[3], t[0]) ^ rk[rounds][1]
+    b2 = F1(t[2], t[3], t[0], t[1]) ^ rk[rounds][2]
+    b3 = F1(t[3], t[0], t[1], t[2]) ^ rk[rounds][3]
+
+    let encrypted: Array<UInt8> = [
+      UInt8(b0 & 0xff), UInt8((b0 >> 8) & 0xff), UInt8((b0 >> 16) & 0xff), UInt8((b0 >> 24) & 0xff),
+      UInt8(b1 & 0xff), UInt8((b1 >> 8) & 0xff), UInt8((b1 >> 16) & 0xff), UInt8((b1 >> 24) & 0xff),
+      UInt8(b2 & 0xff), UInt8((b2 >> 8) & 0xff), UInt8((b2 >> 16) & 0xff), UInt8((b2 >> 24) & 0xff),
+      UInt8(b3 & 0xff), UInt8((b3 >> 8) & 0xff), UInt8((b3 >> 16) & 0xff), UInt8((b3 >> 24) & 0xff)
+    ]
+    return encrypted
+  }
+  @usableFromInline
+  final internal func decrypt(block: Swift.ArraySlice<Swift.UInt8>) -> Swift.Array<Swift.UInt8>?
+  @objc deinit
+}
+extension CryptoSwift.AES {
+  @usableFromInline
+  @inline(__always) final internal func F1(_ x0: Swift.UInt32, _ x1: Swift.UInt32, _ x2: Swift.UInt32, _ x3: Swift.UInt32) -> Swift.UInt32
+}
+extension CryptoSwift.AES : CryptoSwift.Cipher {
+  @inlinable final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    let blockSize = self.blockMode.customBlockSize ?? AES.blockSize
+    let chunks = bytes.batched(by: blockSize)
+
+    var oneTimeCryptor = try makeEncryptor()
+    var out = Array<UInt8>(reserveCapacity: bytes.count)
+    for chunk in chunks {
+      out += try oneTimeCryptor.update(withBytes: chunk, isLast: false)
+    }
+    // Padding may be added at the very end
+    out += try oneTimeCryptor.finish()
+
+    if self.blockMode.options.contains(.paddingRequired) && (out.count % AES.blockSize != 0) {
+      throw Error.dataPaddingRequired
+    }
+
+    return out
+  }
+  @inlinable final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    if self.blockMode.options.contains(.paddingRequired) && (bytes.count % AES.blockSize != 0) {
+      throw Error.dataPaddingRequired
+    }
+
+    var oneTimeCryptor = try makeDecryptor()
+    let chunks = bytes.batched(by: AES.blockSize)
+    if chunks.isEmpty {
+      throw Error.invalidData
+    }
+
+    var out = Array<UInt8>(reserveCapacity: bytes.count)
+
+    var lastIdx = chunks.startIndex
+    chunks.indices.formIndex(&lastIdx, offsetBy: chunks.count - 1)
+
+    // To properly remove padding, `isLast` has to be known when called with the last chunk of ciphertext
+    // Last chunk of ciphertext may contains padded data so next call to update(..) won't be able to remove it
+    for idx in chunks.indices {
+      out += try oneTimeCryptor.update(withBytes: chunks[idx], isLast: idx == lastIdx)
+    }
+    return out
+  }
+}
+final public class Blowfish {
+  public enum Error : Swift.Error {
+    case dataPaddingRequired
+    case invalidKeyOrInitializationVector
+    case invalidInitializationVector
+    case invalidBlockMode
+    public static func == (a: CryptoSwift.Blowfish.Error, b: CryptoSwift.Blowfish.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>, blockMode: CryptoSwift.BlockMode = CBC(iv: Array<UInt8>(repeating: 0, count: Blowfish.blockSize)), padding: CryptoSwift.Padding) throws
+  @objc deinit
+}
+extension CryptoSwift.Blowfish : CryptoSwift.Cipher {
+  final public func encrypt<C>(_ bytes: C) throws -> Swift.Array<Swift.UInt8> where C : Swift.Collection, C.Element == Swift.UInt8, C.Index == Swift.Int
+  final public func decrypt<C>(_ bytes: C) throws -> Swift.Array<Swift.UInt8> where C : Swift.Collection, C.Element == Swift.UInt8, C.Index == Swift.Int
+}
+public protocol PaddingProtocol {
+  func add(to: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+  func remove(from: Swift.Array<Swift.UInt8>, blockSize: Swift.Int?) -> Swift.Array<Swift.UInt8>
+}
+public enum Padding : CryptoSwift.PaddingProtocol {
+  case noPadding, zeroPadding, pkcs7, pkcs5, eme_pkcs1v15, emsa_pkcs1v15, iso78164, iso10126
+  public func add(to: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8>
+  public func remove(from: Swift.Array<Swift.UInt8>, blockSize: Swift.Int?) -> Swift.Array<Swift.UInt8>
+  public static func == (a: CryptoSwift.Padding, b: CryptoSwift.Padding) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension CryptoSwift.RSA : CryptoSwift.Cipher {
+  @inlinable final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    return try self.encrypt(Array<UInt8>(bytes), variant: .pksc1v15)
+  }
+  @inlinable final public func encrypt(_ bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.RSA.RSAEncryptionVariant) throws -> Swift.Array<Swift.UInt8> {
+    // Prepare the data for the specified variant
+    let preparedData = try variant.prepare(bytes, blockSize: self.keySizeBytes)
+
+    // Encrypt the prepared data
+    return try variant.formatEncryptedBytes(self.encryptPreparedBytes(preparedData), blockSize: self.keySizeBytes)
+  }
+  @inlinable final internal func encryptPreparedBytes(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    // Calculate encrypted data
+    return BigUInteger(Data(bytes)).power(self.e, modulus: self.n).serialize().bytes
+  }
+  @inlinable final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    return try self.decrypt(Array<UInt8>(bytes), variant: .pksc1v15)
+  }
+  @inlinable final public func decrypt(_ bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.RSA.RSAEncryptionVariant) throws -> Swift.Array<Swift.UInt8> {
+    // Decrypt the data
+    let decrypted = try self.decryptPreparedBytes(bytes)
+
+    // Remove padding / unstructure data and return the raw plaintext
+    return variant.removePadding(decrypted, blockSize: self.keySizeBytes)
+  }
+  @inlinable final internal func decryptPreparedBytes(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8> {
+    // Check for Private Exponent presence
+    guard let d = d else { throw RSA.Error.noPrivateKey }
+
+    // Calculate decrypted data
+    return BigUInteger(Data(bytes)).power(d, modulus: self.n).serialize().bytes
+  }
+}
+extension CryptoSwift.RSA {
+  @frozen public enum RSAEncryptionVariant {
+    case unsafe
+    case raw
+    case pksc1v15
+    @inlinable internal func prepare(_ bytes: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) throws -> Swift.Array<Swift.UInt8> {
+      switch self {
+        case .unsafe:
+          return bytes
+        case .raw:
+          // We need at least 11 bytes of padding in order to safely encrypt messages
+          // - block types 1 and 2 have this minimum padding requirement, block type 0 isn't specified, but we enforce the minimum padding length here to be safe.
+          guard blockSize >= bytes.count + 11 else { throw RSA.Error.invalidMessageLengthForEncryption }
+          return Array(repeating: 0x00, count: blockSize - bytes.count) + bytes
+        case .pksc1v15:
+          // The `Security` framework refuses to encrypt a zero byte message using the pkcs1v15 padding scheme, so we do the same
+          guard !bytes.isEmpty else { throw RSA.Error.invalidMessageLengthForEncryption }
+          // We need at least 11 bytes of random padding in order to safely encrypt messages (RFC2313 Section 8.1 - Note 6)
+          guard blockSize >= bytes.count + 11 else { throw RSA.Error.invalidMessageLengthForEncryption }
+          return Padding.eme_pkcs1v15.add(to: bytes, blockSize: blockSize)
+      }
+    }
+    @inlinable internal func formatEncryptedBytes(_ bytes: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8> {
+      switch self {
+        case .unsafe:
+          return bytes
+        case .raw, .pksc1v15:
+          // Format the encrypted bytes before returning
+          return Array<UInt8>(repeating: 0x00, count: blockSize - bytes.count) + bytes
+      }
+    }
+    @inlinable internal func removePadding(_ bytes: Swift.Array<Swift.UInt8>, blockSize: Swift.Int) -> Swift.Array<Swift.UInt8> {
+      switch self {
+        case .unsafe:
+          return bytes
+        case .raw:
+          return bytes
+        case .pksc1v15:
+          // Convert the Octet String into an Integer Primitive using the BigInteger `serialize` method
+          // (this effectively just prefixes the data with a 0x00 byte indicating that its a positive integer)
+          return Padding.eme_pkcs1v15.remove(from: [0x00] + bytes, blockSize: blockSize)
+      }
+    }
+    public static func == (a: CryptoSwift.RSA.RSAEncryptionVariant, b: CryptoSwift.RSA.RSAEncryptionVariant) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+}
+extension CryptoSwift.CS {
+  public struct BigUInt : Swift.UnsignedInteger {
+    public typealias Word = Swift.UInt
+    public init()
+    public init(words: [CryptoSwift.CS.BigUInt.Word])
+    public typealias Magnitude = CryptoSwift.CS.BigUInt
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public static var isSigned: Swift.Bool {
+    get
+  }
+  public func signum() -> CryptoSwift.CS.BigUInt
+}
+@usableFromInline
+internal struct BatchedCollectionIndex<Base> where Base : Swift.Collection {
+}
+extension CryptoSwift.BatchedCollectionIndex : Swift.Comparable {
+  @usableFromInline
+  internal static func == <Base>(lhs: CryptoSwift.BatchedCollectionIndex<Base>, rhs: CryptoSwift.BatchedCollectionIndex<Base>) -> Swift.Bool where Base : Swift.Collection
+  @usableFromInline
+  internal static func < <Base>(lhs: CryptoSwift.BatchedCollectionIndex<Base>, rhs: CryptoSwift.BatchedCollectionIndex<Base>) -> Swift.Bool where Base : Swift.Collection
+}
+@usableFromInline
+internal struct BatchedCollection<Base> : Swift.Collection where Base : Swift.Collection {
+  @usableFromInline
+  internal init(base: Base, size: Swift.Int)
+  @usableFromInline
+  internal typealias Index = CryptoSwift.BatchedCollectionIndex<Base>
+  @usableFromInline
+  internal var startIndex: CryptoSwift.BatchedCollection<Base>.Index {
+    get
+  }
+  @usableFromInline
+  internal var endIndex: CryptoSwift.BatchedCollection<Base>.Index {
+    get
+  }
+  @usableFromInline
+  internal func index(after idx: CryptoSwift.BatchedCollection<Base>.Index) -> CryptoSwift.BatchedCollection<Base>.Index
+  @usableFromInline
+  internal subscript(idx: CryptoSwift.BatchedCollection<Base>.Index) -> Base.SubSequence {
+    get
+  }
+  @usableFromInline
+  internal typealias Element = Base.SubSequence
+  @usableFromInline
+  internal typealias Indices = Swift.DefaultIndices<CryptoSwift.BatchedCollection<Base>>
+  @usableFromInline
+  internal typealias Iterator = Swift.IndexingIterator<CryptoSwift.BatchedCollection<Base>>
+  @usableFromInline
+  internal typealias SubSequence = Swift.Slice<CryptoSwift.BatchedCollection<Base>>
+}
+extension Swift.Collection {
+  @inlinable internal func batched(by size: Swift.Int) -> CryptoSwift.BatchedCollection<Self> {
+    BatchedCollection(base: self, size: size)
+  }
+}
+extension Foundation.Data {
+  public func checksum() -> Swift.UInt16
+  public func md5() -> Foundation.Data
+  public func sha1() -> Foundation.Data
+  public func sha224() -> Foundation.Data
+  public func sha256() -> Foundation.Data
+  public func sha384() -> Foundation.Data
+  public func sha512() -> Foundation.Data
+  public func sha3(_ variant: CryptoSwift.SHA3.Variant) -> Foundation.Data
+  public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Foundation.Data
+  public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Foundation.Data
+  public func crc16(seed: Swift.UInt16? = nil) -> Foundation.Data
+  public func encrypt(cipher: CryptoSwift.Cipher) throws -> Foundation.Data
+  public func decrypt(cipher: CryptoSwift.Cipher) throws -> Foundation.Data
+  public func authenticate(with authenticator: CryptoSwift.Authenticator) throws -> Foundation.Data
+}
+extension Foundation.Data {
+  public init(hex: Swift.String)
+  public var bytes: Swift.Array<Swift.UInt8> {
+    get
+  }
+  public func toHexString() -> Swift.String
+}
+extension CryptoSwift.CS.BigUInt {
+  public init?<T>(exactly source: T) where T : Swift.BinaryFloatingPoint
+  public init<T>(_ source: T) where T : Swift.BinaryFloatingPoint
+}
+extension CryptoSwift.CS.BigInt {
+  public init?<T>(exactly source: T) where T : Swift.BinaryFloatingPoint
+  public init<T>(_ source: T) where T : Swift.BinaryFloatingPoint
+}
+extension Swift.BinaryFloatingPoint where Self.RawExponent : Swift.FixedWidthInteger, Self.RawSignificand : Swift.FixedWidthInteger {
+  public init(_ value: CryptoSwift.CS.BigInt)
+  public init(_ value: CryptoSwift.CS.BigUInt)
+}
+public protocol _UInt8Type {
+}
+extension Swift.UInt8 : CryptoSwift._UInt8Type {
+}
+extension Swift.UInt8 {
+  public func bits() -> [CryptoSwift.Bit]
+  public func bits() -> Swift.String
+}
+public struct OFB : CryptoSwift.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: CryptoSwift.OFB.Error, b: CryptoSwift.OFB.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+public struct BlockModeOption : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  @usableFromInline
+  internal static let none: CryptoSwift.BlockModeOption
+  @usableFromInline
+  internal static let initializationVectorRequired: CryptoSwift.BlockModeOption
+  @usableFromInline
+  internal static let paddingRequired: CryptoSwift.BlockModeOption
+  @usableFromInline
+  internal static let useEncryptToDecrypt: CryptoSwift.BlockModeOption
+  public typealias ArrayLiteralElement = CryptoSwift.BlockModeOption
+  public typealias Element = CryptoSwift.BlockModeOption
+  public typealias RawValue = Swift.Int
+}
+@usableFromInline
+final internal class StreamDecryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+  @usableFromInline
+  final internal let blockSize: Swift.Int
+  @usableFromInline
+  final internal var worker: CryptoSwift.CipherModeWorker
+  @usableFromInline
+  final internal let padding: CryptoSwift.Padding
+  @usableFromInline
+  final internal var accumulated: [Swift.UInt8]
+  @usableFromInline
+  final internal var lastBlockRemainder: Swift.Int
+  @usableFromInline
+  internal init(blockSize: Swift.Int, padding: CryptoSwift.Padding, _ worker: CryptoSwift.CipherModeWorker) throws
+  @inlinable final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool) throws -> Swift.Array<Swift.UInt8> {
+    self.accumulated += bytes
+
+    let toProcess = self.accumulated.prefix(max(self.accumulated.count - self.worker.additionalBufferSize, 0))
+
+    if var finalizingWorker = worker as? FinalizingDecryptModeWorker, isLast == true {
+      // will truncate suffix if needed
+      try finalizingWorker.willDecryptLast(bytes: self.accumulated.slice)
+    }
+
+    var processedBytesCount = 0
+    var plaintext = Array<UInt8>(reserveCapacity: bytes.count + self.worker.additionalBufferSize)
+    for chunk in toProcess.batched(by: self.blockSize) {
+      plaintext += self.worker.decrypt(block: chunk)
+      processedBytesCount += chunk.count
+    }
+
+    if var finalizingWorker = worker as? FinalizingDecryptModeWorker, isLast == true {
+      plaintext = Array(try finalizingWorker.didDecryptLast(bytes: plaintext.slice))
+    }
+
+    // omit unecessary calculation if not needed
+    if self.padding != .noPadding {
+      self.lastBlockRemainder = plaintext.count.quotientAndRemainder(dividingBy: self.blockSize).remainder
+    }
+
+    if isLast {
+      // CTR doesn't need padding. Really. Add padding to the last block if really want. but... don't.
+      plaintext = self.padding.remove(from: plaintext, blockSize: self.blockSize - self.lastBlockRemainder)
+    }
+
+    self.accumulated.removeFirst(processedBytesCount) // super-slow
+
+    if var finalizingWorker = worker as? FinalizingDecryptModeWorker, isLast == true {
+      plaintext = Array(try finalizingWorker.finalize(decrypt: plaintext.slice))
+    }
+
+    return plaintext
+  }
+  @inlinable final public func seek(to position: Swift.Int) throws {
+    guard var worker = self.worker as? SeekableModeWorker else {
+      fatalError("Not supported")
+    }
+
+    try worker.seek(to: position)
+    self.worker = worker
+  }
+  @objc @usableFromInline
+  deinit
+}
+extension CryptoSwift.CS {
+  public struct BigInt : Swift.SignedInteger {
+    public enum Sign {
+      case plus
+      case minus
+      public static func == (a: CryptoSwift.CS.BigInt.Sign, b: CryptoSwift.CS.BigInt.Sign) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    public typealias Magnitude = CryptoSwift.CS.BigUInt
+    public typealias Word = CryptoSwift.CS.BigUInt.Word
+    public static var isSigned: Swift.Bool {
+      get
+    }
+    public var magnitude: CryptoSwift.CS.BigUInt
+    public var sign: CryptoSwift.CS.BigInt.Sign
+    public init(sign: CryptoSwift.CS.BigInt.Sign, magnitude: CryptoSwift.CS.BigUInt)
+    public var isZero: Swift.Bool {
+      get
+    }
+    public func signum() -> CryptoSwift.CS.BigInt
+  }
+}
+extension CryptoSwift.AES : CryptoSwift.Cryptors {
+  @inlinable final public func makeEncryptor() throws -> CryptoSwift.Cryptor & CryptoSwift.Updatable {
+    let blockSize = blockMode.customBlockSize ?? AES.blockSize
+    let worker = try blockMode.worker(blockSize: blockSize, cipherOperation: encrypt, encryptionOperation: encrypt)
+    if worker is StreamModeWorker {
+      return try StreamEncryptor(blockSize: blockSize, padding: padding, worker)
+    }
+    return try BlockEncryptor(blockSize: blockSize, padding: padding, worker)
+  }
+  @inlinable final public func makeDecryptor() throws -> CryptoSwift.Cryptor & CryptoSwift.Updatable {
+    let blockSize = blockMode.customBlockSize ?? AES.blockSize
+    let cipherOperation: CipherOperationOnBlock = blockMode.options.contains(.useEncryptToDecrypt) == true ? encrypt : decrypt
+    let worker = try blockMode.worker(blockSize: blockSize, cipherOperation: cipherOperation, encryptionOperation: encrypt)
+    if worker is StreamModeWorker {
+      return try StreamDecryptor(blockSize: blockSize, padding: padding, worker)
+    }
+    return try BlockDecryptor(blockSize: blockSize, padding: padding, worker)
+  }
+}
+extension Swift.Array {
+  @inlinable internal init(reserveCapacity: Swift.Int) {
+    self = Array<Element>()
+    self.reserveCapacity(reserveCapacity)
+  }
+  @inlinable internal var slice: Swift.ArraySlice<Element> {
+    get {
+    self[self.startIndex ..< self.endIndex]
+  }
+  }
+  @inlinable internal subscript(safe index: Swift.Array<Element>.Index) -> Element? {
+    get {
+    return indices.contains(index) ? self[index] : nil
+  }
+  }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  public init(hex: Swift.String)
+  public func toHexString() -> Swift.String
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  @available(*, deprecated)
+  public func chunks(size chunksize: Swift.Int) -> Swift.Array<Swift.Array<Element>>
+  public func md5() -> [Element]
+  public func sha1() -> [Element]
+  public func sha224() -> [Element]
+  public func sha256() -> [Element]
+  public func sha384() -> [Element]
+  public func sha512() -> [Element]
+  public func sha2(_ variant: CryptoSwift.SHA2.Variant) -> [Element]
+  public func sha3(_ variant: CryptoSwift.SHA3.Variant) -> [Element]
+  public func crc32(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public func crc32c(seed: Swift.UInt32? = nil, reflect: Swift.Bool = true) -> Swift.UInt32
+  public func crc16(seed: Swift.UInt16? = nil) -> Swift.UInt16
+  public func encrypt(cipher: CryptoSwift.Cipher) throws -> [Element]
+  public func decrypt(cipher: CryptoSwift.Cipher) throws -> [Element]
+  public func authenticate<A>(with authenticator: A) throws -> [Element] where A : CryptoSwift.Authenticator
+}
+public typealias BigInteger = CryptoSwift.CS.BigInt
+public typealias BigUInteger = CryptoSwift.CS.BigUInt
+public enum CS {
+}
+public enum PKCS5 {
+}
+public protocol AEAD {
+  static var kLen: Swift.Int { get }
+  static var ivRange: Swift.Range<Swift.Int> { get }
+}
+final public class OCB : CryptoSwift.BlockMode {
+  public enum Mode {
+    case combined
+    case detached
+    public static func == (a: CryptoSwift.OCB.Mode, b: CryptoSwift.OCB.Mode) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let options: CryptoSwift.BlockModeOption
+  public enum Error : Swift.Error {
+    case invalidNonce
+    case fail
+    public static func == (a: CryptoSwift.OCB.Error, b: CryptoSwift.OCB.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  final public let customBlockSize: Swift.Int?
+  final public var authenticationTag: Swift.Array<Swift.UInt8>?
+  public init(nonce N: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, tagLength: Swift.Int = 16, mode: CryptoSwift.OCB.Mode = .detached)
+  @inlinable convenience public init(nonce N: Swift.Array<Swift.UInt8>, authenticationTag: Swift.Array<Swift.UInt8>, additionalAuthenticatedData: Swift.Array<Swift.UInt8>? = nil, mode: CryptoSwift.OCB.Mode = .detached) {
+    self.init(nonce: N, additionalAuthenticatedData: additionalAuthenticatedData, tagLength: authenticationTag.count, mode: mode)
+    self.authenticationTag = authenticationTag
+  }
+  final public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+  @objc deinit
+}
+extension CryptoSwift.CS.BigUInt {
+  public func quotientAndRemainder(dividingBy y: CryptoSwift.CS.BigUInt) -> (quotient: CryptoSwift.CS.BigUInt, remainder: CryptoSwift.CS.BigUInt)
+  public static func / (x: CryptoSwift.CS.BigUInt, y: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func % (x: CryptoSwift.CS.BigUInt, y: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public static func /= (x: inout CryptoSwift.CS.BigUInt, y: CryptoSwift.CS.BigUInt)
+  public static func %= (x: inout CryptoSwift.CS.BigUInt, y: CryptoSwift.CS.BigUInt)
+}
+extension CryptoSwift.CS.BigInt {
+  public func quotientAndRemainder(dividingBy y: CryptoSwift.CS.BigInt) -> (quotient: CryptoSwift.CS.BigInt, remainder: CryptoSwift.CS.BigInt)
+  public static func / (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public static func % (a: CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public func modulus(_ mod: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+}
+extension CryptoSwift.CS.BigInt {
+  public static func /= (a: inout CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt)
+  public static func %= (a: inout CryptoSwift.CS.BigInt, b: CryptoSwift.CS.BigInt)
+}
+public struct PCBC : CryptoSwift.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: CryptoSwift.PCBC.Error, b: CryptoSwift.PCBC.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+final public class ChaCha20 {
+  public enum Error : Swift.Error {
+    case invalidKeyOrInitializationVector
+    case notSupported
+    public static func == (a: CryptoSwift.ChaCha20.Error, b: CryptoSwift.ChaCha20.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static let blockSize: Swift.Int
+  final public let keySize: Swift.Int
+  public init(key: Swift.Array<Swift.UInt8>, iv nonce: Swift.Array<Swift.UInt8>) throws
+  @objc deinit
+}
+extension CryptoSwift.ChaCha20 : CryptoSwift.Cipher {
+  final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+extension CryptoSwift.ChaCha20 {
+  public struct ChaChaEncryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+    public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8>
+    public func seek(to: Swift.Int) throws
+  }
+}
+extension CryptoSwift.ChaCha20 {
+  public struct ChaChaDecryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+    public mutating func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = true) throws -> Swift.Array<Swift.UInt8>
+    public func seek(to: Swift.Int) throws
+  }
+}
+extension CryptoSwift.ChaCha20 : CryptoSwift.Cryptors {
+  final public func makeEncryptor() -> CryptoSwift.Cryptor & CryptoSwift.Updatable
+  final public func makeDecryptor() -> CryptoSwift.Cryptor & CryptoSwift.Updatable
+}
+public struct CBC : CryptoSwift.BlockMode {
+  public enum Error : Swift.Error {
+    case invalidInitializationVector
+    public static func == (a: CryptoSwift.CBC.Error, b: CryptoSwift.CBC.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let options: CryptoSwift.BlockModeOption
+  public let customBlockSize: Swift.Int?
+  public init(iv: Swift.Array<Swift.UInt8>)
+  public func worker(blockSize: Swift.Int, cipherOperation: @escaping CryptoSwift.CipherOperationOnBlock, encryptionOperation: @escaping CryptoSwift.CipherOperationOnBlock) throws -> CryptoSwift.CipherModeWorker
+}
+extension CryptoSwift.PKCS5 {
+  public struct PBKDF2 {
+    public enum Error : Swift.Error {
+      case invalidInput
+      case derivedKeyTooLong
+      public static func == (a: CryptoSwift.PKCS5.PBKDF2.Error, b: CryptoSwift.PKCS5.PBKDF2.Error) -> Swift.Bool
+      public func hash(into hasher: inout Swift.Hasher)
+      public var hashValue: Swift.Int {
+        get
+      }
+    }
+    public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, iterations: Swift.Int = 4096, keyLength: Swift.Int? = nil, variant: CryptoSwift.HMAC.Variant = .sha2(.sha256)) throws
+    public func calculate() throws -> Swift.Array<Swift.UInt8>
+    public func callAsFunction() throws -> Swift.Array<Swift.UInt8>
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public func isStrongProbablePrime(_ base: CryptoSwift.CS.BigUInt) -> Swift.Bool
+  public func isPrime(rounds: Swift.Int = 10) -> Swift.Bool
+}
+extension CryptoSwift.CS.BigInt {
+  public func isStrongProbablePrime(_ base: CryptoSwift.CS.BigInt) -> Swift.Bool
+  public func isPrime(rounds: Swift.Int = 10) -> Swift.Bool
+}
+public protocol Authenticator {
+  func authenticate(_ bytes: Swift.Array<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+final public class Rabbit {
+  public enum Error : Swift.Error {
+    case invalidKeyOrInitializationVector
+    public static func == (a: CryptoSwift.Rabbit.Error, b: CryptoSwift.Rabbit.Error) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public static let ivSize: Swift.Int
+  public static let keySize: Swift.Int
+  public static let blockSize: Swift.Int
+  final public var keySize: Swift.Int {
+    get
+  }
+  convenience public init(key: Swift.Array<Swift.UInt8>) throws
+  public init(key: Swift.Array<Swift.UInt8>, iv: Swift.Array<Swift.UInt8>?) throws
+  @objc deinit
+}
+extension CryptoSwift.Rabbit : CryptoSwift.Cipher {
+  final public func encrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+  final public func decrypt(_ bytes: Swift.ArraySlice<Swift.UInt8>) throws -> Swift.Array<Swift.UInt8>
+}
+public class BlockDecryptor : CryptoSwift.Cryptor, CryptoSwift.Updatable {
+  @usableFromInline
+  final internal let blockSize: Swift.Int
+  @usableFromInline
+  final internal let padding: CryptoSwift.Padding
+  @usableFromInline
+  internal var worker: CryptoSwift.CipherModeWorker
+  @usableFromInline
+  internal var accumulated: [Swift.UInt8]
+  @usableFromInline
+  internal init(blockSize: Swift.Int, padding: CryptoSwift.Padding, _ worker: CryptoSwift.CipherModeWorker) throws
+  @inlinable public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    self.accumulated += bytes
+
+    // If a worker (eg GCM) can combine ciphertext + tag
+    // we need to remove tag from the ciphertext.
+    if !isLast && self.accumulated.count < self.blockSize + self.worker.additionalBufferSize {
+      return []
+    }
+
+    let accumulatedWithoutSuffix: Array<UInt8>
+    if self.worker.additionalBufferSize > 0 {
+      // FIXME: how slow is that?
+      accumulatedWithoutSuffix = Array(self.accumulated.prefix(self.accumulated.count - self.worker.additionalBufferSize))
+    } else {
+      accumulatedWithoutSuffix = self.accumulated
+    }
+
+    var processedBytesCount = 0
+    var plaintext = Array<UInt8>(reserveCapacity: accumulatedWithoutSuffix.count)
+    // Processing in a block-size manner. It's good for block modes, but bad for stream modes.
+    for var chunk in accumulatedWithoutSuffix.batched(by: self.blockSize) {
+      if isLast || (accumulatedWithoutSuffix.count - processedBytesCount) >= blockSize {
+        let isLastChunk = processedBytesCount + chunk.count == accumulatedWithoutSuffix.count
+
+        if isLast, isLastChunk, var finalizingWorker = worker as? FinalizingDecryptModeWorker {
+          chunk = try finalizingWorker.willDecryptLast(bytes: chunk + accumulated.suffix(worker.additionalBufferSize)) // tag size
+        }
+
+        if !chunk.isEmpty {
+          plaintext += worker.decrypt(block: chunk)
+        }
+
+        if isLast, isLastChunk, var finalizingWorker = worker as? FinalizingDecryptModeWorker {
+          plaintext = Array(try finalizingWorker.didDecryptLast(bytes: plaintext.slice))
+        }
+
+        processedBytesCount += chunk.count
+      }
+    }
+    accumulated.removeFirst(processedBytesCount) // super-slow
+
+    if isLast {
+      if accumulatedWithoutSuffix.isEmpty, var finalizingWorker = worker as? FinalizingDecryptModeWorker {
+        try finalizingWorker.willDecryptLast(bytes: self.accumulated.suffix(self.worker.additionalBufferSize))
+        plaintext = Array(try finalizingWorker.didDecryptLast(bytes: plaintext.slice))
+      }
+      plaintext = self.padding.remove(from: plaintext, blockSize: self.blockSize)
+    }
+
+    return plaintext
+  }
+  public func seek(to position: Swift.Int) throws
+  @objc deinit
+}
+extension Swift.String {
+  public func decryptBase64ToString(cipher: CryptoSwift.Cipher) throws -> Swift.String
+  public func decryptBase64(cipher: CryptoSwift.Cipher) throws -> Swift.Array<Swift.UInt8>
+}
+@inlinable internal func rotateLeft(_ value: Swift.UInt8, by: Swift.UInt8) -> Swift.UInt8 {
+  ((value << by) & 0xff) | (value >> (8 - by))
+}
+@inlinable internal func rotateLeft(_ value: Swift.UInt16, by: Swift.UInt16) -> Swift.UInt16 {
+  ((value << by) & 0xffff) | (value >> (16 - by))
+}
+@inlinable internal func rotateLeft(_ value: Swift.UInt32, by: Swift.UInt32) -> Swift.UInt32 {
+  ((value << by) & 0xffffffff) | (value >> (32 - by))
+}
+@inlinable internal func rotateLeft(_ value: Swift.UInt64, by: Swift.UInt64) -> Swift.UInt64 {
+  (value << by) | (value >> (64 - by))
+}
+@inlinable internal func rotateRight(_ value: Swift.UInt16, by: Swift.UInt16) -> Swift.UInt16 {
+  (value >> by) | (value << (16 - by))
+}
+@inlinable internal func rotateRight(_ value: Swift.UInt32, by: Swift.UInt32) -> Swift.UInt32 {
+  (value >> by) | (value << (32 - by))
+}
+@inlinable internal func rotateRight(_ value: Swift.UInt64, by: Swift.UInt64) -> Swift.UInt64 {
+  ((value >> by) | (value << (64 - by)))
+}
+@inlinable internal func reversed(_ uint8: Swift.UInt8) -> Swift.UInt8 {
+  var v = uint8
+  v = (v & 0xf0) >> 4 | (v & 0x0f) << 4
+  v = (v & 0xcc) >> 2 | (v & 0x33) << 2
+  v = (v & 0xaa) >> 1 | (v & 0x55) << 1
+  return v
+}
+@inlinable internal func reversed(_ uint32: Swift.UInt32) -> Swift.UInt32 {
+  var v = uint32
+  v = ((v >> 1) & 0x55555555) | ((v & 0x55555555) << 1)
+  v = ((v >> 2) & 0x33333333) | ((v & 0x33333333) << 2)
+  v = ((v >> 4) & 0x0f0f0f0f) | ((v & 0x0f0f0f0f) << 4)
+  v = ((v >> 8) & 0x00ff00ff) | ((v & 0x00ff00ff) << 8)
+  v = ((v >> 16) & 0xffff) | ((v & 0xffff) << 16)
+  return v
+}
+@inlinable internal func xor<T, V>(_ left: T, _ right: V) -> Swift.ArraySlice<Swift.UInt8> where T : Swift.RandomAccessCollection, V : Swift.RandomAccessCollection, T.Element == Swift.UInt8, T.Index == Swift.Int, V.Element == Swift.UInt8, V.Index == Swift.Int {
+  return xor(left, right).slice
+}
+@inlinable internal func xor<T, V>(_ left: T, _ right: V) -> Swift.Array<Swift.UInt8> where T : Swift.RandomAccessCollection, V : Swift.RandomAccessCollection, T.Element == Swift.UInt8, T.Index == Swift.Int, V.Element == Swift.UInt8, V.Index == Swift.Int {
+  let length = Swift.min(left.count, right.count)
+
+  let buf = UnsafeMutablePointer<UInt8>.allocate(capacity: length)
+  buf.initialize(repeating: 0, count: length)
+  defer {
+    buf.deinitialize(count: length)
+    buf.deallocate()
+  }
+
+  // xor
+  for i in 0..<length {
+    buf[i] = left[left.startIndex.advanced(by: i)] ^ right[right.startIndex.advanced(by: i)]
+  }
+
+  return Array(UnsafeBufferPointer(start: buf, count: length))
+}
+@inline(__always) @inlinable internal func bitPadding(to data: inout Swift.Array<Swift.UInt8>, blockSize: Swift.Int, allowance: Swift.Int = 0) {
+  let msgLength = data.count
+  // Step 1. Append Padding Bits
+  // append one bit (UInt8 with one bit) to message
+  data.append(0x80)
+
+  // Step 2. append "0" bit until message length in bits ≡ 448 (mod 512)
+  let max = blockSize - allowance // 448, 986
+  if msgLength % blockSize < max { // 448
+    data += Array<UInt8>(repeating: 0, count: max - 1 - (msgLength % blockSize))
+  } else {
+    data += Array<UInt8>(repeating: 0, count: blockSize + max - 1 - (msgLength % blockSize))
+  }
+}
+extension Swift.Array where Element == Swift.UInt8 {
+  public func toBase64(options: Foundation.Data.Base64EncodingOptions = []) -> Swift.String
+  public init(base64: Swift.String, options: Foundation.Data.Base64DecodingOptions = .ignoreUnknownCharacters)
+}
+final public class SHA3 {
+  final public let blockSize: Swift.Int
+  final public let digestLength: Swift.Int
+  final public let markByte: Swift.UInt8
+  @usableFromInline
+  final internal var accumulated: [Swift.UInt8]
+  @usableFromInline
+  final internal var accumulatedHash: Swift.Array<Swift.UInt64>
+  public enum Variant {
+    case sha224, sha256, sha384, sha512, keccak224, keccak256, keccak384, keccak512
+    public var outputLength: Swift.Int {
+      get
+    }
+    public static func == (a: CryptoSwift.SHA3.Variant, b: CryptoSwift.SHA3.Variant) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public init(variant: CryptoSwift.SHA3.Variant)
+  @inlinable final public func calculate(for bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8> {
+    do {
+      return try update(withBytes: bytes.slice, isLast: true)
+    } catch {
+      return []
+    }
+  }
+  final public func callAsFunction(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  @usableFromInline
+  final internal func process(block chunk: Swift.ArraySlice<Swift.UInt64>, currentHash hh: inout Swift.Array<Swift.UInt64>)
+  @objc deinit
+}
+extension CryptoSwift.SHA3 : CryptoSwift.Updatable {
+  @inlinable final public func update(withBytes bytes: Swift.ArraySlice<Swift.UInt8>, isLast: Swift.Bool = false) throws -> Swift.Array<Swift.UInt8> {
+    self.accumulated += bytes
+
+    if isLast {
+      // Add padding
+      let markByteIndex = self.accumulated.count
+
+      // We need to always pad the input. Even if the input is a multiple of blockSize.
+      let r = self.blockSize * 8
+      let q = (r / 8) - (accumulated.count % (r / 8))
+      self.accumulated += Array<UInt8>(repeating: 0, count: q)
+
+      self.accumulated[markByteIndex] |= self.markByte
+      self.accumulated[self.accumulated.count - 1] |= 0x80
+    }
+
+    var processedBytes = 0
+    for chunk in self.accumulated.batched(by: self.blockSize) {
+      if isLast || (self.accumulated.count - processedBytes) >= self.blockSize {
+        self.process(block: chunk.toUInt64Array().slice, currentHash: &self.accumulatedHash)
+        processedBytes += chunk.count
+      }
+    }
+    self.accumulated.removeFirst(processedBytes)
+
+    // TODO: verify performance, reduce vs for..in
+    let result = self.accumulatedHash.reduce(into: Array<UInt8>()) { (result, value) in
+      result += value.bigEndian.bytes()
+    }
+
+    // reset hash value for instance
+    if isLast {
+      self.accumulatedHash = Array<UInt64>(repeating: 0, count: self.digestLength)
+    }
+
+    return Array(result[0..<self.digestLength])
+  }
+}
+extension CryptoSwift.CS.BigUInt {
+  public func greatestCommonDivisor(with b: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt
+  public func inverse(_ modulus: CryptoSwift.CS.BigUInt) -> CryptoSwift.CS.BigUInt?
+}
+extension CryptoSwift.CS.BigInt {
+  public func greatestCommonDivisor(with b: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt
+  public func inverse(_ modulus: CryptoSwift.CS.BigInt) -> CryptoSwift.CS.BigInt?
+}
+final public class Scrypt {
+  public init(password: Swift.Array<Swift.UInt8>, salt: Swift.Array<Swift.UInt8>, dkLen: Swift.Int, N: Swift.Int, r: Swift.Int, p: Swift.Int) throws
+  final public func calculate() throws -> [Swift.UInt8]
+  final public func callAsFunction() throws -> Swift.Array<Swift.UInt8>
+  @objc deinit
+}
+@available(*, renamed: "Digest")
+public typealias Hash = CryptoSwift.Digest
+public struct Digest {
+  public static func md5(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha1(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha224(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha256(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha384(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha512(_ bytes: Swift.Array<Swift.UInt8>) -> Swift.Array<Swift.UInt8>
+  public static func sha2(_ bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.SHA2.Variant) -> Swift.Array<Swift.UInt8>
+  public static func sha3(_ bytes: Swift.Array<Swift.UInt8>, variant: CryptoSwift.SHA3.Variant) -> Swift.Array<Swift.UInt8>
+}
+extension CryptoSwift.RSA.Error : Swift.Equatable {}
+extension CryptoSwift.RSA.Error : Swift.Hashable {}
+extension CryptoSwift.CFB.Error : Swift.Equatable {}
+extension CryptoSwift.CFB.Error : Swift.Hashable {}
+extension CryptoSwift.CFB.SegmentSize : Swift.Equatable {}
+extension CryptoSwift.CFB.SegmentSize : Swift.Hashable {}
+extension CryptoSwift.CFB.SegmentSize : Swift.RawRepresentable {}
+extension CryptoSwift.CMAC.Error : Swift.Equatable {}
+extension CryptoSwift.CMAC.Error : Swift.Hashable {}
+extension CryptoSwift.GCM.Mode : Swift.Equatable {}
+extension CryptoSwift.GCM.Mode : Swift.Hashable {}
+extension CryptoSwift.GCM.Error : Swift.Equatable {}
+extension CryptoSwift.GCM.Error : Swift.Hashable {}
+extension CryptoSwift.HKDF.Error : Swift.Equatable {}
+extension CryptoSwift.HKDF.Error : Swift.Hashable {}
+extension CryptoSwift.HMAC.Error : Swift.Equatable {}
+extension CryptoSwift.HMAC.Error : Swift.Hashable {}
+extension CryptoSwift.Poly1305.Error : Swift.Equatable {}
+extension CryptoSwift.Poly1305.Error : Swift.Hashable {}
+extension CryptoSwift.CipherError : Swift.Equatable {}
+extension CryptoSwift.CipherError : Swift.Hashable {}
+extension CryptoSwift.RSA.SignatureVariant : Swift.Equatable {}
+extension CryptoSwift.RSA.SignatureVariant : Swift.Hashable {}
+extension CryptoSwift.SHA2.Variant : Swift.Equatable {}
+extension CryptoSwift.SHA2.Variant : Swift.Hashable {}
+extension CryptoSwift.SHA2.Variant : Swift.Sendable {}
+extension CryptoSwift.PKCS5.PBKDF1.Error : Swift.Equatable {}
+extension CryptoSwift.PKCS5.PBKDF1.Error : Swift.Hashable {}
+extension CryptoSwift.PKCS5.PBKDF1.Variant : Swift.Equatable {}
+extension CryptoSwift.PKCS5.PBKDF1.Variant : Swift.Hashable {}
+extension CryptoSwift.SignatureError : Swift.Equatable {}
+extension CryptoSwift.SignatureError : Swift.Hashable {}
+extension CryptoSwift.Bit : Swift.Equatable {}
+extension CryptoSwift.Bit : Swift.Hashable {}
+extension CryptoSwift.Bit : Swift.RawRepresentable {}
+extension CryptoSwift.CCM : CryptoSwift.BlockMode {}
+extension CryptoSwift.CCM.Error : Swift.Equatable {}
+extension CryptoSwift.CCM.Error : Swift.Hashable {}
+extension CryptoSwift.CTR : CryptoSwift.BlockMode {}
+extension CryptoSwift.CTR.Error : Swift.Equatable {}
+extension CryptoSwift.CTR.Error : Swift.Hashable {}
+extension CryptoSwift.AES.Error : Swift.Equatable {}
+extension CryptoSwift.AES.Error : Swift.Hashable {}
+extension CryptoSwift.AES.Variant : Swift.Equatable {}
+extension CryptoSwift.AES.Variant : Swift.Hashable {}
+extension CryptoSwift.AES.Variant : Swift.RawRepresentable {}
+extension CryptoSwift.Blowfish.Error : Swift.Equatable {}
+extension CryptoSwift.Blowfish.Error : Swift.Hashable {}
+extension CryptoSwift.Padding : Swift.Equatable {}
+extension CryptoSwift.Padding : Swift.Hashable {}
+extension CryptoSwift.RSA.RSAEncryptionVariant : Swift.Equatable {}
+extension CryptoSwift.RSA.RSAEncryptionVariant : Swift.Hashable {}
+extension CryptoSwift.RSA.RSAEncryptionVariant : Swift.Sendable {}
+extension CryptoSwift.OFB.Error : Swift.Equatable {}
+extension CryptoSwift.OFB.Error : Swift.Hashable {}
+extension CryptoSwift.CS.BigInt.Sign : Swift.Equatable {}
+extension CryptoSwift.CS.BigInt.Sign : Swift.Hashable {}
+extension CryptoSwift.OCB.Mode : Swift.Equatable {}
+extension CryptoSwift.OCB.Mode : Swift.Hashable {}
+extension CryptoSwift.OCB.Error : Swift.Equatable {}
+extension CryptoSwift.OCB.Error : Swift.Hashable {}
+extension CryptoSwift.PCBC.Error : Swift.Equatable {}
+extension CryptoSwift.PCBC.Error : Swift.Hashable {}
+extension CryptoSwift.ChaCha20.Error : Swift.Equatable {}
+extension CryptoSwift.ChaCha20.Error : Swift.Hashable {}
+extension CryptoSwift.CBC.Error : Swift.Equatable {}
+extension CryptoSwift.CBC.Error : Swift.Hashable {}
+extension CryptoSwift.PKCS5.PBKDF2.Error : Swift.Equatable {}
+extension CryptoSwift.PKCS5.PBKDF2.Error : Swift.Hashable {}
+extension CryptoSwift.Rabbit.Error : Swift.Equatable {}
+extension CryptoSwift.Rabbit.Error : Swift.Hashable {}
+extension CryptoSwift.SHA3.Variant : Swift.Equatable {}
+extension CryptoSwift.SHA3.Variant : Swift.Hashable {}
