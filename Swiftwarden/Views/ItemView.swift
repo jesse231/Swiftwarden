@@ -1,10 +1,12 @@
 import Foundation
 import SwiftUI
 
+
 struct ItemView : View {
     var cipher: Cipher?
     var hostname: String
-    @EnvironmentObject var allPasswords: Passwords
+    @EnvironmentObject var account : Account
+//    @EnvironmentObject var allPasswords: Passwords
     @State var favourite: Bool
     @State var showPassword = false
     var body: some View {
@@ -15,19 +17,19 @@ struct ItemView : View {
                     let username = cipher?.login?.username ?? " "
                     let password = cipher?.login?.password ?? " "
                     HStack{
-                        if let hostname = hostname{
-                            AsyncImage(url: URL(string: "https://vaultwarden.seeligsohn.com/icons/\(hostname)/icon.png")) { image in
-                                image.resizable()
-                            } placeholder: {
-                                ProgressView()
-                            }
-                            .clipShape(Circle())
-                            .frame(width: 35, height: 35)
-                        } else {
-                            Image(systemName: "lock.circle")
-                                .resizable()
-                                .frame(width: 35, height: 35)
-                        }
+//                        if let hostname = hostname{
+//                            AsyncImage(url: account.api.getIcons(host: hostname)) { image in
+//                                image.resizable()
+//                            } placeholder: {
+//                                ProgressView()
+//                            }
+//                            .clipShape(Circle())
+//                            .frame(width: 35, height: 35)
+//                        } else {
+//                            Image(systemName: "lock.circle")
+//                                .resizable()
+//                                .frame(width: 35, height: 35)
+//                        }
                         VStack{
                             Text(name)
                                 .font(.system(size: 15))
@@ -40,10 +42,10 @@ struct ItemView : View {
                         }
                         Button (action: {
                             favourite = !favourite
-                            allPasswords.currentPassword?.favorite = favourite
+                            account.selectedCipher.favorite = favourite
 //                            allPasswords.favourites.append(allPasswords.currentPassworzd)
                             Task {
-                                try await Api.updatePassword(cipher: allPasswords.currentPassword!)
+                                try await account.api.updatePassword(cipher: account.selectedCipher)
                             }
                         } ){
                             if (favourite) {
@@ -96,3 +98,5 @@ struct ItemView : View {
         }
     }
 }
+
+

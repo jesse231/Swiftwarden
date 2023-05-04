@@ -14,9 +14,40 @@ struct AccountData {
 }
 
 
-class Account : ObservableObject{
+class User : ObservableObject{
     private var keys : [String:[UInt8]]
     @Published private var data : AccountData
+    
+    init(sync : Response){
+        var symKeys : [String : [UInt8]] = [:]
+        if let organizations = sync.profile?.organizations{
+            for org in organizations {
+                do {
+                    symKeys[org.id!] = try Encryption.decOrg(org: org)
+                } catch {
+                    
+                }
+            }
+            
+        }
+        
+        self.keys = symKeys
+        self.data = AccountData()
+        if let ciphers = sync.ciphers {
+            let decCiphers = decryptPasswords(dataList: ciphers)
+            self.data.passwords = decCiphers
+        }
+        if let folders = sync.folders {
+            var decFolders = Encryption.decryptFolders(dataList: folders)
+            decFolders.append(Folder(name: "No Folder", object: "Folder"))
+            self.data.folders = decFolders
+        }
+        }
+    
+    init (data: AccountData) {
+        self.data = data
+        self.keys = [:]
+    }
     
     private func decryptPasswords(dataList: [Cipher]) -> [Cipher]{
         var decDataList = dataList
@@ -86,14 +117,14 @@ class Account : ObservableObject{
         return self.data.folders
     }
     
-    func deleteCipher(cipher: Cipher) async throws {
+    func deleteCipher(cipher: Cipher, api: Api) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             self.data.passwords.remove(at: index)
             
             // Call the Api.deletePassword() method on a different thread asynchronously
             try await Task.detached {
                 do {
-                    try await Api.deletePassword(id: cipher.id!)
+                    try await api.deletePassword(id: cipher.id!)
                     // Update the passwords field on the main thread
                     DispatchQueue.main.async {
                         self.objectWillChange.send()
@@ -105,13 +136,13 @@ class Account : ObservableObject{
         }
     }
     
-    func addCipher(cipher: Cipher) async throws {
+    func addCipher(cipher: Cipher, api: Api) async throws {
         
         self.data.passwords.append(cipher)
         
         try await Task.detached { {
             do {
-                try await Api.createPassword(cipher: cipher)
+                try await api.createPassword(cipher: cipher)
                 
                 DispatchQueue.main.async {
                     self.objectWillChange.send()
@@ -124,32 +155,6 @@ class Account : ObservableObject{
         }
     }
     
-    
-    init(sync : Response){
-        var symKeys : [String : [UInt8]] = [:]
-        if let organizations = sync.profile?.organizations{
-            for org in organizations {
-                do {
-                    symKeys[org.id!] = try Encryption.decOrg(org: org)
-                } catch {
-                    
-                }
-            }
-            
-        }
-        
-        self.keys = symKeys
-        self.data = AccountData()
-        if let ciphers = sync.ciphers {
-            let decCiphers = decryptPasswords(dataList: ciphers)
-            self.data.passwords = decCiphers
-        }
-        if let folders = sync.folders {
-            var decFolders = Encryption.decryptFolders(dataList: folders)
-            decFolders.append(Folder(name: "No Folder", object: "Folder"))
-            self.data.folders = decFolders
-        }
-        }
     
     
     

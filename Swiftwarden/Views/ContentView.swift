@@ -21,14 +21,21 @@ extension View {
     }
 }
 
+class Account : ObservableObject {
+    @Published var user = User(sync: Response())
+    @Published var selectedCipher = Cipher()
+    @Published var api: Api = Api()
+}
+
 struct ContentView: View {
     @State var loginSuccess = false
-    @State var account : Account = Account(sync: Response())
+//    @State var user : Account = Account(sync: Response())
+    @StateObject var user = Account()
     var body: some View {
         if loginSuccess {
-            MainView()
+            MainView().environmentObject(user)
         } else {
-            LoginView(loginSuccess: $loginSuccess, account: $account)
+            LoginView(loginSuccess: $loginSuccess).environmentObject(user)
         }
 
     }

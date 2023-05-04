@@ -1,8 +1,7 @@
 import SwiftUI
 
 struct PopupNew: View {
-    @EnvironmentObject var appState : AppState
-//    @EnvironmentObject var account: Account
+    @EnvironmentObject var account : Account
     @Binding var show: Bool
     @State private var name = ""
     @State private var username = ""
@@ -56,30 +55,36 @@ struct PopupNew: View {
                 .padding(.bottom)
             
             VStack{
-                Picker(selection: $selectedFolder, content: {
-                        ForEach(appState.account.getFolders(), id:\.self) {folder in
+                HStack{
+                    Picker(selection: $selectedFolder, content: {
+                        ForEach(account.user.getFolders(), id:\.self) {folder in
                             Text(folder.name!)
+                        }
+                        
+                    }) {
+                        Text("Folder")
+//                            .font(.system(size: 10))
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 300)
                     }
-                    
-                }) {
-                    Text("Folder")
-                        .font(.system(size: 10))
-                        .foregroundColor(.gray)
                 }
                 
                 HStack{
                     Text("Favourite")
                         .frame(alignment: .trailing)
-                        .font(.system(size: 10))
+//                        .font(.system(size: 10))
                         .foregroundColor(.gray)
+                    Spacer()
                     Toggle("Favourite", isOn: $favourite).labelsHidden()
                 }
                 
                 HStack{
                     Text("Master Password re-prompt")
                         .frame(alignment: .trailing)
-                        .font(.system(size: 10))
+//                        .font(.system(size: 10))
                         .foregroundColor(.gray)
+//                        .padding(.trailing, 30)
+                    Spacer()
                     Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                 }
             }.padding(.bottom)
@@ -87,22 +92,14 @@ struct PopupNew: View {
             HStack{
                 Button( action: {show = false}) {
                     Text("Cancel")
-                        .padding(22)
-                        .frame(width: 222, height: 44)
-                        .background(Color.gray)
-                        .foregroundColor(Color.black)
                 }
-                .buttonStyle(.plain)
-                .padding(22)
-                .frame(width: 222, height: 44)
-                .background(Color.gray)
-                .foregroundColor(Color.black)
-                .cornerRadius(10)
+                Spacer()
                 Button(action: {
                     var newCipher : Cipher
                     do {
                         newCipher = Cipher(
                             favorite: favourite,
+//                            fields: [],
                             folderID: selectedFolder.id,
                             login: Login(
                                 password: password,
@@ -116,6 +113,7 @@ struct PopupNew: View {
                     } catch {
                         newCipher = Cipher(
                             favorite: favourite,
+//                            fields: [],
                             folderID: selectedFolder.id,
                             login: Login(
                                 password: password,
@@ -127,37 +125,52 @@ struct PopupNew: View {
                             type: 1
                         )}
                     Task {
-                        try await appState.account.addCipher(cipher: newCipher)
+                        try await account.user.addCipher(cipher: newCipher, api: account.api)
                     }
                     show = false
                     
                     
                 }) {
                     Text("Save")
-                        .padding(22)
-                        .frame(width: 222, height: 44)
-                        .background(Color.blue)
-                        .foregroundColor(Color.white)
+//                        .foregroundColor(.white)
+//                        .font(.headline)
+//                        .padding(.horizontal, 16)
+//                        .padding(.vertical, 8)
+////                        .background(Color.blue)
+//                        .cornerRadius(10)
+//                        .background(
+//                                    RoundedRectangle(cornerRadius: 10)
+//                                        .stroke(Color.white, lineWidth: 2)
+//                                        .background(Color.blue)
+//                                )
+                    
+                        
+//                        .frame(width: 222, height: 44)
+//                        .foregroundColor(Color.white)
                 }
-                .buttonStyle(.plain)
-                .padding(22)
-                .frame(width: 222, height: 44)
-                .background(Color.blue)
-                .foregroundColor(Color.white)
-                .cornerRadius(10)
+//                .buttonStyle(.plain)
+//                .padding(22)
+//                .frame(width: 222, height: 44)
+//                .background(Color.blue)
+//                .foregroundColor(Color.white)
+//                .cornerRadius(10)
                 //            }
             }
         }.padding()
-            .frame(width: 500, height: 500).onAppear() {
-                selectedFolder = appState.account.getFolders()[0]
-            }
+            .frame(width: 500, height: 500)
+//            .onAppear() {
+//                if (account.user.getFolders() != []) {
+//                    selectedFolder = account.user.getFolders()[0]
+//                }
+//            }
     }
 }
 
 struct PopupNew_Previews: PreviewProvider {
     @State static var show = true
-    //    @EnvironmentObject var allPasswords = Passwords()
+//    var account : Account = Account()
+//    var data = AccountData(folders: [Folder()])
     static var previews: some View {
-        PopupNew(show: $show).environmentObject(Passwords())
+        PopupNew(show: $show).environmentObject(Account())
     }
 }

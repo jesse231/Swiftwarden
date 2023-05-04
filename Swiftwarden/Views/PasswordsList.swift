@@ -4,19 +4,19 @@ import CoreImage
 
 struct PasswordsList: View {
     @Binding var searchText : String
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var user: Account
     @State var deleteDialog = false
     var display : PasswordListType
     func passwordsToDisplay() -> [Cipher] {
             switch display {
             case .normal:
-                return appState.account.getCiphers()
+                return user.user.getCiphers()
             case .trash:
-                return appState.account.getTrash()
+                return user.user.getTrash()
             case .favorite:
-                return appState.account.getFavorites()
+                return user.user.getFavorites()
             case .card:
-                return appState.account.getCards()
+                return user.user.getCards()
             }
         }
     
@@ -32,18 +32,18 @@ struct PasswordsList: View {
                 ForEach(passwordsToDisplay().filter { cipher in
                     cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
                 }, id: \.self) { cipher in
-                    let url = URL(string: cipher.login?.uris?[0].uri ?? " ")
+                    let url = (cipher.login?.uris?.isEmpty) ?? true ? nil : URL(string: cipher.login?.uris?[0].uri ?? " ")
                     let hostname = url?.host ?? "null"
                     NavigationLink(
                         destination: {
                             ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).background(.white).onAppear(perform: {
-                                appState.selectedCipher = cipher
-                            }).environmentObject(appState)
+                                user.selectedCipher = cipher
+                            }).environmentObject(user)
                         },
                         label: {
                             Group {
                                 if (hostname != "null"){
-                                    AsyncImage(url: URL(string: "https://vaultwarden.seeligsohn.com/icons/\(hostname)/icon.png")) { image in
+                                    AsyncImage(url: user.api.getIcons(host: hostname)) { image in
                                         image.resizable()
                                     } placeholder: {
                                         ProgressView()
@@ -86,8 +86,8 @@ struct PasswordsList: View {
                     Button("Delete") {
                                 Task {
                                     do {
-                                        try await appState.account.deleteCipher(cipher: appState.selectedCipher)
-                                        appState.selectedCipher = Cipher()
+                                        try await user.user.deleteCipher(cipher: user.selectedCipher, api: user.api)
+                                        user.selectedCipher = Cipher()
                                     } catch {
                                         print(error)
                                     }

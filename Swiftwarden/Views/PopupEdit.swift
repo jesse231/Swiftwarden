@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct PopupEdit: View {
-    @EnvironmentObject var allPasswords : Passwords
     @State var name : String
     @State var username : String
     @State var password : String
