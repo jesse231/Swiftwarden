@@ -24,22 +24,58 @@ struct Token: Decodable {
     var unofficialServer: Bool
 }
 
+
 class Api {
-    private static var base : String = "https://vaultwarden.seeligsohn.com/"
-    private static var bearer: String = ""
-    init (username: String, password: String, base: String) async throws{
-        let token: Token = try await Api.login(email: username, password: password)
-        Api.bearer = token.access_token
-        print(Api.bearer)
-        try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)
-        Api.base = base + "/"
+    private var base : String?
+    private var bearer: String = ""
+    
+    
+    private var apiPath = "https://api.bitwarden.com"
+    private var identityPath = "https://identity.bitwarden.com"
+    private var iconPath = "https://icons.bitwarden.com"
+    
+    init (username: String, password: String, base: String?, identityPath: String?, apiPath: String? , iconPath: String?) async throws{
+        if let base {
+            self.base = base + "/"
+        }
         
-//        let sync = Api.sync()
+        if let identityPath {
+            self.identityPath = identityPath
+        } else if let base {
+            self.identityPath = base + "identity/"
+        }
+        
+        if let apiPath {
+            self.apiPath = apiPath
+        } else if let base {
+            self.apiPath = base + "api/"
+        }
+        
+        if let iconPath {
+            self.iconPath = iconPath
+        } else if let base {
+            self.iconPath = base + "icons/"
+        }
+        
+        let token: Token = try await self.login(email: username, password: password)
+        self.bearer = token.access_token
+
+        
+        
+        
+        try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)
+        
         
     }
     
+    init () {
+        
+    }
+    
+    
+    
     private func getBearer() async throws -> (String, String) {
-        let url = URL(string: Api.base + "identity/connect/token")!
+        let url = URL(string: self.identityPath + "connect/token")!
         //    let url = URL(string: "https://google.com")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -65,19 +101,18 @@ class Api {
         return (token.access_token, token.Key)
     }
     
-    static func updatePassword(cipher: Cipher) async throws{
-        let url = URL(string: Api.base + "/api/ciphers/" + (cipher.id ?? ""))!
+    func updatePassword(cipher: Cipher) async throws{
+        let url = URL(string: self.apiPath + "/ciphers/" + (cipher.id ?? ""))!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
+        request.addValue(self.bearer, forHTTPHeaderField: "Authorization")
         let encCipher = try Encryption.encryptCipher(cipher: cipher)
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
     }
     
-    static func login (email: String, password: String) async throws -> Token {
-        var url = URL(string: Api.base + "identity/accounts/prelogin")!
-        
+    private func login (email: String, password: String) async throws -> Token {
+        var url = URL(string: self.identityPath + "/accounts/prelogin")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         var parameters: [String: Any] = [
@@ -95,7 +130,7 @@ class Api {
         //        let symKey = Encryption.makeKey(password: password, salt: email.lowercased(), iterations: iterations as! Int)
         let masterPasswordHash = try Encryption.hashedPassword(password: password, salt: email, iterations: iterations as! Int)
         
-        url = URL(string: Api.base + "identity/connect/token")!
+        url = URL(string: self.identityPath + "/connect/token")!
         
         request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -124,11 +159,11 @@ class Api {
         
     }
     
-    static func sync () async throws -> Response {
-        let url = URL(string: Api.base + "/api/sync?excludeDomains=false")!
+    func sync () async throws -> Response {
+        let url = URL(string: self.apiPath + "sync?excludeDomains=false")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        request.addValue(Api.bearer, forHTTPHeaderField: "Authorization")
+        request.addValue(self.bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
         let syncData = try Response(data: data)
 //        print(syncData)
@@ -139,9 +174,9 @@ class Api {
     
 //    static func getPasswords() async throws -> [Cipher]{
 //
-//        let bearer = Api.bearer
+//        let bearer = self.bearer
 //
-//        let url = URL(string: Api.base + "api/ciphers")!
+//        let url = URL(string: self.base + "api/ciphers")!
 //        var request = URLRequest(url: url)
 //        request.httpMethod = "GET"
 //        request.addValue(bearer, forHTTPHeaderField: "Authorization")
@@ -154,9 +189,9 @@ class Api {
 //
 //    }
     
-    static func deletePassword(id: String) async throws -> Bool{
-        let bearer = Api.bearer
-        let url = URL(string: Api.base + "api/ciphers/" + id + "/delete")!
+    func deletePassword(id: String) async throws{
+        let bearer = self.bearer
+        let url = URL(string: self.apiPath + "ciphers/" + id + "/delete")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -166,13 +201,12 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request)
         print(String(data: data, encoding: .utf8)!)
         print("api/ciphers/" + id + "/delete")
-        return true
     }
     
     
-    static func createPassword(cipher: Cipher) async throws -> Bool{
-        let bearer = Api.bearer
-        let url = URL(string: Api.base + "api/ciphers/")!
+    func createPassword(cipher: Cipher) async throws{
+        let bearer = self.bearer
+        let url = URL(string: self.apiPath + "ciphers/")!
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -184,16 +218,17 @@ class Api {
         request.addValue(bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
         print(String(data: data, encoding: .utf8)!)
-        
-        return true
     }
     
+    func getIcons(host: String) -> URL{
+        let url = URL(string: self.iconPath + "\(host)/icon.png")!
+        
+        return url
+        //    let (data, response) = try await URLSession.shared.data(from: url)
+        //    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
     
 
 }
 
-func getIcons(website: String) async throws{
-    let url = URL(string: "https://vaultwarden.seeligsohn.com/icons/\(website)/icon.png")!
-    //    let (data, response) = try await URLSession.shared.data(from: url)
-    //    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
-}
+
