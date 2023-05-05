@@ -1,10 +1,11 @@
 import Foundation
+import NukeUI
 import SwiftUI
 
 
 struct ItemView : View {
     var cipher: Cipher?
-    var hostname: String
+    var hostname: String?
     @EnvironmentObject var account : Account
 //    @EnvironmentObject var allPasswords: Passwords
     @State var favourite: Bool
@@ -17,19 +18,20 @@ struct ItemView : View {
                     let username = cipher?.login?.username ?? " "
                     let password = cipher?.login?.password ?? " "
                     HStack{
-//                        if let hostname = hostname{
-//                            AsyncImage(url: account.api.getIcons(host: hostname)) { image in
-//                                image.resizable()
-//                            } placeholder: {
-//                                ProgressView()
-//                            }
-//                            .clipShape(Circle())
-//                            .frame(width: 35, height: 35)
-//                        } else {
-//                            Image(systemName: "lock.circle")
-//                                .resizable()
-//                                .frame(width: 35, height: 35)
-//                        }
+                        if let hostname = hostname{
+                            LazyImage(url: account.api.getIcons(host: hostname))
+                            { state in
+                               if let image = state.image {
+                                   image.resizable()
+                               }
+                           }
+                            .clipShape(Circle())
+                            .frame(width: 35, height: 35)
+                        } else {
+                            Image(systemName: "lock.circle")
+                                .resizable()
+                                .frame(width: 35, height: 35)
+                        }
                         VStack{
                             Text(name)
                                 .font(.system(size: 15))
@@ -76,13 +78,15 @@ struct ItemView : View {
                                 Hide(toggle: $showPassword)
                                 Copy(content: password)
                             })
-                        Field(
-                            title: "Website",
-                            content: hostname,
-                            buttons: {
-                                Open(link: hostname)
-                                Copy(content: hostname)
-                            })
+                        if let hostname{
+                            Field(
+                                title: "Website",
+                                content: hostname,
+                                buttons: {
+                                    Open(link: hostname)
+                                    Copy(content: hostname)
+                                })
+                        }
                         
                     }
                 }
