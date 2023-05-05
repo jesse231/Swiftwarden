@@ -32,7 +32,7 @@ class Api {
     
     private var apiPath = "https://api.bitwarden.com/"
     private var identityPath = "https://identity.bitwarden.com/"
-    private var iconPath = "https://icons.bitwarden.com/"
+    private var iconPath = "https://icons.bitwarden.net/"
     
     init (username: String, password: String, base: String, identityPath: String?, apiPath: String? , iconPath: String?) async throws{
         
