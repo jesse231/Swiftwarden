@@ -27,8 +27,10 @@
 		3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513A8289AF29F002164C9 /* ItemView.swift */; };
 		3B4513AC289AF380002164C9 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AB289AF380002164C9 /* Field.swift */; };
 		3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AE289B78E5002164C9 /* Buttons.swift */; };
+		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
 		3BB5594229B1A27400AB9DAC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* Account.swift */; };
+		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
 		3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757912A031BF90065CCF0 /* Uris.swift */; };
 		3BC757A02A031BFA0065CCF0 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757932A031BF90065CCF0 /* Folder.swift */; };
@@ -100,7 +102,9 @@
 		3B4513A8289AF29F002164C9 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		3B4513AB289AF380002164C9 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3BB5594129B1A27400AB9DAC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Swiftwarden/Models/Account.swift; sourceTree = SOURCE_ROOT; };
+		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
 		3BC757912A031BF90065CCF0 /* Uris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uris.swift; sourceTree = "<group>"; };
 		3BC757932A031BF90065CCF0 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
@@ -158,10 +162,10 @@
 			isa = PBXGroup;
 			children = (
 				3B4513AA289AF36F002164C9 /* Components */,
+				3B2EC3C6296F30FC003A04A1 /* LoginView.swift */,
 				3B4513A8289AF29F002164C9 /* ItemView.swift */,
 				3BD0746728A0829F00812AAB /* PopupEdit.swift */,
 				3B3E48432870F673000D0D0C /* ContentView.swift */,
-				3B2EC3C6296F30FC003A04A1 /* LoginView.swift */,
 				3B2EC3CB296F315E003A04A1 /* MainView.swift */,
 				3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */,
 				3B4513A62899DAAB002164C9 /* PasswordsList.swift */,
@@ -246,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				3BB5594129B1A27400AB9DAC /* Account.swift */,
+				3B5865152A05A87400A39868 /* SaveData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 				3B0486DF2875018C007CCC5A /* Api.swift */,
 				3B0A8E03296209830055DA2D /* Encryption.swift */,
 				3BF9B58E296CC40B0095B557 /* Query.swift */,
+				3BBF9C852A0827720058E82E /* Biometric.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -436,6 +442,7 @@
 				3BC757A52A031BFA0065CCF0 /* Cipher.swift in Sources */,
 				3BC757A82A031BFA0065CCF0 /* Login.swift in Sources */,
 				3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */,
+				3BBF9C862A0827720058E82E /* Biometric.swift in Sources */,
 				3BC757AD2A031CA10065CCF0 /* Identity.swift in Sources */,
 				3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */,
 				3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */,
@@ -446,6 +453,7 @@
 				3BC757A62A031BFA0065CCF0 /* Object.swift in Sources */,
 				3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */,
 				3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */,
+				3B5865162A05A87400A39868 /* SaveData.swift in Sources */,
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
 				3B0486E02875018C007CCC5A /* Api.swift in Sources */,
