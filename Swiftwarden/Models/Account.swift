@@ -10,7 +10,7 @@ import Foundation
 struct AccountData {
     var passwords: [Cipher] = []
     var folders: [Folder] = []
-//    var organizations: [String:Organization]
+    var organizations: [Organization] = []
 }
 
 

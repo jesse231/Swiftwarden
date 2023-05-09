@@ -6,16 +6,20 @@ struct LoginView: View {
     @State var email: String = (ProcessInfo.processInfo.environment["Username"] ?? "")
     @State var password: String = (ProcessInfo.processInfo.environment["Password"] ?? "")
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
-    @State var storedEmail: String? = UserDefaults.standard.string(forKey: "email")
-    @EnvironmentObject var account : Account
     
+    @State var storedEmail: String? = UserDefaults.standard.string(forKey: "email")
+    
+    @State var attempt = false
+    @State var errorMessage = "Your username or password is incorrect or your account does not exist."
+    @State var isLoading = false
+    @EnvironmentObject var account : Account
     
     func login (storedEmail : String? = nil, storedPassword : String? = nil) async throws -> Bool{
         let username = storedEmail ?? email
         let pass = storedPassword ?? password
         
         let api = try await Api(username: username, password: pass, base: server,    identityPath: nil, apiPath: nil, iconPath: nil)
-
+        
         account.api = api
         
         let sync = try await api.sync()
@@ -57,15 +61,15 @@ struct LoginView: View {
                             .strokeBorder(.gray, lineWidth: 1))
                     .padding(4)
                 Button {
-                        authenticate() {_ in
-                            Task{
-                                try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword)
-                                loginSuccess = true
-                            }
+                    authenticate() {_ in
+                        Task{
+                            try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword)
+                            loginSuccess = true
                         }
-                    } label: {
-                        Image(systemName: "touchid")
                     }
+                } label: {
+                    Image(systemName: "touchid")
+                }
                 HStack{
                     Button(action: {
                         UserDefaults.standard.set(nil, forKey: "email")
@@ -108,55 +112,88 @@ struct LoginView: View {
                     .foregroundColor(Color.white)
                     .cornerRadius(5)
                 }.padding().frame(maxWidth: 300)
-        }.padding().frame(maxWidth: 300)
+            }.padding().frame(maxWidth: 300)
         } else {
             VStack{
                 Text("Log in").font(.title).bold()
                 Divider().padding(.bottom, 5)
-                TextField("Email Address", text: $email)
-                    .padding()
-                    .textFieldStyle(.plain)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .strokeBorder(.gray, lineWidth: 1))
-                    .padding(4)
-                    SecureField("Password", text: $password)
-                        .padding()
+                GroupBox{
+                    TextField("Email Address", text: $email)
                         .textFieldStyle(.plain)
-                        .background(
-                            RoundedRectangle(cornerRadius: 4)
-                                .strokeBorder(.gray, lineWidth: 1))
                         .padding(4)
-                TextField("Server url", text: $server)
-                    .padding()
-                    .textFieldStyle(.plain)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .strokeBorder(.gray, lineWidth: 1))
-                    .padding(4)
-                Button(action: {
+                }.padding(4)
+                GroupBox{
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(.plain)
+                        .padding(4)
+                }.padding(4)
+                GroupBox{
+                    TextField("Server url", text: $server)
+                        .textFieldStyle(.plain)
+                        .padding(4)
+                }.padding(4)
+                if (attempt == true){
+                    Text(errorMessage)
+                        .fixedSize(horizontal: false, vertical: false)
+                        .containerShape(Rectangle())
+                        .padding(20)
+                        .foregroundColor(.primary)
+                        .background(.pink.opacity(0.4))
+                        .cornerRadius(5)
+                }
+                Button {
                     Task {
+                        attempt = false
+                        isLoading = true
                         do {
+                            let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
+                            guard(email != "" && password != "") else {
+                                errorMessage = "Please enter a valid email address and password."
+                                attempt = true
+                                isLoading = false
+                                return
+                            }
+                            
+                            guard (email.contains(checkEmail)) else {
+                                errorMessage = "Please enter a valid email address."
+                                isLoading = false
+                                attempt = true
+                                return
+                            }
+                            
+                            
                             try await loginSuccess = login()
-                        } catch {
+                        } catch let error as AuthError {
                             print(error)
+                            attempt = true
+                            errorMessage = error.message
+                            isLoading = false
+                        } catch {
+                            print("Unexpected error: \(error)")
                         }
+                        isLoading = false
                     }
-                }) {
-                    Text("Sign In")
-                        .padding(22)
-                        .frame(width: 111, height: 44)
-                        .background(Color.blue)
-                        .foregroundColor(Color.white)
-                    
+                } label: {
+                    if isLoading {
+                        ProgressView() // Show loading animation
+                            .frame(width: 10, height: 10)
+                    } else {
+                        Text("Log In")
+                            .padding(22)
+                            .frame(width: 111, height: 22)
+                            .background(Color.blue)
+                            .foregroundColor(Color.white)
+                        
+                    }
                 }
                 .buttonStyle(.plain)
                 .padding(22)
-                .frame(width: 222, height: 44)
+                .frame(width: 111, height: 22)
                 .background(Color.blue)
                 .foregroundColor(Color.white)
-                .cornerRadius(10)
-            }.padding().frame(maxWidth: 300)
+                .cornerRadius(5)
+            }.padding()
+                .frame(maxWidth: 300)
             Spacer()
         }
     }
