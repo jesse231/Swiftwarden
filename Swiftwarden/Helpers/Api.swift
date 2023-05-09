@@ -11,6 +11,16 @@ extension String{
     
 }
 
+struct AuthError: Error {
+    let message: String
+}
+
+
+struct ErrorResponse : Decodable {
+    let error: String?
+    let errorDescription: String?
+    let message: String?
+}
 
 struct Token: Decodable {
     var Kdf: Int
@@ -115,7 +125,6 @@ class Api {
     
     private func login (email: String, password: String) async throws -> Token {
         var url = URL(string: self.identityPath + "accounts/prelogin")!
-        print(url)
         var request = URLRequest(url: url)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
@@ -123,15 +132,27 @@ class Api {
             "email": email,
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
-        
         var (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
+        if let httpResponse = response as? HTTPURLResponse {
+//                print("Status code: \(httpResponse.statusCode)")
+//                print("Headers: \(httpResponse.allHeaderFields)")
+            }
+//        print(String(data: data, encoding: .utf8))
+        if let httpResponse = response as? HTTPURLResponse {
+            if (httpResponse.statusCode != 200) {
+                let decoder = JSONDecoder()
+                decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let error = try decoder.decode(ErrorResponse.self, from: data)
+                if let message = error.message {
+                    throw AuthError(message: message)
+                }
+            }
+        }
         let preLogin = try PreLogin(data: data)
-//        var responseDict = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
+
         let iterations = preLogin.kdfIterations
 
-        //        let symKey = Encryption.makeKey(password: password, salt: email.lowercased(), iterations: iterations as! Int)
-        let masterPasswordHash = try Encryption.hashedPassword(password: password, salt: email, iterations: iterations as! Int)
+        let masterPasswordHash = try Encryption.hashedPassword(password: password, salt: email, iterations: iterations!)
         
         
         
@@ -165,8 +186,15 @@ class Api {
 //        print(query)
         request.httpBody = Data(query!.utf8)
         (data, response) = try await URLSession.shared.data(for: request)
-//        print(String(data: data, encoding: .utf8)!)
-//        print(response)
+        print(String(data: data, encoding: .utf8)!)
+        if let httpResponse = response as? HTTPURLResponse {
+            if httpResponse.statusCode != 200 {
+//                let decoder = try JSONDecoder()
+//                try decoder.keyDecodingStrategy = .convertFromSnakeCase
+//                let error = try decoder.decode(ErrorResponse.self, from: data)
+                throw AuthError(message: "Invalid email or password")
+            }
+        }
 //        print("--------")w
         let token = try JSONDecoder().decode(Token.self, from: data)
         return token
