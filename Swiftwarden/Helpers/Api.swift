@@ -52,20 +52,19 @@ class Api {
         
         if let identityPath {
             self.identityPath = identityPath
-        } else if base != "" {
-            print("yes")
+        } else if base != "https://bitwarden.com/" {
             self.identityPath = base + "identity/"
         }
         
         if let apiPath {
             self.apiPath = apiPath
-        } else if base != "" {
+        } else if base != "https://bitwarden.com/" {
             self.apiPath = base + "api/"
         }
         
         if let iconPath {
             self.iconPath = iconPath
-        } else if base != "" {
+        } else if base != "https://bitwarden.com/" {
             self.iconPath = base + "icons/"
         }
         
