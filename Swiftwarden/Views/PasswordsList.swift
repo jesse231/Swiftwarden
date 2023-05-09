@@ -81,25 +81,30 @@ struct PasswordsList: View {
             }
         }
         .listStyle(.inset(alternatesRowBackgrounds: true))
-        .toolbar(content: {
-            ToolbarItem{
-                Button (action: {
-                    deleteDialog = true
-                }){
-                    Label("Delete", systemImage: "trash").labelStyle(.titleAndIcon)
-                }.confirmationDialog("Are you sure you would like to delete the password?", isPresented: $deleteDialog) {
-                    Button("Delete") {
-                        Task {
-                            do {
-                                try await user.user.deleteCipher(cipher: user.selectedCipher, api: user.api)
-                                user.selectedCipher = Cipher()
-                            } catch {
-                                print(error)
-                            }
-                        }
-                    }
-                }
+        .toolbar {
+            ToolbarItem {
+                Button(action: {}, label: {Image(systemName: "plus")})
             }
-        })
+        }
+//        .toolbar(content: {
+//            ToolbarItem{
+//                Button (action: {
+//                    deleteDialog = true
+//                }){
+//                    Label("Delete", systemImage: "trash").labelStyle(.titleAndIcon)
+//                }.confirmationDialog("Are you sure you would like to delete the password?", isPresented: $deleteDialog) {
+//                    Button("Delete") {
+//                        Task {
+//                            do {
+//                                try await user.user.deleteCipher(cipher: user.selectedCipher, api: user.api)
+//                                user.selectedCipher = Cipher()
+//                            } catch {
+//                                print(error)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        })
     }
 }

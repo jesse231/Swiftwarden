@@ -12,7 +12,7 @@ struct ItemView : View {
     @State var showPassword = false
     var body: some View {
         if let _ = cipher {
-            List{
+            GroupBox{
                 VStack{
                     let name = cipher?.name ?? " "
                     let username = cipher?.login?.username ?? " "
@@ -94,9 +94,20 @@ struct ItemView : View {
                 .frame(maxWidth: 400)
                 Spacer()
             }
+            .toolbar {
+                ToolbarItem{
+                    Spacer()
+                }
+            }
         } else {
-            List{
+            GroupBox{
                 Spacer()
+                    .frame(maxWidth: .infinity)
+            }
+            .toolbar {
+                ToolbarItem{
+                    Spacer()
+                }
             }
             
         }

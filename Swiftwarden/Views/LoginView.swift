@@ -7,6 +7,7 @@ struct LoginView: View {
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
     @State var attempt = false
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
+    @State var isLoading = false
     @EnvironmentObject var account : Account
     
     
@@ -43,17 +44,20 @@ struct LoginView: View {
 
             Button(action: {
                 attempt = false
+                isLoading = true
                 Task {
                     do {
                         let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
                         guard(email != "" && password != "") else {
                             errorMessage = "Please enter a valid email address and password."
                             attempt = true
+                            isLoading = false
                             return
                         }
                         
                         guard (email.contains(checkEmail)) else {
                             errorMessage = "Please enter a valid email address."
+                            isLoading = false
                             attempt = true
                             return
                         }
@@ -84,24 +88,30 @@ struct LoginView: View {
                         print(error)
                         attempt = true
                         errorMessage = error.message
-
+                        isLoading = false
                     } catch {
                         print("Unexpected error: \(error)")
                     }
+                    isLoading = false
                 }
             }) {
-                Text("Sign In")
-                    .padding(22)
-                    .frame(width: 111, height: 44)
-                    .background(Color.blue)
-                    .foregroundColor(Color.white)
-            }
-            .buttonStyle(.plain)
-            .padding(22)
-            .frame(width: 222, height: 44)
-            .background(Color.blue)
-            .foregroundColor(Color.white)
-            .cornerRadius(10)
+                    if isLoading {
+                        ProgressView() // Show loading animation
+                            .frame(width: 10, height: 10)
+                    } else {
+                        Text("Log in")
+                            .padding(22)
+                            .frame(width: 111, height: 22)
+                            .background(Color.blue)
+                            .foregroundColor(Color.white)
+                    }
+                }
+                .buttonStyle(.plain)
+                .padding(22)
+                .frame(width: 111, height: 25)
+                .background(Color.blue)
+                .foregroundColor(Color.white)
+                .cornerRadius(5)
         }.padding().frame(maxWidth: 300)
         Spacer()
     }

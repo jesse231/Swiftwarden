@@ -8,7 +8,6 @@ struct SwiftwardenApp: App {
             ContentView()
         }
         .windowToolbarStyle(.unified(showsTitle: true))
-        .windowStyle(HiddenTitleBarWindowStyle())
-
+        .windowStyle(.titleBar)
     }
 }

@@ -8,15 +8,36 @@ struct MainView: View {
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
     @State private var showNew = false
+    @State private var toggleSidebar = false
     
     
     
     var body: some View {
         NavigationView{
             SideBar(searchResults: $searchText).environmentObject(user)
-            PasswordsList(searchText: $searchText, display: .normal).frame(minWidth: 400)
+                .toolbar {
+                    ToolbarItem{
+                        Button(action: {toggleSidebar = !toggleSidebar}) {
+                            Image(systemName: "sidebar.left")
+                                .help("Toggle Sidebar")
+                        }
+                    }
+                }
+            PasswordsList(searchText: $searchText, display: .normal)
+                .frame(minWidth: 400)
                 .environmentObject(user)
+            
             ItemView(cipher: nil, hostname: "null", favourite: false).background(.white)
+//                .toolbar {
+//                    ToolbarItem (){
+//                        Button (action: {
+//                            showEdit = true
+//                        }){
+////                            Label("Edit", systemImage: "square.and.pencil").labelStyle(.titleAndIcon)
+////                        }
+//
+//                    }
+//                }
         }
         .sheet(isPresented: $showEdit, content: {
             let selected = user.selectedCipher
@@ -31,29 +52,6 @@ struct MainView: View {
 //                allPasswords.searchResults =  allPasswords.passwords?.filter({$0.name?.lowercased().contains(searchText) ?? false})
         }
         }
-        
-        .toolbar(content: {
-            
-            ToolbarItem{
-                Spacer()
-            }
-            ToolbarItem (){
-                Button (action: {
-                    showNew = true
-                }){
-                    Label("Add", systemImage: "plus.square").labelStyle(.titleAndIcon)
-                }
-                
-            }
-            ToolbarItem (){
-                Button (action: {
-                    showEdit = true
-                }){
-                    Label("Edit", systemImage: "square.and.pencil").labelStyle(.titleAndIcon)
-                }
-                
-            }
-        })
     }
 }
 
