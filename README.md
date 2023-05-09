@@ -6,6 +6,8 @@
 
 # Todo
 - [X] Decryption of organization passwords
-- [ ] Allow for both selfhosted and official bitwarden instances to work (currently only selfhosted)
+- [X] Allow for both selfhosted and official bitwarden instances to work (currently only selfhosted)
 - [ ] Cache images
+- [ ] Save user data/allow multiple logins
+- [ ] Make UI Prettier
 - [ ] Fingerprint authentication
