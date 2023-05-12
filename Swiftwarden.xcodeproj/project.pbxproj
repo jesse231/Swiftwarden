@@ -31,7 +31,7 @@
 		3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AE289B78E5002164C9 /* Buttons.swift */; };
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
-		3BB5594229B1A27400AB9DAC /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* Account.swift */; };
+		3BB5594229B1A27400AB9DAC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* User.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
 		3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757912A031BF90065CCF0 /* Uris.swift */; };
@@ -112,7 +112,7 @@
 		3B4513AB289AF380002164C9 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
-		3BB5594129B1A27400AB9DAC /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Account.swift; path = Swiftwarden/Models/Account.swift; sourceTree = SOURCE_ROOT; };
+		3BB5594129B1A27400AB9DAC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Swiftwarden/Models/User.swift; sourceTree = SOURCE_ROOT; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
 		3BC757912A031BF90065CCF0 /* Uris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uris.swift; sourceTree = "<group>"; };
@@ -273,7 +273,7 @@
 		3BB5594029B1A26800AB9DAC /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3BB5594129B1A27400AB9DAC /* Account.swift */,
+				3BB5594129B1A27400AB9DAC /* User.swift */,
 				3B5865152A05A87400A39868 /* SaveData.swift */,
 			);
 			path = Models;
@@ -502,7 +502,7 @@
 				3BC757A02A031BFA0065CCF0 /* Folder.swift in Sources */,
 				3BC757B52A0321D40065CCF0 /* PreLogin.swift in Sources */,
 				3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */,
-				3BB5594229B1A27400AB9DAC /* Account.swift in Sources */,
+				3BB5594229B1A27400AB9DAC /* User.swift in Sources */,
 				3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */,
 				3BC757B12A031D3B0065CCF0 /* Organization.swift in Sources */,
 				3BC757A22A031BFA0065CCF0 /* Response.swift in Sources */,
