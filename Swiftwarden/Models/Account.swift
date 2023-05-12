@@ -37,9 +37,10 @@ class User : ObservableObject{
             let decCiphers = decryptPasswords(dataList: ciphers)
             self.data.passwords = decCiphers
         }
+        
         if let folders = sync.folders {
             var decFolders = Encryption.decryptFolders(dataList: folders)
-            decFolders.append(Folder(name: "No Folder", object: "Folder"))
+            decFolders.insert(Folder(name: "No Folder", object: "Folder"), at: 0)
             self.data.folders = decFolders
         }
         }
@@ -49,12 +50,22 @@ class User : ObservableObject{
         self.keys = [:]
     }
     
+    // For testing
+    init () {
+        self.data = AccountData()
+        self.keys = [:]
+        
+        self.data.folders = [Folder(name: "No Folder", object: "Folder")]
+    }
+    
     private func decryptPasswords(dataList: [Cipher]) -> [Cipher]{
         var decDataList = dataList
         for (i,data) in dataList.enumerated(){
             do {
                 decDataList[i] = try decryptCipher(data: data)
-            } catch {}
+            } catch {
+                print(error)
+            }
         }
         return decDataList
     }
@@ -119,39 +130,24 @@ class User : ObservableObject{
     
     func deleteCipher(cipher: Cipher, api: Api) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
-            self.data.passwords.remove(at: index)
-            
-            // Call the Api.deletePassword() method on a different thread asynchronously
-            try await Task.detached {
-                do {
-                    try await api.deletePassword(id: cipher.id!)
-                    // Update the passwords field on the main thread
-                    DispatchQueue.main.async {
-                        self.objectWillChange.send()
-                    }
-                } catch {
-                    print(error)
-                }
+            if let id = cipher.id{
+                try await api.deletePassword(id: id)
+                self.data.passwords.remove(at: index)
             }
         }
     }
     
     func addCipher(cipher: Cipher, api: Api) async throws {
-        
-        self.data.passwords.append(cipher)
-        
-        try await Task.detached { {
-            do {
-                try await api.createPassword(cipher: cipher)
-                
-                DispatchQueue.main.async {
-                    self.objectWillChange.send()
-                }
-            } catch {
-                print(error)
-            }
-        }
-            
+        var modCipher = cipher
+        let retCipher = try await api.createPassword(cipher: cipher)
+        modCipher.id = retCipher.id
+        self.data.passwords.append(modCipher)
+    }
+    
+    func updateCipher(cipher: Cipher, api: Api, index: Array<Cipher>.Index? = nil) async throws {
+            try await api.updatePassword(cipher: cipher)
+        if let index{
+            data.passwords[index] = cipher
         }
     }
     

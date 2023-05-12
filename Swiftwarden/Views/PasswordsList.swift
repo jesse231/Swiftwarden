@@ -7,6 +7,8 @@ struct PasswordsList: View {
     @Binding var searchText : String
     @EnvironmentObject var user: Account
     @State var deleteDialog = false
+    @State private var showNew = false
+
     var display : PasswordListType
     func passwordsToDisplay() -> [Cipher] {
         switch display {
@@ -34,12 +36,12 @@ struct PasswordsList: View {
                 cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
             }
             
-            ForEach(filtered, id: \.self) { cipher in
+            ForEach(filtered) { cipher in
                 let url = (cipher.login?.uris?.isEmpty) ?? true ? nil : URL(string: cipher.login?.uris?[0].uri ?? " ")
                 let hostname = url?.host ?? nil
                 NavigationLink(
                     destination: {
-                        ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).background(.white).onAppear(perform: {
+                        ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).onAppear(perform: {
                             user.selectedCipher = cipher
                         }).environmentObject(user)
                     },
@@ -83,28 +85,14 @@ struct PasswordsList: View {
         .listStyle(.inset(alternatesRowBackgrounds: true))
         .toolbar {
             ToolbarItem {
-                Button(action: {}, label: {Image(systemName: "plus")})
+                Button{
+                    showNew = true
+                }
+                label: {Image(systemName: "plus")}
             }
         }
-//        .toolbar(content: {
-//            ToolbarItem{
-//                Button (action: {
-//                    deleteDialog = true
-//                }){
-//                    Label("Delete", systemImage: "trash").labelStyle(.titleAndIcon)
-//                }.confirmationDialog("Are you sure you would like to delete the password?", isPresented: $deleteDialog) {
-//                    Button("Delete") {
-//                        Task {
-//                            do {
-//                                try await user.user.deleteCipher(cipher: user.selectedCipher, api: user.api)
-//                                user.selectedCipher = Cipher()
-//                            } catch {
-//                                print(error)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        })
+        .sheet(isPresented: $showNew) {
+            PopupNew(show: $showNew).environmentObject(user)
+        }
     }
 }

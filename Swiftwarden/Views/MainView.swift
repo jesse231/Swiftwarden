@@ -7,7 +7,6 @@ struct MainView: View {
     @State private var showEdit: Bool = false
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
-    @State private var showNew = false
     @State private var toggleSidebar = false
     
     
@@ -27,25 +26,12 @@ struct MainView: View {
                 .frame(minWidth: 400)
                 .environmentObject(user)
             
-            ItemView(cipher: nil, hostname: "null", favourite: false).background(.white)
-//                .toolbar {
-//                    ToolbarItem (){
-//                        Button (action: {
-//                            showEdit = true
-//                        }){
-////                            Label("Edit", systemImage: "square.and.pencil").labelStyle(.titleAndIcon)
-////                        }
-//
-//                    }
-//                }
+            ItemView(cipher: nil, hostname: "null", favourite: false)
         }
         .sheet(isPresented: $showEdit, content: {
             let selected = user.selectedCipher
             PopupEdit(name: user.selectedCipher.name ?? "", username: (selected.login?.username) ?? "", password: (user.selectedCipher.login?.password) ?? "", show: $showEdit).environmentObject(user)
         })
-        .sheet(isPresented: $showNew) {
-            PopupNew(show: $showNew).environmentObject(user)
-        }
         .searchable(text: $searchText).onChange(of: searchText) {_ in do {
 //            print(searchText)
 //            if !searchText.isEmpty{
@@ -61,7 +47,7 @@ struct Previews_MainView_Previews: PreviewProvider {
 //            SideBar().environmentObject(Passwords())
 //            PasswordsList(ciphers: [Cipher()]).frame(minWidth: 400)
 //                .environmentObject(Passwords())
-            ItemView(cipher: nil, hostname: "null", favourite: false).background(.white)
+//            ItemView(cipher: nil, hostname: "null", favourite: false)
         }
     }
 }

@@ -22,7 +22,7 @@ extension View {
 }
 
 class Account : ObservableObject {
-    @Published var user = User(sync: Response())
+    @Published var user = User()
     @Published var selectedCipher = Cipher()
     @Published var api: Api = Api()
 }

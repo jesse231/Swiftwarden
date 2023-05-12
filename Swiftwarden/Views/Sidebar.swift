@@ -53,15 +53,14 @@ struct SideBar: View {
                 }
             }
             Section(header: Text("Folders")) {
-                //                if let folders = account.user.getFolders() {
-                //                    ForEach(folders) {folder in
-                //                        HStack {
-                //                            Image(systemName: "folder")
-                //                            Text(folder.name!)
-                //                        }
-                //                    }
-                //                }
-                //            }
+                                let folders = account.user.getFolders()
+                                    ForEach(folders) {folder in
+                                        let _ = print(folder)
+                                        HStack {
+                                            Image(systemName: "folder")
+                                            Text(folder.name!)
+                                        }
+                                    }
             }.listStyle(SidebarListStyle())
         }
     }

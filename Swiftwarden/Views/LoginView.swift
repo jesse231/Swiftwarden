@@ -8,17 +8,19 @@ struct LoginView: View {
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
     
     @State var storedEmail: String? = UserDefaults.standard.string(forKey: "email")
+    @State var storedServer: String? = UserDefaults.standard.string(forKey: "server")
     
     @State var attempt = false
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
     @State var isLoading = false
     @EnvironmentObject var account : Account
     
-    func login (storedEmail : String? = nil, storedPassword : String? = nil) async throws -> Bool{
+    func login (storedEmail : String? = nil, storedPassword : String? = nil, storedServer: String? = nil) async throws -> Bool{
         let username = storedEmail ?? email
         let pass = storedPassword ?? password
+        let serv = storedServer ?? server
         
-        let api = try await Api(username: username, password: pass, base: server,    identityPath: nil, apiPath: nil, iconPath: nil)
+        let api = try await Api(username: username, password: pass, base: serv,    identityPath: nil, apiPath: nil, iconPath: nil)
         
         account.api = api
         
@@ -43,6 +45,10 @@ struct LoginView: View {
             let defaults = UserDefaults.standard
             defaults.set(email, forKey: "email")
         }
+        if (storedServer == nil) {
+            let defaults = UserDefaults.standard
+            defaults.set(server, forKey: "server")
+        }
         
         
         return true
@@ -50,7 +56,7 @@ struct LoginView: View {
     
     
     var body: some View {
-        if let storedEmail{
+        if let storedEmail, let storedServer{
             let storedPassword = KeyChain.getUser(account: storedEmail)
             VStack{
                 SecureField("Password", text: $password)
@@ -63,7 +69,7 @@ struct LoginView: View {
                 Button {
                     authenticate() {_ in
                         Task{
-                            try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword)
+                            try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
                             loginSuccess = true
                         }
                     }
@@ -73,8 +79,10 @@ struct LoginView: View {
                 HStack{
                     Button(action: {
                         UserDefaults.standard.set(nil, forKey: "email")
+                        UserDefaults.standard.set(nil, forKey: "server")
                         KeyChain.deleteUser(account: storedEmail)
                         self.storedEmail = nil
+                        self.storedServer = nil
                     }) {
                         Text("Log out")
                             .padding(22)
@@ -92,7 +100,7 @@ struct LoginView: View {
                     Button(action: {
                         Task {
                             do {
-                                try await loginSuccess = login(storedEmail: storedEmail)
+                                try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
                             } catch {
                                 print(error)
                             }

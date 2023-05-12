@@ -10,10 +10,10 @@ struct Folder: Codable & Hashable & Identifiable {
     var id, name, object, revisionDate: String?
 
     enum CodingKeys: String, CodingKey {
-        case id = "Id"
-        case name = "Name"
-        case object = "Object"
-        case revisionDate = "RevisionDate"
+        case id = "id"
+        case name = "name"
+        case object = "object"
+        case revisionDate = "revisiondate"
     }
 }
 

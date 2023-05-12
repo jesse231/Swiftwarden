@@ -21,3 +21,15 @@ struct Field<Content: View> : View {
         }
     }
 }
+
+struct FieldPreview: PreviewProvider {
+    static var previews: some View {
+        Field(title: "Username",
+              content: "test",
+              buttons: { Button {
+        }
+        label: {
+            Image(systemName: "square.and.pencil")
+        } })
+    }
+}

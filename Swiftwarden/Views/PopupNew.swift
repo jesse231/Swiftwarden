@@ -11,7 +11,7 @@ struct PopupNew: View {
     @State private var favourite = false
     @State private var reprompt = false
     
-    @State private var selectedFolder : Folder = Folder();
+    @State private var selectedFolder : Folder = Folder()
     
     var body: some View {
         VStack(spacing: 0){
@@ -22,38 +22,28 @@ struct PopupNew: View {
             }
             Divider()
                 .padding()
-            TextField("Name", text: $name)
-                .padding()
-                .textFieldStyle(.plain)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .strokeBorder(.gray, lineWidth: 1))
-                .padding(4)
-                .padding(.bottom)
-            TextField("Username", text: $username)
-                .padding()
-                .textFieldStyle(.plain)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .strokeBorder(.gray, lineWidth: 1))
-                .padding(4)
-            SecureField("Password", text: $password)
-                .padding()
-                .textFieldStyle(.plain)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .strokeBorder(.gray, lineWidth: 1))
-                .padding(4)
-                .padding(.bottom)
-            TextField("URL", text: $url)
-                .padding()
-                .textFieldStyle(.plain)
-                .background(
-                    RoundedRectangle(cornerRadius: 4)
-                        .strokeBorder(.gray, lineWidth: 1))
-                .padding(4)
-                .padding(.bottom)
-            
+            GroupBox{
+                TextField("Name", text: $name)
+                    .textFieldStyle(.plain)
+                    .padding(8)
+            }
+            .padding(.bottom, 4)
+            GroupBox{
+                TextField("Username", text: $username)
+                    .textFieldStyle(.plain)
+                    .padding(8)
+            }.padding(.bottom, 4)
+            GroupBox{
+                SecureField("Password", text: $password)
+                    .textFieldStyle(.plain)
+                    .padding(8)
+            }.padding(.bottom, 12)
+            GroupBox{
+                TextField("URL", text: $url)
+                    .textFieldStyle(.plain)
+                    .padding(8)
+            }
+            .padding(.bottom, 12)
             VStack{
                 HStack{
                     Picker(selection: $selectedFolder, content: {
@@ -81,95 +71,75 @@ struct PopupNew: View {
                 HStack{
                     Text("Master Password re-prompt")
                         .frame(alignment: .trailing)
-//                        .font(.system(size: 10))
                         .foregroundColor(.gray)
-//                        .padding(.trailing, 30)
                     Spacer()
                     Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                 }
-            }.padding(.bottom)
-            // Create button with function
+                .padding(.bottom, 20)
+                HStack{
+                    Picker(selection: $selectedFolder, content: {
+                        ForEach(account.user.getFolders(), id:\.self) {folder in
+                            Text(folder.name!)
+                        }
+                        
+                    }) {
+                        Text("Owner")
+                            .foregroundColor(.gray)
+                            .padding(.trailing, 300)
+                    }
+                }
+            }.padding(.bottom, 24)
             HStack{
-                Button( action: {show = false}) {
+                Button {
+                    show = false
+                    
+                } label: {
                     Text("Cancel")
                 }
                 Spacer()
-                Button(action: {
-                    var newCipher : Cipher
-                    do {
-                        newCipher = Cipher(
-                            favorite: favourite,
-//                            fields: [],
-                            folderID: selectedFolder.id,
-                            login: Login(
-                                password: password,
-                                uris: [try Uris(url)],
-                                username: username),
-                            name: name,
-                            notes: nil,
-                            organizationID: nil,
-                            type: 1
-                        )
-                    } catch {
-                        newCipher = Cipher(
-                            favorite: favourite,
-//                            fields: [],
-                            folderID: selectedFolder.id,
-                            login: Login(
-                                password: password,
-                                uris: nil,
-                                username: username),
-                            name: name,
-                            notes: nil,
-                            organizationID: nil,
-                            type: 1
-                        )}
+                Button {
                     Task {
-                        try await account.user.addCipher(cipher: newCipher, api: account.api)
-                    }
-                    show = false
-                    
-                    
-                }) {
-                    Text("Save")
-//                        .foregroundColor(.white)
-//                        .font(.headline)
-//                        .padding(.horizontal, 16)
-//                        .padding(.vertical, 8)
-////                        .background(Color.blue)
-//                        .cornerRadius(10)
-//                        .background(
-//                                    RoundedRectangle(cornerRadius: 10)
-//                                        .stroke(Color.white, lineWidth: 2)
-//                                        .background(Color.blue)
-//                                )
-                    
+                        let newCipher = Cipher(
+                                favorite: favourite,
+                                fields: nil,
+                                folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
+                                login: Login(
+                                    password: password != "" ? password : nil,
+                                    uris: url != "" ? [Uris(url: url)] : nil,
+                                    username: username != "" ? username : nil),
+                                name: name,
+                                notes: nil,
+                                organizationID: nil,
+                                type: 1
+                            )
+                        do{
+                            //account.selectedCipher =
+                            try await account.user.addCipher(cipher: newCipher, api: account.api)
+                        }
+                        //account.api.createPassword(cipher: newCipher) }
+                        catch { print(error)
+                        }
                         
-//                        .frame(width: 222, height: 44)
-//                        .foregroundColor(Color.white)
+                    }
+                    //Launch itemview
+                    
+                    show = false
+        
+                } label: {
+                    Text("Save")
                 }
-//                .buttonStyle(.plain)
-//                .padding(22)
-//                .frame(width: 222, height: 44)
-//                .background(Color.blue)
-//                .foregroundColor(Color.white)
-//                .cornerRadius(10)
-                //            }
             }
         }.padding()
             .frame(width: 500, height: 500)
-//            .onAppear() {
-//                if (account.user.getFolders() != []) {
-//                    selectedFolder = account.user.getFolders()[0]
-//                }
-//            }
+            .onAppear() {
+                selectedFolder = account.user.getFolders().first!
+            }
     }
 }
 
 struct PopupNew_Previews: PreviewProvider {
     @State static var show = true
-//    var account : Account = Account()
-//    var data = AccountData(folders: [Folder()])
+    var account : Account = Account()
     static var previews: some View {
         PopupNew(show: $show).environmentObject(Account())
     }

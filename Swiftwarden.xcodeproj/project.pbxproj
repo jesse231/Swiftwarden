@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3B0486E02875018C007CCC5A /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Api.swift */; };
 		3B0A8E04296209830055DA2D /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A8E03296209830055DA2D /* Encryption.swift */; };
+		3B2C41FE2A0C56C700720E43 /* ItemViewEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C41FD2A0C56C700720E43 /* ItemViewEditing.swift */; };
+		3B2C42022A0C581800720E43 /* EditingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42012A0C581800720E43 /* EditingField.swift */; };
 		3B2EC3C4296F27F6003A04A1 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3C3296F27F6003A04A1 /* CardView.swift */; };
 		3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3C6296F30FC003A04A1 /* LoginView.swift */; };
 		3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CB296F315E003A04A1 /* MainView.swift */; };
@@ -85,6 +87,9 @@
 		3B0486DF2875018C007CCC5A /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		3B0A8E03296209830055DA2D /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		3B112FB72982F9940018F53B /* SwCrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
+		3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftwardenDebug.entitlements; sourceTree = "<group>"; };
+		3B2C41FD2A0C56C700720E43 /* ItemViewEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemViewEditing.swift; sourceTree = "<group>"; };
+		3B2C42012A0C581800720E43 /* EditingField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingField.swift; sourceTree = "<group>"; };
 		3B2EC3C3296F27F6003A04A1 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3B2EC3C6296F30FC003A04A1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3B2EC3CB296F315E003A04A1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -166,12 +171,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3B2C41FC2A0C56AD00720E43 /* ItemView */ = {
+			isa = PBXGroup;
+			children = (
+				3B4513A8289AF29F002164C9 /* ItemView.swift */,
+				3B4513AB289AF380002164C9 /* Field.swift */,
+				3B2C41FD2A0C56C700720E43 /* ItemViewEditing.swift */,
+				3B2C42012A0C581800720E43 /* EditingField.swift */,
+			);
+			path = ItemView;
+			sourceTree = "<group>";
+		};
 		3B2EC3CD296F389E003A04A1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B2C41FC2A0C56AD00720E43 /* ItemView */,
 				3B4513AA289AF36F002164C9 /* Components */,
 				3B2EC3C6296F30FC003A04A1 /* LoginView.swift */,
-				3B4513A8289AF29F002164C9 /* ItemView.swift */,
 				3BD0746728A0829F00812AAB /* PopupEdit.swift */,
 				3B3E48432870F673000D0D0C /* ContentView.swift */,
 				3B2EC3CB296F315E003A04A1 /* MainView.swift */,
@@ -206,6 +222,7 @@
 		3B3E48402870F673000D0D0C /* Swiftwarden */ = {
 			isa = PBXGroup;
 			children = (
+				3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */,
 				3BB5594029B1A26800AB9DAC /* Models */,
 				3B2EC3CD296F389E003A04A1 /* Views */,
 				3BF9B58D296CC3FC0095B557 /* Helpers */,
@@ -246,7 +263,6 @@
 		3B4513AA289AF36F002164C9 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				3B4513AB289AF380002164C9 /* Field.swift */,
 				3B4513AE289B78E5002164C9 /* Buttons.swift */,
 				3BD0746528A01FC000812AAB /* TestField.swift */,
 				3B2EC3C3296F27F6003A04A1 /* CardView.swift */,
@@ -455,6 +471,8 @@
 				3BC757A52A031BFA0065CCF0 /* Cipher.swift in Sources */,
 				3BC757A82A031BFA0065CCF0 /* Login.swift in Sources */,
 				3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */,
+				3B2C42022A0C581800720E43 /* EditingField.swift in Sources */,
+				3B2C41FE2A0C56C700720E43 /* ItemViewEditing.swift in Sources */,
 				3BBF9C862A0827720058E82E /* Biometric.swift in Sources */,
 				3BC757AD2A031CA10065CCF0 /* Identity.swift in Sources */,
 				3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */,
@@ -647,11 +665,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = Swiftwarden/Swiftwarden.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Swiftwarden/SwiftwardenDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftwarden/Preview Content\"";
+				DEVELOPMENT_TEAM = 223W8R2MTJ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -661,8 +682,9 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jesse.Swiftwarden;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swiftwarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 			};
@@ -674,6 +696,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Swiftwarden/Swiftwarden.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;

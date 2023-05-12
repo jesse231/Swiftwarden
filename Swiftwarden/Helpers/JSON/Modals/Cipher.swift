@@ -7,7 +7,7 @@ import Foundation
 
 
 // MARK: - Cipher
-struct Cipher: Codable & Hashable {
+struct Cipher: Codable & Hashable & Identifiable {
     var attachments: JSONNull?
     var card: Card?
     var collectionIDS: [String]?

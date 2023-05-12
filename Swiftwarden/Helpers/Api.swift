@@ -38,6 +38,7 @@ struct Token: Decodable {
 class Api {
     private var base : String?
     private var bearer: String = ""
+    private var email = ""
     
     
     private var apiPath = "https://api.bitwarden.com/"
@@ -69,6 +70,7 @@ class Api {
         }
         
         let token: Token = try await self.login(email: username, password: password)
+        self.email = username
         self.bearer = token.access_token
 //        print("DONE!")
 //        print(token.KdfIterations)
@@ -76,7 +78,7 @@ class Api {
         
         
         
-        try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)        
+        try Encryption(email: username, password: password, encKey: token.Key, iterations: token.KdfIterations)
     }
     
     init () {
@@ -116,10 +118,17 @@ class Api {
         let url = URL(string: self.apiPath + "ciphers/" + (cipher.id ?? ""))!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.addValue(self.bearer, forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+
         let encCipher = try Encryption.encryptCipher(cipher: cipher)
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
+        print(response)
+        print(String(data: data, encoding: .utf8)!)
+
+        return
     }
     
     private func login (email: String, password: String) async throws -> Token {
@@ -200,7 +209,7 @@ class Api {
         
     }
     
-    func sync () async throws -> Response {
+    func sync() async throws -> Response {
 
         let url = URL(string: self.apiPath + "sync?excludeDomains=false")!
         var request = URLRequest(url: url)
@@ -241,16 +250,18 @@ class Api {
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
         
-        request.addValue(bearer, forHTTPHeaderField: "Authorization")
         let (data, response) = try await URLSession.shared.data(for: request)
         print(String(data: data, encoding: .utf8)!)
+        print(response)
         print("api/ciphers/" + id + "/delete")
     }
     
     
-    func createPassword(cipher: Cipher) async throws{
+    func createPassword(cipher: Cipher) async throws -> Cipher{
         let bearer = self.bearer
         let url = URL(string: self.apiPath + "ciphers/")!
         
@@ -261,9 +272,21 @@ class Api {
         request.httpBody = try JSONEncoder().encode(try Encryption.encryptCipher(cipher: cipher))
         
         print(String(bytes: try encoder.encode(try Encryption.encryptCipher(cipher: cipher)), encoding: .utf8))
-        request.addValue(bearer, forHTTPHeaderField: "Authorization")
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
         let (data, response) = try await URLSession.shared.data(for: request)
+        print(response)
         print(String(data: data, encoding: .utf8)!)
+        if let httpResponse = response as? HTTPURLResponse {
+            if (httpResponse.statusCode != 200) {
+                print(httpResponse.statusCode)
+                print(String(data: data, encoding: .utf8)!)
+            }
+        }
+
+        
+        return try Encryption.decryptCipher(data: Cipher(data:data))
     }
     
     func getIcons(host: String) -> URL{
@@ -276,5 +299,6 @@ class Api {
     
 
 }
+
 
 

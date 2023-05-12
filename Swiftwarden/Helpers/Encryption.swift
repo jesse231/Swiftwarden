@@ -213,7 +213,6 @@ class Encryption {
                  
              }
          }
-         
         return dec
     }
     
