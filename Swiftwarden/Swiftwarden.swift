@@ -7,6 +7,9 @@ struct SwiftwardenApp: App {
         WindowGroup {
             ContentView()
         }
+        .commands {
+            SidebarCommands()
+        }
         .windowToolbarStyle(.unified(showsTitle: true))
         .windowStyle(.titleBar)
     }

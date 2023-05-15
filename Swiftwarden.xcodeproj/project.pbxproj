@@ -231,12 +231,12 @@
 		3B3E48402870F673000D0D0C /* Swiftwarden */ = {
 			isa = PBXGroup;
 			children = (
+				3B3E48412870F673000D0D0C /* Swiftwarden.swift */,
 				3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */,
 				3BB5594029B1A26800AB9DAC /* Models */,
 				3B2EC3CD296F389E003A04A1 /* Views */,
 				3BF9B58D296CC3FC0095B557 /* Helpers */,
 				3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */,
-				3B3E48412870F673000D0D0C /* Swiftwarden.swift */,
 				3B3E48452870F674000D0D0C /* Assets.xcassets */,
 				3B3E484A2870F674000D0D0C /* Swiftwarden.entitlements */,
 				3B3E48472870F674000D0D0C /* Preview Content */,
