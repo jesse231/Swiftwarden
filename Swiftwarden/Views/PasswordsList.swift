@@ -45,9 +45,13 @@ struct PasswordsList: View {
                 let hostname = url?.host ?? nil
                 NavigationLink(
                     destination: {
-                        ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).onAppear(perform: {
-                            account.selectedCipher = cipher
-                        }).environmentObject(account)
+                        if let card = cipher.card {
+                            CardView(card: card)
+                        } else {
+                            ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).onAppear(perform: {
+                                account.selectedCipher = cipher
+                            }).environmentObject(account)
+                        }
                     },
                     label: {
                         Group {
