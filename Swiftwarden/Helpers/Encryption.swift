@@ -218,7 +218,7 @@ class Encryption {
     
     static func decryptFolder(data: Folder) throws  -> Folder {
        var dec = data
-       dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
+       dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)!
        return dec
    }
     

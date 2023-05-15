@@ -59,22 +59,43 @@ struct LoginView: View {
         if let storedEmail, let storedServer{
             let storedPassword = KeyChain.getUser(account: storedEmail)
             VStack{
-                SecureField("Password", text: $password)
-                    .padding()
-                    .textFieldStyle(.plain)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .strokeBorder(.gray, lineWidth: 1))
-                    .padding(4)
-                Button {
-                    authenticate() {_ in
-                        Task{
-                            try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
-                            loginSuccess = true
-                        }
+                HStack{
+                    GroupBox{
+                        SecureField("Master Password", text: $password)
+                            .textFieldStyle(.plain)
                     }
-                } label: {
-                    Image(systemName: "touchid")
+                    .padding()
+                    Button {
+                        authenticate() {_ in
+                            Task{
+                                do{
+                                    try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
+                                    loginSuccess = true
+                                } catch let error as AuthError {
+                                    attempt = true
+                                    errorMessage = error.message
+                                    isLoading = false
+                                } catch {
+                                    attempt = true
+                                    errorMessage = error.localizedDescription
+                                    isLoading = false
+                                }
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "touchid")
+                            
+                    }
+                    
+                }
+                if (attempt == true){
+                    Text(errorMessage)
+                        .fixedSize(horizontal: false, vertical: false)
+                        .containerShape(Rectangle())
+                        .padding(20)
+                        .foregroundColor(.primary)
+                        .background(.pink.opacity(0.4))
+                        .cornerRadius(5)
                 }
                 HStack{
                     Button(action: {
@@ -101,12 +122,21 @@ struct LoginView: View {
                         Task {
                             do {
                                 try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
+//                                print("test")
+                            } catch let error as AuthError {
+//                                print(error)
+                                attempt = true
+                                errorMessage = error.message
+                                isLoading = false
                             } catch {
                                 print(error)
+                                attempt = true
+                                errorMessage = error.localizedDescription
+                                isLoading = false
                             }
                         }
                     }) {
-                        Text("Sign in")
+                        Text("Unlock")
                             .padding(22)
                             .frame(width: 111, height: 22)
                             .background(Color.blue)
@@ -154,6 +184,7 @@ struct LoginView: View {
                         attempt = false
                         isLoading = true
                         do {
+                            
                             let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
                             guard(email != "" && password != "") else {
                                 errorMessage = "Please enter a valid email address and password."
@@ -177,7 +208,10 @@ struct LoginView: View {
                             errorMessage = error.message
                             isLoading = false
                         } catch {
-                            print("Unexpected error: \(error)")
+                            attempt = true
+                            print(error)
+                            errorMessage = error.localizedDescription
+                            isLoading = false
                         }
                         isLoading = false
                     }
@@ -208,8 +242,9 @@ struct LoginView: View {
 }
 
 struct LoginView_Previews: PreviewProvider {
-    @State static var show = true
     static var previews: some View {
-        LoginView(loginSuccess: $show)
+        LoginView(loginSuccess: .constant(false))
+            .environmentObject(Account())
     }
+    
 }

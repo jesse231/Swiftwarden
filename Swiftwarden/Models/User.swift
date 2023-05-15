@@ -40,7 +40,7 @@ class User : ObservableObject{
         
         if let folders = sync.folders {
             var decFolders = Encryption.decryptFolders(dataList: folders)
-            decFolders.insert(Folder(name: "No Folder", object: "Folder"), at: 0)
+            decFolders.insert(Folder(object: "Folder", name: "No Folder"), at: 0)
             self.data.folders = decFolders
         }
         }
@@ -55,7 +55,7 @@ class User : ObservableObject{
         self.data = AccountData()
         self.keys = [:]
         
-        self.data.folders = [Folder(name: "No Folder", object: "Folder")]
+        self.data.folders = [Folder(object: "Folder", name: "No Folder")]
     }
     
     private func decryptPasswords(dataList: [Cipher]) -> [Cipher]{
@@ -87,7 +87,9 @@ class User : ObservableObject{
              
              if let uris = dec.login?.uris {
                  for (i,uri) in uris.enumerated() {
-                     dec.login?.uris?[i].uri = String(bytes: try Encryption.decrypt(decKey: key, str: uri.uri!), encoding: .utf8) ?? uri.uri
+                     if let uri = uri.uri {
+                         dec.login?.uris?[i].uri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+                     }
                  }
              }
              if let card = dec.card {
@@ -112,8 +114,12 @@ class User : ObservableObject{
         }
     }
     
+    func getCiphersInFolder(folderID: String?) -> [Cipher] {
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.folderID == folderID})
+    }
+    
     func getCards() -> [Cipher] {
-        return self.data.passwords.filter({$0.card != nil})
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.card != nil})
     }
     
     func getTrash() -> [Cipher] {
@@ -121,7 +127,7 @@ class User : ObservableObject{
     }
     
     func getFavorites() -> [Cipher] {
-        return self.data.passwords.filter({$0.favorite != false})
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.favorite != false})
     }
     
     func getFolders() -> [Folder] {

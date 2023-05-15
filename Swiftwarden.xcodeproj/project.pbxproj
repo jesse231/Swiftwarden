@@ -16,8 +16,6 @@
 		3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CB296F315E003A04A1 /* MainView.swift */; };
 		3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */; };
 		3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */; };
-		3B2EC3D2296F4AD5003A04A1 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Api.swift */; };
-		3B2EC3D3296F4AD5003A04A1 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Api.swift */; };
 		3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48412870F673000D0D0C /* Swiftwarden.swift */; };
 		3B3E48442870F673000D0D0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48432870F673000D0D0C /* ContentView.swift */; };
 		3B3E48462870F674000D0D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B3E48452870F674000D0D0C /* Assets.xcassets */; };
@@ -275,6 +273,7 @@
 			children = (
 				3BB5594129B1A27400AB9DAC /* User.swift */,
 				3B5865152A05A87400A39868 /* SaveData.swift */,
+				3B0486DF2875018C007CCC5A /* Api.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -318,7 +317,6 @@
 			children = (
 				3BDEA75B2A0480240007DFB4 /* JSON */,
 				3B112FB72982F9940018F53B /* SwCrypt.swift */,
-				3B0486DF2875018C007CCC5A /* Api.swift */,
 				3B0A8E03296209830055DA2D /* Encryption.swift */,
 				3BF9B58E296CC40B0095B557 /* Query.swift */,
 				3BBF9C852A0827720058E82E /* Biometric.swift */,
@@ -513,7 +511,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3B2EC3D2296F4AD5003A04A1 /* Api.swift in Sources */,
 				3B3E48542870F674000D0D0C /* SwiftWardenTests.swift in Sources */,
 				3BF9B590296CC40B0095B557 /* Query.swift in Sources */,
 			);
@@ -524,7 +521,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3B3E485E2870F674000D0D0C /* SwiftwardenUITests.swift in Sources */,
-				3B2EC3D3296F4AD5003A04A1 /* Api.swift in Sources */,
 				3B3E48602870F674000D0D0C /* SwiftwardenUITestsLaunchTests.swift in Sources */,
 				3BF9B591296CC40B0095B557 /* Query.swift in Sources */,
 			);

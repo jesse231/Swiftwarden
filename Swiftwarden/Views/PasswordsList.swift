@@ -5,21 +5,24 @@ import CoreImage
 
 struct PasswordsList: View {
     @Binding var searchText : String
-    @EnvironmentObject var user: Account
+    @EnvironmentObject var account: Account
     @State var deleteDialog = false
     @State private var showNew = false
+    var folderID: String?
 
-    var display : PasswordListType
+    var display: PasswordListType
     func passwordsToDisplay() -> [Cipher] {
         switch display {
         case .normal:
-            return user.user.getCiphers()
+            return account.user.getCiphers()
         case .trash:
-            return user.user.getTrash()
+            return account.user.getTrash()
         case .favorite:
-            return user.user.getFavorites()
+            return account.user.getFavorites()
         case .card:
-            return user.user.getCards()
+            return account.user.getCards()
+        case .folder:
+            return account.user.getCiphersInFolder(folderID: folderID)
         }
     }
     
@@ -28,6 +31,7 @@ struct PasswordsList: View {
         case trash
         case favorite
         case card
+        case folder
     }
     
     var body: some View {
@@ -42,13 +46,13 @@ struct PasswordsList: View {
                 NavigationLink(
                     destination: {
                         ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).onAppear(perform: {
-                            user.selectedCipher = cipher
-                        }).environmentObject(user)
+                            account.selectedCipher = cipher
+                        }).environmentObject(account)
                     },
                     label: {
                         Group {
                             if let hostname{
-                                LazyImage(url: user.api.getIcons(host: hostname)) { state in
+                                LazyImage(url: account.api.getIcons(host: hostname)) { state in
                                     if let image = state.image {
                                         image.resizable()
                                     }
@@ -92,7 +96,7 @@ struct PasswordsList: View {
             }
         }
         .sheet(isPresented: $showNew) {
-            PopupNew(show: $showNew).environmentObject(user)
+            PopupNew(show: $showNew).environmentObject(account)
         }
     }
 }

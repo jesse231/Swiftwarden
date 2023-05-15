@@ -141,10 +141,13 @@ class Api {
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
         var (data, response) = try await URLSession.shared.data(for: request)
+        
         if let httpResponse = response as? HTTPURLResponse {
-//                print("Status code: \(httpResponse.statusCode)")
-//                print("Headers: \(httpResponse.allHeaderFields)")
+            if (httpResponse.statusCode != 200) {
+                print(httpResponse.statusCode)
+                print(String(data: data, encoding: .utf8)!)
             }
+        }
 //        print(String(data: data, encoding: .utf8))
         if let httpResponse = response as? HTTPURLResponse {
             if (httpResponse.statusCode != 200) {
@@ -214,9 +217,9 @@ class Api {
         let url = URL(string: self.apiPath + "sync?excludeDomains=false")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        print(self.bearer)
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         print(response)
         print(String(data: data, encoding: .utf8)!)

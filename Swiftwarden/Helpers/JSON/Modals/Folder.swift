@@ -7,7 +7,8 @@ import Foundation
 
 // MARK: - Folder
 struct Folder: Codable & Hashable & Identifiable {
-    var id, name, object, revisionDate: String?
+    var id, object, revisionDate: String?
+    var name: String
 
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -35,19 +36,19 @@ extension Folder {
         try self.init(data: try Data(contentsOf: url))
     }
 
-    func with(
-        id: String?? = nil,
-        name: String?? = nil,
-        object: String?? = nil,
-        revisionDate: String?? = nil
-    ) -> Folder {
-        return Folder(
-            id: id ?? self.id,
-            name: name ?? self.name,
-            object: object ?? self.object,
-            revisionDate: revisionDate ?? self.revisionDate
-        )
-    }
+//    func with(
+//        id: String?? = nil,
+//        name: String?? = nil,
+//        object: String?? = nil,
+//        revisionDate: String?? = nil
+//    ) -> Folder {
+//        return Folder(
+//            id: id ?? self.id,
+//            object: object ?? self.object,
+//            revisionDate: revisionDate ?? self.revisionDate,
+//            name: name ? self.name
+//        )
+//    }
 
     func jsonData() throws -> Data {
         return try newJSONEncoder().encode(self)

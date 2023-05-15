@@ -13,7 +13,7 @@ struct ItemEditingView: View {
     @State var hostname: String = ""
     
     @State var favorite: Bool = false
-    @State var folder: Folder = Folder()
+    @State var folder: Folder = Folder(id: "", name: "")
     @State var reprompt: Bool = false
     
     var body: some View {
@@ -21,18 +21,16 @@ struct ItemEditingView: View {
             HStack{
                 Spacer()
                 Button {
-                    
                     Task {
                         let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
 
-//                        }
-//                        var cipher = account.selectedCipher
                         var modCipher = cipher
                         modCipher.name = name
                         modCipher.login?.username = username
                         modCipher.login?.password = password
                         modCipher.login?.uris = [Uris(uri: hostname)]
                         modCipher.favorite = favorite
+                        modCipher.reprompt = reprompt ? 1 : 0
                         try await account.user.updateCipher(cipher: modCipher, api: account.api, index: index)
                         account.selectedCipher = modCipher
                         cipher = modCipher
@@ -88,13 +86,20 @@ struct ItemEditingView: View {
                 EditingField(title: "Password", content: $password, secure: true).padding(.bottom, 8)
                 EditingField(title: "Website", content: $hostname).padding(.bottom, 8)
                 
-                Picker(selection: $folder, label: Text("Folder")) {
-                    ForEach(account.user.getFolders(), id:\.self) {folder in
-                        Text(folder.name!)
+//                if folder  {
+                    Picker(selection: $folder, label: Text("Folder")) {
+                        ForEach(account.user.getFolders(), id:\.self) {folder in
+                            Text(folder.name)
+                        }
                     }
+//                }
+                HStack{
+                    Text("Master Password re-prompt")
+                        .frame(alignment: .trailing)
+                        .foregroundColor(.gray)
+                    Spacer()
+                    Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                 }
-                
-                Toggle("Reprompt", isOn: $reprompt)
             }
         }
             .onAppear(
@@ -104,9 +109,13 @@ struct ItemEditingView: View {
                     password = account.selectedCipher.login?.password ?? ""
                     hostname = account.selectedCipher.login?.uris?.first?.uri ?? ""
                     favorite = account.selectedCipher.favorite ?? false
-                    folder = Folder()
-                    //                reprompt = account.selectedCipher.reprompt ?? 0
-                    
+                    if let folderID = account.selectedCipher.folderID {
+                        self.folder = account.user.getFolders().filter({$0.id == folderID}).first!
+                    } else {
+                        folder = account.user.getFolders().first!
+                    }
+                    reprompt = account.selectedCipher.reprompt == 1 ? true : false
+                                    
                 })
     }
 }

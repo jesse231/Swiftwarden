@@ -21,7 +21,7 @@ struct Cipher: Codable & Hashable & Identifiable {
     var identity: Identity?
     var login: Login?
     var name: String?
-    var notes: JSONNull?
+    var notes: String?
     var object: String?
     var organizationID: String?
     var organizationUseTotp: Bool?
@@ -42,7 +42,7 @@ struct Cipher: Codable & Hashable & Identifiable {
         case edit = "edit"
         case favorite = "favorite"
         case fields = "fields"
-        case folderID = "folderId"
+        case folderID = "folderid"
         case id = "id"
         case identity = "identity"
         case login = "login"
@@ -94,7 +94,7 @@ extension Cipher {
         identity: Identity?? = nil,
         login: Login?? = nil,
         name: String?? = nil,
-        notes: JSONNull?? = nil,
+        notes: String?? = nil,
         object: String?? = nil,
         organizationID: String?? = nil,
         organizationUseTotp: Bool?? = nil,

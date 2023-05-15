@@ -9,7 +9,7 @@ import Foundation
 struct DataClass: Codable & Hashable {
     var fields: [CustomField]?
     var name: String?
-    var notes: JSONNull?
+    var notes: String?
     var password: String?
     var passwordHistory: [PasswordHistory]?
     var uri: String?
@@ -87,7 +87,7 @@ extension DataClass {
     func with(
         fields: [CustomField]?? = nil,
         name: String?? = nil,
-        notes: JSONNull?? = nil,
+        notes: String?? = nil,
         password: String?? = nil,
         passwordHistory: [PasswordHistory]?? = nil,
         uri: String?? = nil,

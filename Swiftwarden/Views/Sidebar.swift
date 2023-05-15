@@ -25,7 +25,6 @@ struct SideBar: View {
             ForEach(0..<menuItems.count) { i in
                 NavigationLink(
                     destination: menuItems[i].destination,
-                    // Fix for allowing default to be selected
                     tag: i,
                     selection: $selection,
                     label: {
@@ -55,11 +54,18 @@ struct SideBar: View {
             Section(header: Text("Folders")) {
                                 let folders = account.user.getFolders()
                                     ForEach(folders) {folder in
-                                        let _ = print(folder)
-                                        HStack {
-                                            Image(systemName: "folder")
-                                            Text(folder.name!)
-                                        }
+                                        NavigationLink(
+                                            destination: PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder),
+//                                            tag: 7,
+//                                            selection: $selection,
+                                            label: {
+                                                Label {
+                                                    Text(folder.name)
+                                                } icon: {
+                                                    Image(systemName: "folder")
+                                                }
+                                            }
+                                        ).padding(4)
                                     }
             }.listStyle(SidebarListStyle())
         }

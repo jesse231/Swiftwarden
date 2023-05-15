@@ -11,7 +11,7 @@ struct PopupNew: View {
     @State private var favourite = false
     @State private var reprompt = false
     
-    @State private var selectedFolder : Folder = Folder()
+    @State private var selectedFolder : Folder = Folder(name: "")
     
     var body: some View {
         VStack(spacing: 0){
@@ -48,9 +48,9 @@ struct PopupNew: View {
                 HStack{
                     Picker(selection: $selectedFolder, content: {
                         ForEach(account.user.getFolders(), id:\.self) {folder in
-                            Text(folder.name!)
+                            Text(folder.name)
                         }
-                        
+
                     }) {
                         Text("Folder")
 //                            .font(.system(size: 10))
@@ -58,7 +58,7 @@ struct PopupNew: View {
                             .padding(.trailing, 300)
                     }
                 }
-                
+//
                 HStack{
                     Text("Favourite")
                         .frame(alignment: .trailing)
@@ -67,7 +67,7 @@ struct PopupNew: View {
                     Spacer()
                     Toggle("Favourite", isOn: $favourite).labelsHidden()
                 }
-                
+
                 HStack{
                     Text("Master Password re-prompt")
                         .frame(alignment: .trailing)
@@ -79,9 +79,9 @@ struct PopupNew: View {
                 HStack{
                     Picker(selection: $selectedFolder, content: {
                         ForEach(account.user.getFolders(), id:\.self) {folder in
-                            Text(folder.name!)
+                            Text(folder.name)
                         }
-                        
+
                     }) {
                         Text("Owner")
                             .foregroundColor(.gray)
@@ -108,8 +108,8 @@ struct PopupNew: View {
                                     uris: url != "" ? [Uris(url: url)] : nil,
                                     username: username != "" ? username : nil),
                                 name: name,
-                                notes: nil,
                                 organizationID: nil,
+                                reprompt: reprompt ? 1 : 0,
                                 type: 1
                             )
                         do{
