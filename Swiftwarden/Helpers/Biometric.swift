@@ -3,8 +3,10 @@ import LocalAuthentication
 
 func authenticate(completion: @escaping (Bool) -> Void) {
     let context = LAContext()
+    context.localizedFallbackTitle = ""
+
     var error: NSError?
-    let reason = "Authenticate to save your data"
+    let reason = "authenticate to view you're passwords"
     
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
@@ -15,7 +17,6 @@ func authenticate(completion: @escaping (Bool) -> Void) {
                     completion(true)
                 }
             } else {
-                
                 print("Failure")
 //                completion(false)
             }

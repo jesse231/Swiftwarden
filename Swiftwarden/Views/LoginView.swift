@@ -15,12 +15,20 @@ struct LoginView: View {
     @State var isLoading = false
     @EnvironmentObject var account : Account
     
+    
     func login (storedEmail : String? = nil, storedPassword : String? = nil, storedServer: String? = nil) async throws -> Bool{
+        
         let username = storedEmail ?? email
         let pass = storedPassword ?? password
-        let serv = storedServer ?? server
+        var serv = storedServer ?? server
         
-        let api = try await Api(username: username, password: pass, base: serv,    identityPath: nil, apiPath: nil, iconPath: nil)
+        
+        var base = URL(string: serv)
+        if let base, base.host == nil {
+            serv = "https://" + serv
+        }
+        
+        let api = try await Api(username: username, password: pass, base: URL(string: serv),    identityPath: nil, apiPath: nil, iconPath: nil)
         
         account.api = api
         
@@ -84,7 +92,7 @@ struct LoginView: View {
                         }
                     } label: {
                         Image(systemName: "touchid")
-                            
+                        
                     }
                     
                 }
@@ -122,9 +130,9 @@ struct LoginView: View {
                         Task {
                             do {
                                 try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
-//                                print("test")
+                                //                                print("test")
                             } catch let error as AuthError {
-//                                print(error)
+                                //                                print(error)
                                 attempt = true
                                 errorMessage = error.message
                                 isLoading = false
@@ -165,11 +173,13 @@ struct LoginView: View {
                         .textFieldStyle(.plain)
                         .padding(4)
                 }.padding(4)
-                GroupBox{
-                    TextField("Server url", text: $server)
-                        .textFieldStyle(.plain)
-                        .padding(4)
-                }.padding(4)
+                Section(header: Text("Server URL")) {
+                    GroupBox{
+                        TextField("https://bitwarden.com/", text: $server)
+                            .textFieldStyle(.plain)
+                            .padding(4)
+                    }.padding(4)
+                }
                 if (attempt == true){
                     Text(errorMessage)
                         .fixedSize(horizontal: false, vertical: false)
@@ -199,7 +209,6 @@ struct LoginView: View {
                                 attempt = true
                                 return
                             }
-                            
                             
                             try await loginSuccess = login()
                         } catch let error as AuthError {
@@ -236,7 +245,6 @@ struct LoginView: View {
                 .cornerRadius(5)
             }.padding()
                 .frame(maxWidth: 300)
-            Spacer()
         }
     }
 }

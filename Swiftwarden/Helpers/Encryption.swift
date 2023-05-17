@@ -11,8 +11,8 @@ class Encryption {
         Encryption.iterations = iterations
         Encryption.symcKey = Encryption.makeKey(password: password, salt: email.lowercased(), iterations: Encryption.iterations)
         Encryption.key = try Encryption.decrypt(encKey: Encryption.symcKey, str: encKey)
-//        print(Encryption.key.toBase64())
     }
+    
     static func hashedPassword(password : String, salt: String, iterations: Int) throws -> String {
         let key = makeKey(password: password, salt: salt, iterations: iterations)
         return try PKCS5.PBKDF2(password: key, salt: Array(password.utf8), iterations: 1, keyLength: 32, variant: .sha2(.sha256)).calculate().toBase64()
@@ -179,6 +179,10 @@ class Encryption {
             dec.login?.username = try encrypt(str: user)
         }
         
+        if let uri = dec.login?.uri {
+            dec.login?.uri = try encrypt(str: uri)
+        }
+        
         if let uris = dec.login?.uris {
             for (i,uri) in uris.enumerated() {
                 dec.login?.uris?[i].uri = try encrypt(str: uri.uri!)
@@ -190,7 +194,7 @@ class Encryption {
     static func decryptCipher(data: Cipher) throws  -> Cipher {
         var dec = data
          dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
-         if data.object! == "cipherDetails"{
+        if let object = data.object, object == "cipherDetails"{
              if let pass = dec.login?.password {
                  dec.login?.password = String(bytes: try decrypt(str: pass), encoding: .utf8)
              }

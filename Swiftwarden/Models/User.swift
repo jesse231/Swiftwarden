@@ -85,6 +85,10 @@ class User : ObservableObject{
                  dec.login?.username = String(bytes: try Encryption.decrypt(decKey: key, str: user), encoding: .utf8)
              }
              
+             if let uri = dec.login?.uri {
+                 dec.login?.uri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+             }
+             
              if let uris = dec.login?.uris {
                  for (i,uri) in uris.enumerated() {
                      if let uri = uri.uri {
@@ -143,11 +147,12 @@ class User : ObservableObject{
         }
     }
     
-    func addCipher(cipher: Cipher, api: Api) async throws {
+    func addCipher(cipher: Cipher, api: Api) async throws -> Cipher {
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
         self.data.passwords.append(modCipher)
+        return modCipher
     }
     
     func updateCipher(cipher: Cipher, api: Api, index: Array<Cipher>.Index? = nil) async throws {

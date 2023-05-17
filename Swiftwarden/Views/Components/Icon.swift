@@ -6,16 +6,41 @@
 //
 
 import SwiftUI
+import NukeUI
 
 struct Icon: View {
     let hostname: String
+    let account : Account
     var body: some View {
-        
+        if hostname != ""{
+            LazyImage(url: account.api.getIcons(host: hostname))
+            { state in
+                if let image = state.image {
+                    image.resizable()
+                }
+            }
+            .background(.white)
+            .clipShape(Rectangle())
+            .cornerRadius(5)
+            .frame(width: 35, height: 35)
+        } else {
+            Rectangle()
+                .foregroundColor(.white)
+                .cornerRadius(5)
+                .frame(width: 35, height: 35)
+                .overlay(
+                    Image(systemName: "lock.fill")
+                        .foregroundColor(.black)
+                        .font(.system(size: 25))
+                )
+        }
     }
 }
 
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
-        Icon()
+        let account = Account()
+        Icon(hostname:"", account: account)
+        Icon(hostname:"google.com", account: account)
     }
 }

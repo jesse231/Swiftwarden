@@ -48,27 +48,13 @@ struct PasswordsList: View {
                         if let card = cipher.card {
                             CardView(card: card)
                         } else {
-                            ItemView(cipher: cipher,  hostname: hostname, favourite: cipher.favorite ?? false).onAppear(perform: {
+                            ItemView(cipher: cipher, favourite: cipher.favorite ?? false).onAppear(perform: {
                                 account.selectedCipher = cipher
                             }).environmentObject(account)
                         }
                     },
                     label: {
-                        Group {
-                            if let hostname{
-                                LazyImage(url: account.api.getIcons(host: hostname)) { state in
-                                    if let image = state.image {
-                                        image.resizable()
-                                    }
-                                }
-                                .clipShape(Circle())
-                                .frame(width: 35, height: 35)
-                            } else {
-                                Image(systemName: "lock.circle")
-                                    .resizable()
-                                    .frame(width: 35, height: 35)
-                            }
-                        }
+                        Icon(hostname: hostname ?? "", account: account)
                         Spacer().frame(width: 20)
                         VStack{
                             if let name = cipher.name {

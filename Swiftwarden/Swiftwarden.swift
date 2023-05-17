@@ -9,6 +9,7 @@ struct SwiftwardenApp: App {
         }
         .commands {
             SidebarCommands()
+            ToolbarCommands()
         }
         .windowToolbarStyle(.unified(showsTitle: true))
         .windowStyle(.titleBar)

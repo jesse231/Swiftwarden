@@ -36,37 +36,35 @@ struct Token: Decodable {
 
 
 class Api {
-    private var base : String?
     private var bearer: String = ""
     private var email = ""
     
+    private var base = URL(string: "https://bitwarden.com/")!
+    private var apiPath = URL(string: "https://api.bitwarden.com/")!
+    private var identityPath =  URL(string: "https://identity.bitwarden.com/")!
+    private var iconPath = URL(string: "https://icons.bitwarden.net/")!
     
-    private var apiPath = "https://api.bitwarden.com/"
-    private var identityPath = "https://identity.bitwarden.com/"
-    private var iconPath = "https://icons.bitwarden.net/"
-    
-    init (username: String, password: String, base: String, identityPath: String?, apiPath: String? , iconPath: String?) async throws{
-        
-        if base != "" {
-            self.base = base + "/"
-        }
-        
+    init (username: String, password: String, base: URL?, identityPath: URL?, apiPath: URL? , iconPath: URL?) async throws{
+//
+//        if base != ""{
+//            self.base = base + "/"
+//        }
         if let identityPath {
             self.identityPath = identityPath
-        } else if base != "https://bitwarden.com/" {
-            self.identityPath = base + "identity/"
+        } else if let base{
+            self.identityPath = base.appendingPathComponent("identity/")
         }
         
         if let apiPath {
             self.apiPath = apiPath
-        } else if base != "https://bitwarden.com/" {
-            self.apiPath = base + "api/"
+        } else if let base {
+            self.apiPath = base.appendingPathComponent("api/")
         }
         
         if let iconPath {
             self.iconPath = iconPath
-        } else if base != "https://bitwarden.com/" {
-            self.iconPath = base + "icons/"
+        } else if let base {
+            self.iconPath = base.appendingPathComponent("icons/")
         }
         
         let token: Token = try await self.login(email: username, password: password)
@@ -115,9 +113,9 @@ class Api {
 //    }
 //
     func updatePassword(cipher: Cipher) async throws{
-        let url = URL(string: self.apiPath + "ciphers/" + (cipher.id ?? ""))!
+        let url = self.apiPath.appendingPathComponent("ciphers/" + cipher.id!)
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PUT"
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
@@ -127,19 +125,20 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request)
         print(response)
         print(String(data: data, encoding: .utf8)!)
-
-        return
     }
     
     private func login (email: String, password: String) async throws -> Token {
-        var url = URL(string: self.identityPath + "accounts/prelogin")!
+        var url = self.identityPath.appendingPathComponent("accounts/prelogin/")
         var request = URLRequest(url: url)
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
+        
         var parameters: [String: Any] = [
             "email": email,
         ]
+        
         request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+        
         var (data, response) = try await URLSession.shared.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse {
@@ -168,7 +167,7 @@ class Api {
         
         
         
-        url = URL(string: self.identityPath + "connect/token")!
+        url = self.identityPath.appendingPathComponent("connect/token")
         request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -189,6 +188,7 @@ class Api {
             URLQueryItem(name: "username", value: email),
             URLQueryItem(name: "password", value: masterPasswordHash),
         ].percentEncoded()
+        components.scheme = "https"
 //        print(components.query)
 //        print(components.url!.query?.removePercentEncoding())
 //        print(email.removePercentEncoding())
@@ -197,12 +197,13 @@ class Api {
 //        print(query)
         request.httpBody = Data(query!.utf8)
         (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode != 200 {
 //                let decoder = try JSONDecoder()
 //                try decoder.keyDecodingStrategy = .convertFromSnakeCase
 //                let error = try decoder.decode(ErrorResponse.self, from: data)
+                print(response)
+                print(String(data: data, encoding: .utf8)!)
                 throw AuthError(message: "Invalid email or password")
             }
         }
@@ -214,7 +215,7 @@ class Api {
     
     func sync() async throws -> Response {
 
-        let url = URL(string: self.apiPath + "sync?excludeDomains=false")!
+        let url = self.apiPath.appendingPathComponent("sync").appending(queryItems: [URLQueryItem(name: "excludeDomains", value: "false")])
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
@@ -249,7 +250,7 @@ class Api {
     
     func deletePassword(id: String) async throws{
         let bearer = self.bearer
-        let url = URL(string: self.apiPath + "ciphers/" + id + "/delete")!
+        let url = self.apiPath.appendingPathComponent("ciphers/" + id + "/delete/")
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -266,7 +267,7 @@ class Api {
     
     func createPassword(cipher: Cipher) async throws -> Cipher{
         let bearer = self.bearer
-        let url = URL(string: self.apiPath + "ciphers/")!
+        let url = self.apiPath.appendingPathComponent("ciphers/")
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -281,21 +282,19 @@ class Api {
         let (data, response) = try await URLSession.shared.data(for: request)
         print(response)
         print(String(data: data, encoding: .utf8)!)
+        
         if let httpResponse = response as? HTTPURLResponse {
             if (httpResponse.statusCode != 200) {
                 print(httpResponse.statusCode)
                 print(String(data: data, encoding: .utf8)!)
             }
         }
-
         
         return try Encryption.decryptCipher(data: Cipher(data:data))
     }
     
-    func getIcons(host: String) -> URL{
-        let url = URL(string: self.iconPath + "\(host)/icon.png")!
-        
-        return url
+    func getIcons(host: String) -> URL?{
+        return self.iconPath.appendingPathComponent("\(host)/icon.png")
         //    let (data, response) = try await URLSession.shared.data(from: url)
         //    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
     }

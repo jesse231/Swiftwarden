@@ -70,7 +70,7 @@ struct SideBar: View {
                 ForEach(folders) { folder in
                     MenuItem(
                         label: folder.name,
-                        icon: "folder",
+                        icon: "folder.fill",
                         color: .gray,
                         destination: AnyView(PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder))
                     )

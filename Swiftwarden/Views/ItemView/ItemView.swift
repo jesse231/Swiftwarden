@@ -5,11 +5,12 @@ import SwiftUI
 
 struct ItemView : View {
     @State var cipher: Cipher? = Cipher()
-    @State var hostname: String?
+//    @State var hostname: String?
     @EnvironmentObject var account : Account
     
     @State var favourite: Bool
     @State var showPassword = false
+    @State var hostname: String = ""
     
     @State var editing: Bool = false
     
@@ -18,7 +19,7 @@ struct ItemView : View {
     
     @State var username: String = ""
     @State var password: String = ""
-    @State var hostnameEdit: String = ""
+    @State var url: String = ""
     
     @State var favorite: Bool = false
     @State var folder: Folder = Folder(id: "", name: "")
@@ -31,6 +32,15 @@ struct ItemView : View {
                     RegularView
                         .padding(20)
                         .frame(maxWidth: 400)
+                        .onAppear() {
+                            if let uri = cipher.login?.uri {
+                                if let noScheme = uri.split(separator:"//").dropFirst().first, let host = noScheme.split(separator:"/").first {
+                                    hostname = String(host)
+                                } else {
+                                    hostname = uri
+                                }
+                            }
+                        }
 //                    Text("Test")
                 } else {
                     EditingView
@@ -38,13 +48,18 @@ struct ItemView : View {
                         .frame(maxWidth: 400)
                 }
             }
+            
         }
         .toolbar {
             ToolbarItem{
                 Spacer()
             }
         }
-    }
+        .onAppear {
+            name = account.selectedCipher.name ?? ""
+            username = cipher?.login?.username ?? ""
+            password = cipher?.login?.password ?? ""
+        }
 }
 
 
@@ -54,7 +69,7 @@ struct ItemView_Previews: PreviewProvider {
         let account = Account()
         
         Group {
-            ItemView(cipher: cipher, hostname: "test.com", favourite: true)
+            ItemView(cipher: cipher, favourite: true)
                 .environmentObject(account)
 //            ItemView(cipher: cipher, hostname: "test.com", favourite: true, editing: true)
 //                .environmentObject(account)

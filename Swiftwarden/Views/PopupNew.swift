@@ -53,7 +53,6 @@ struct PopupNew: View {
 
                     }) {
                         Text("Folder")
-//                            .font(.system(size: 10))
                             .foregroundColor(.gray)
                             .padding(.trailing, 300)
                     }
@@ -62,7 +61,6 @@ struct PopupNew: View {
                 HStack{
                     Text("Favourite")
                         .frame(alignment: .trailing)
-//                        .font(.system(size: 10))
                         .foregroundColor(.gray)
                     Spacer()
                     Toggle("Favourite", isOn: $favourite).labelsHidden()
@@ -108,21 +106,17 @@ struct PopupNew: View {
                                     uris: url != "" ? [Uris(url: url)] : nil,
                                     username: username != "" ? username : nil),
                                 name: name,
-                                organizationID: nil,
                                 reprompt: reprompt ? 1 : 0,
                                 type: 1
                             )
-                        do{
-                            //account.selectedCipher =
-                            try await account.user.addCipher(cipher: newCipher, api: account.api)
+                        do {
+                            self.account.selectedCipher = try await account.user.addCipher(cipher: newCipher, api: account.api)
                         }
-                        //account.api.createPassword(cipher: newCipher) }
-                        catch { print(error)
+                        catch {
+                            print(error)
                         }
                         
                     }
-                    //Launch itemview
-                    
                     show = false
         
                 } label: {

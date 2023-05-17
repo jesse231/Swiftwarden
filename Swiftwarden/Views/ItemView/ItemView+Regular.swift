@@ -11,10 +11,11 @@ extension ItemView {
                         Task {
                             if let cipher{
                                 try await account.user.deleteCipher(cipher:cipher, api: account.api)
+                                account.selectedCipher = Cipher()
+                                self.cipher = nil
                             }
-                            account.selectedCipher = Cipher()
+                            
                         }
-                        self.cipher = nil
                     } label: {
                         Text("Delete")
                     }
@@ -27,24 +28,8 @@ extension ItemView {
                     }
                 }
                 VStack{
-                    let name = cipher?.name ?? ""
-                    let username = cipher?.login?.username ?? " "
-                    let password = cipher?.login?.password ?? " "
                     HStack{
-                        if let hostname{
-                            LazyImage(url: account.api.getIcons(host: hostname))
-                            { state in
-                                if let image = state.image {
-                                    image.resizable()
-                                }
-                            }
-                            .clipShape(Circle())
-                            .frame(width: 35, height: 35)
-                        } else {
-                            Image(systemName: "lock.circle")
-                                .resizable()
-                                .frame(width: 35, height: 35)
-                        }
+                        Icon(hostname: hostname, account: account)
                         VStack{
                             Text(name)
                                 .font(.system(size: 15))
@@ -97,12 +82,14 @@ extension ItemView {
                             Hide(toggle: $showPassword)
                             Copy(content: password)
                         })
-                    if let hostname{
+                    if hostname != ""{
                         Field(
                             title: "Website",
                             content: hostname,
                             buttons: {
-                                Open(link: hostname)
+                                if let uri = cipher?.login?.uri {
+                                Open(link: uri)
+                                 }
                                 Copy(content: hostname)
                             })
                     }
