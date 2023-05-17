@@ -12,3 +12,4 @@
 - [X] Fingerprint authentication
 - [ ] Save user data/allow multiple logins
 - [ ] Properly implement other Bitwarden features (identity, card, securenote) and encryption methods
+- [ ] Create settings page
