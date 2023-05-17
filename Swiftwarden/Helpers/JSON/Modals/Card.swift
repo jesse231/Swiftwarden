@@ -13,10 +13,10 @@ struct Card: Codable & Hashable {
 
     enum CodingKeys: String, CodingKey {
         case brand = "brand"
-        case cardholderName = "cardholdername"
+        case cardholderName = "cardholderName"
         case code = "code"
-        case expMonth = "expmonth"
-        case expYear = "expyear"
+        case expMonth = "expMonth"
+        case expYear = "expYear"
         case number = "number"
     }
 }

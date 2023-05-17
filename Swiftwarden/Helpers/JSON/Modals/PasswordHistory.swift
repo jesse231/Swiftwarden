@@ -10,7 +10,7 @@ struct PasswordHistory: Codable & Hashable {
     var lastUsedDate, password: String?
 
     enum CodingKeys: String, CodingKey {
-        case lastUsedDate = "lastuseddate"
+        case lastUsedDate = "lastUsedDate"
         case password = "password"
     }
 }

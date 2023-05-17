@@ -14,7 +14,7 @@ struct Folder: Codable & Hashable & Identifiable {
         case id = "id"
         case name = "name"
         case object = "object"
-        case revisionDate = "revisiondate"
+        case revisionDate = "revisionDate"
     }
 }
 

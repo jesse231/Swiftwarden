@@ -13,9 +13,9 @@ struct PreLogin: Codable & Hashable {
 
     enum CodingKeys: String, CodingKey {
         case kdf = "kdf"
-        case kdfIterations = "kdfiterations"
-        case kdfMemory = "kdfmemory"
-        case kdfParallelism = "kdfparallelism"
+        case kdfIterations = "kdfIterations"
+        case kdfMemory = "kdfMemory"
+        case kdfParallelism = "kdfParallelism"
     }
 
 }

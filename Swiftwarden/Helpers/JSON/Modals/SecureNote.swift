@@ -15,12 +15,12 @@ struct SecureNote: Codable & Hashable {
     var username: String?
 
     enum CodingKeys: String, CodingKey {
-        case autofillOnPageLoad = "AutofillOnPageLoad"
-        case password = "Password"
-        case passwordRevisionDate = "PasswordRevisionDate"
-        case totp = "Totp"
-        case uris = "Uris"
-        case username = "Username"
+        case autofillOnPageLoad = "autofillOnPageLoad"
+        case password = "password"
+        case passwordRevisionDate = "passwordRevisionDate"
+        case totp = "totp"
+        case uris = "uris"
+        case username = "username"
     }
 }
 

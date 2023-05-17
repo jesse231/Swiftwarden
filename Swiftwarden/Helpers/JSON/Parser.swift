@@ -19,7 +19,7 @@ struct AnyKey: CodingKey {
 struct DecodingStrategy {
     static var lowercase: ([CodingKey]) -> AnyKey {
         return { keys -> AnyKey in
-            let lastKey = keys.last!.stringValue.lowercased()
+            let lastKey = keys.last!.stringValue.prefix(1).lowercased() + keys.last!.stringValue.dropFirst()
             return AnyKey(stringValue: lastKey)!
         }
     }

@@ -18,9 +18,9 @@ struct Login: Codable & Hashable {
         case uri = "uri"
         case uris = "uris"
         case username = "username"
-        case passwordRevisionDate = "passwordrevisiondate"
+        case passwordRevisionDate = "passwordRevisionDate"
         case totp = "totp"
-        case autofillOnPageLoad = "autofillonpageload"
+        case autofillOnPageLoad = "autofillOnPageLoad"
     }
 }
 

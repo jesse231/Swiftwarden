@@ -35,7 +35,6 @@ extension Response {
         let decoder = newJSONDecoder()
         decoder.keyDecodingStrategy = .custom(DecodingStrategy.lowercase)
         self = try decoder.decode(Response.self, from: data)
-//        self = try newJSONDecoder().decode(Response.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {

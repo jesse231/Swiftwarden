@@ -12,9 +12,9 @@ struct GlobalEquivalentDomain: Codable & Hashable {
     var type: Int?
 
     enum CodingKeys: String, CodingKey {
-        case domains = "Domains"
-        case excluded = "Excluded"
-        case type = "Type"
+        case domains = "domains"
+        case excluded = "excluded"
+        case type = "type"
     }
 }
 

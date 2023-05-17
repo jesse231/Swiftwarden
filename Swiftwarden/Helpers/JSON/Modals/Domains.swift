@@ -13,8 +13,8 @@ struct Domains: Codable & Hashable {
 
     enum CodingKeys: String, CodingKey {
 //        case equivalentDomains = "EquivalentDomains"
-        case globalEquivalentDomains = "GlobalEquivalentDomains"
-        case object = "Object"
+        case globalEquivalentDomains = "globalEquivalentDomains"
+        case object = "object"
     }
 }
 

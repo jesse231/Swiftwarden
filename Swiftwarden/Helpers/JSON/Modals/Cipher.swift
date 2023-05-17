@@ -35,28 +35,28 @@ struct Cipher: Codable & Hashable & Identifiable {
     enum CodingKeys: String, CodingKey {
         case attachments = "attachments"
         case card = "card"
-        case collectionIDS = "collectionids"
-        case creationDate = "creationdate"
+        case collectionIDS = "collectionIds"
+        case creationDate = "creationDate"
         case data = "data"
-        case deletedDate = "deleteddate"
+        case deletedDate = "deletedDate"
         case edit = "edit"
         case favorite = "favorite"
         case fields = "fields"
-        case folderID = "folderid"
+        case folderID = "folderId"
         case id = "id"
         case identity = "identity"
         case login = "login"
         case name = "name"
         case notes = "notes"
         case object = "object"
-        case organizationID = "organizationid"
-        case organizationUseTotp = "organizationusetotp"
-        case passwordHistory = "passwordhistory"
+        case organizationID = "organizationId"
+        case organizationUseTotp = "organizationUseTotp"
+        case passwordHistory = "passwordHistory"
         case reprompt = "reprompt"
-        case revisionDate = "revisiondate"
-        case secureNote = "securenote"
+        case revisionDate = "revisionDate"
+        case secureNote = "secureNote"
         case type = "type"
-        case viewPassword = "viewpassword"
+        case viewPassword = "viewPassword"
     }
 }
 
@@ -65,7 +65,9 @@ struct Cipher: Codable & Hashable & Identifiable {
 extension Cipher {
     
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Cipher.self, from: data)
+        let decoder = newJSONDecoder()
+        decoder.keyDecodingStrategy = .custom(DecodingStrategy.lowercase)
+        self = try decoder.decode(Cipher.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {
