@@ -45,10 +45,7 @@ class Api {
     private var iconPath = URL(string: "https://icons.bitwarden.net/")!
     
     init (username: String, password: String, base: URL?, identityPath: URL?, apiPath: URL? , iconPath: URL?) async throws{
-//
-//        if base != ""{
-//            self.base = base + "/"
-//        }
+
         if let identityPath {
             self.identityPath = identityPath
         } else if let base{
@@ -70,9 +67,6 @@ class Api {
         let token: Token = try await self.login(email: username, password: password)
         self.email = username
         self.bearer = token.access_token
-//        print("DONE!")
-//        print(token.KdfIterations)
-        
         
         
         
@@ -141,12 +135,6 @@ class Api {
         
         var (data, response) = try await URLSession.shared.data(for: request)
         
-        if let httpResponse = response as? HTTPURLResponse {
-            if (httpResponse.statusCode != 200) {
-                print(httpResponse.statusCode)
-                print(String(data: data, encoding: .utf8)!)
-            }
-        }
 //        print(String(data: data, encoding: .utf8))
         if let httpResponse = response as? HTTPURLResponse {
             if (httpResponse.statusCode != 200) {
@@ -260,8 +248,22 @@ class Api {
         
         let (data, response) = try await URLSession.shared.data(for: request)
         print(String(data: data, encoding: .utf8)!)
+    }
+    
+    func deletePasswordPermanently(id: String) async throws {
+        let bearer = self.bearer
+        let url = self.apiPath.appendingPathComponent("ciphers/" + id)
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        print(String(data: data, encoding: .utf8)!)
         print(response)
-        print("api/ciphers/" + id + "/delete")
+        return
     }
     
     

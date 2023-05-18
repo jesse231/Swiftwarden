@@ -91,8 +91,9 @@ class User : ObservableObject{
              
              if let uris = dec.login?.uris {
                  for (i,uri) in uris.enumerated() {
-                     if let uri = uri.uri {
-                         dec.login?.uris?[i].uri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+                     let uri = uri.uri
+                     if let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
+                         dec.login?.uris?[i].uri = decrypt
                      }
                  }
              }
@@ -140,8 +141,22 @@ class User : ObservableObject{
     
     func deleteCipher(cipher: Cipher, api: Api) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
+            let modCipher = cipher
             if let id = cipher.id{
                 try await api.deletePassword(id: id)
+                let dateFormatter = ISO8601DateFormatter()
+                let dateString = dateFormatter.string(from: Date())
+                let deletedDate = dateString
+
+                self.data.passwords[index].deletedDate = dateString
+            }
+        }
+    }
+    
+    func deleteCipherPermanently(cipher: Cipher, api: Api) async throws {
+        if let index = self.data.passwords.firstIndex(of: cipher) {
+            if let id = cipher.id{
+                try await api.deletePasswordPermanently(id: id)
                 self.data.passwords.remove(at: index)
             }
         }
@@ -151,6 +166,7 @@ class User : ObservableObject{
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
+        self.objectWillChange.send()
         self.data.passwords.append(modCipher)
         return modCipher
     }

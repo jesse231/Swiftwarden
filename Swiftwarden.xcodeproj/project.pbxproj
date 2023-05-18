@@ -20,6 +20,7 @@
 		3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CB296F315E003A04A1 /* MainView.swift */; };
 		3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */; };
 		3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */; };
+		3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B321EDE2A16E1F2006B0DEA /* Generator.swift */; };
 		3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48412870F673000D0D0C /* Swiftwarden.swift */; };
 		3B3E48442870F673000D0D0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48432870F673000D0D0C /* ContentView.swift */; };
 		3B3E48462870F674000D0D0C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B3E48452870F674000D0D0C /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
 		3BB5594229B1A27400AB9DAC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* User.swift */; };
+		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
 		3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757912A031BF90065CCF0 /* Uris.swift */; };
@@ -113,6 +115,7 @@
 		3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupNew.swift; sourceTree = "<group>"; };
 		3B2EC3D4296F520E003A04A1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		3B321EDE2A16E1F2006B0DEA /* Generator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
 		3B3E483E2870F673000D0D0C /* Swiftwarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftwarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B3E48412870F673000D0D0C /* Swiftwarden.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swiftwarden.swift; sourceTree = "<group>"; };
 		3B3E48432870F673000D0D0C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -130,6 +133,7 @@
 		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3BB5594129B1A27400AB9DAC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Swiftwarden/Models/User.swift; sourceTree = SOURCE_ROOT; };
+		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
 		3BC757912A031BF90065CCF0 /* Uris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uris.swift; sourceTree = "<group>"; };
@@ -293,6 +297,7 @@
 				3B4513AE289B78E5002164C9 /* Buttons.swift */,
 				3BD0746528A01FC000812AAB /* TestField.swift */,
 				3B2EC3C3296F27F6003A04A1 /* CardView.swift */,
+				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -334,9 +339,9 @@
 		3BDEA75B2A0480240007DFB4 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				3BC7578F2A031BE20065CCF0 /* Modals */,
 				3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */,
 				3BDEA75C2A0480870007DFB4 /* Parser.swift */,
-				3BC7578F2A031BE20065CCF0 /* Modals */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -349,6 +354,7 @@
 				3B0A8E03296209830055DA2D /* Encryption.swift */,
 				3BF9B58E296CC40B0095B557 /* Query.swift */,
 				3BBF9C852A0827720058E82E /* Biometric.swift */,
+				3B321EDE2A16E1F2006B0DEA /* Generator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -516,6 +522,8 @@
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
 				3B0486E02875018C007CCC5A /* Api.swift in Sources */,
 				3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */,
+				3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */,
+				3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */,
 				3B4513AC289AF380002164C9 /* Field.swift in Sources */,
 				3BC757A42A031BFA0065CCF0 /* CustomField.swift in Sources */,
 				3B3E48442870F673000D0D0C /* ContentView.swift in Sources */,

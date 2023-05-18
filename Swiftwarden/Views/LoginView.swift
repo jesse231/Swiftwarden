@@ -72,6 +72,8 @@ struct LoginView: View {
                         SecureField("Master Password", text: $password)
                             .textFieldStyle(.plain)
                     }
+                    .textContentType(.oneTimeCode) //Hacky solution to disable password autofill prompt
+                    .accessibilityIdentifier("Master Password")
                     .padding()
                     Button {
                         authenticate() {_ in
@@ -112,6 +114,8 @@ struct LoginView: View {
                         KeyChain.deleteUser(account: storedEmail)
                         self.storedEmail = nil
                         self.storedServer = nil
+                        self.attempt = false
+                        self.password = ""
                     }) {
                         Text("Log out")
                             .padding(22)
@@ -172,6 +176,8 @@ struct LoginView: View {
                     SecureField("Password", text: $password)
                         .textFieldStyle(.plain)
                         .padding(4)
+                        .disableAutocorrection(true)
+                        .textContentType(.oneTimeCode) //Hacky solution to disable password autofill prompt
                 }.padding(4)
                 Section(header: Text("Server URL")) {
                     GroupBox{

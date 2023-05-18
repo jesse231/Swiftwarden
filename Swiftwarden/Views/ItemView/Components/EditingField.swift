@@ -6,11 +6,18 @@
 //
 
 import SwiftUI
+import Foundation
 
-struct EditingField: View {
+struct EditingField<Content: View>: View {
     var title: String
-    @Binding var content: String
+    @Binding var text: String
+    
     var secure: Bool = false
+    
+    @ViewBuilder var buttons: Content
+    
+    @State private var isHovered = false
+
     var body: some View {
             HStack{
                 VStack{
@@ -19,14 +26,26 @@ struct EditingField: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .foregroundColor(.gray)
                     GroupBox{
-                        if (!secure) {
-                            TextField(title, text: $content)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        } else {
-                            SecureField(title, text: $content)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                        HStack{
+                            if (!secure) {
+                                TextField(title, text: $text)
+                                    .textFieldStyle(.plain)
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                            } else {
+                                SecureField(title, text: $text)
+                                    .textFieldStyle(.plain)
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                            }
+                            buttons
+                                .background(isHovered ? .gray.opacity(0.2) : .clear)
+                                .cornerRadius(5)
+                                .buttonStyle(.plain)
+                                .onHover { hovering in
+                                    withAnimation{
+                                        isHovered = hovering
+                                    }
+                                }
+                                .padding(.trailing)
                         }
                     }
                 }
@@ -38,7 +57,14 @@ struct EditingField_Previews: PreviewProvider {
     @State static var content: String = "Initial Value"
     
     static var previews: some View {
-        EditingField(title: "Title", content: $content)
+        EditingField(title: "Title", text: $content, buttons: {
+            Button {
+            }
+            label: {
+                Image(systemName: "square.and.pencil")
+            }
+        
+        })
             .padding()
             .previewLayout(.sizeThatFits)
     }

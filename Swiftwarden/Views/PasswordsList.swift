@@ -34,15 +34,26 @@ struct PasswordsList: View {
         case folder
     }
     
-    var body: some View {
-        List {
-            let filtered = passwordsToDisplay().filter { cipher in
-                cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
+    func extractHost(cipher: Cipher) -> String {
+        if let uri = cipher.login?.uri {
+            if let noScheme = uri.split(separator:"//").dropFirst().first, let host = noScheme.split(separator:"/").first {
+                return String(host)
+            } else {
+                return uri
             }
-            
-            ForEach(filtered) { cipher in
-                let url = (cipher.login?.uris?.isEmpty) ?? true ? nil : URL(string: cipher.login?.uris?[0].uri ?? " ")
-                let hostname = url?.host ?? nil
+        }
+        return ""
+    }
+    
+    var body: some View {
+        let filtered = passwordsToDisplay().filter { cipher in
+            cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
+        }
+        
+        
+        return List {
+            ForEach(filtered, id: \.self.id) { cipher in
+                let hostname = extractHost(cipher: cipher) // Move the declaration here
                 NavigationLink(
                     destination: {
                         if let card = cipher.card {
@@ -73,10 +84,12 @@ struct PasswordsList: View {
                             }
                         }
                     }
-                ).padding(5)
+                )
+                .padding(5)
             }
         }
-        .listStyle(.inset(alternatesRowBackgrounds: true))
+        .animation(.default, value: filtered)
+//        .listStyle(.inset(alternatesRowBackgrounds: true))
         .toolbar {
             ToolbarItem {
                 Button{
@@ -86,7 +99,11 @@ struct PasswordsList: View {
             }
         }
         .sheet(isPresented: $showNew) {
-            PopupNew(show: $showNew).environmentObject(account)
+            PopupNew(show: $showNew)
+                .environmentObject(account)
+                .onDisappear {
+                    account.user.objectWillChange.send()
+                }
         }
     }
 }
