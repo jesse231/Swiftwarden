@@ -7,9 +7,9 @@
 <p align="center"><img src="Images/Dark.png" width="864"></p>
 
 # Supports
-- [ ] Basic password creation, viewing and interacting
-- [ ] Logging in through official or selfhosted servers
-- [ ] TouchID login
+- Basic password creation, viewing and interacting
+- Logging in through official or selfhosted servers
+- TouchID login
 
 # Implemented
 - [X] Decryption of organization passwords
