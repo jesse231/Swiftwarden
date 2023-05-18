@@ -6,9 +6,10 @@
 import Foundation
 
 // MARK: - Uris
-struct Uris: Codable & Hashable {
-    var uri: String?
+struct Uris: Codable & Hashable & Identifiable {
+    var uri: String
     var match: Int?
+    var id: UUID = ID()
 
     enum CodingKeys: String, CodingKey {
         case uri = "uri"
@@ -23,7 +24,7 @@ extension Uris {
         self = try newJSONDecoder().decode(Uris.self, from: data)
     }
     
-    init(url: String?) {
+    init(url: String) {
         self.uri = url
     }
 
@@ -36,7 +37,7 @@ extension Uris {
         match: Int?? = nil
     ) -> Uris {
         return Uris(
-            uri: uri ?? self.uri,
+            uri: self.uri,
             match: match ?? self.match
         )
     }

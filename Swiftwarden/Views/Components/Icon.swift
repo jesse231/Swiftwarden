@@ -24,14 +24,14 @@ struct Icon: View {
             .cornerRadius(5)
             .frame(width: 35, height: 35)
         } else {
-            Rectangle()
-                .foregroundColor(.white)
-                .cornerRadius(5)
+            Circle()
+                .foregroundColor(.black)
                 .frame(width: 35, height: 35)
                 .overlay(
-                    Image(systemName: "lock.fill")
-                        .foregroundColor(.black)
-                        .font(.system(size: 25))
+                    Image(systemName: "lock.square.fill")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .frame(width: 35, height: 35)
                 )
         }
     }

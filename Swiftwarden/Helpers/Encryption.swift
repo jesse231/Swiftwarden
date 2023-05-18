@@ -185,7 +185,7 @@ class Encryption {
         
         if let uris = dec.login?.uris {
             for (i,uri) in uris.enumerated() {
-                dec.login?.uris?[i].uri = try encrypt(str: uri.uri!)
+                dec.login?.uris?[i].uri = try encrypt(str: uri.uri)
             }
         }
         return dec
@@ -204,7 +204,7 @@ class Encryption {
              
              if let uris = dec.login?.uris {
                  for (i,uri) in uris.enumerated() {
-                     dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri!), encoding: .utf8) ?? uri.uri
+                     dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri), encoding: .utf8) ?? uri.uri
                  }
              }
              if let card = dec.card {

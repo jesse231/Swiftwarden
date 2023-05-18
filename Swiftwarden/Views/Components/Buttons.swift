@@ -1,6 +1,8 @@
 import Foundation
 import SwiftUI
 
+
+
 struct Copy : View {
     var content: String
     let pasteboard = NSPasteboard.general
@@ -19,8 +21,10 @@ struct Copy : View {
 struct Hide : View {
     @Binding var toggle: Bool
     var body : some View {
-            Button(action:{toggle = !toggle}) {
-                Image(systemName: toggle ? "eye.slash" : "eye")
+            Button(action:{
+                toggle = !toggle}
+            ) {
+                Image(systemName: toggle ? "eye.slash.fill" : "eye.fill")
             }
             .buttonStyle(.plain)
     }
@@ -29,8 +33,12 @@ struct Hide : View {
 struct Open : View {
     var link: String
     var body : some View {
-        Link(destination: URL(string: link)!) {
-            Image(systemName: "link").foregroundColor(.primary)
+        if let url = URL(string: link){
+            Link(destination: url) {
+                Image(systemName: "link").foregroundColor(.primary)
+            }
+        } else {
+            EmptyView()
         }
     }
 }
