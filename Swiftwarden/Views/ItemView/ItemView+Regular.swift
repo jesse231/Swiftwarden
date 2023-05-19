@@ -35,7 +35,6 @@ extension ItemView {
     }
     
     var RegularView: some View {
-        return AnyView (
             Group{
                     HStack{
                         if cipher?.deletedDate == nil {
@@ -78,30 +77,7 @@ extension ItemView {
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                                 
                             }
-                            Button (action: {
-                                favourite = !favourite
-                                
-                                let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-                                
-                                
-                                account.selectedCipher.favorite = favourite
-                                Task {
-                                    do{
-                                        try await account.user.updateCipher(cipher: account.selectedCipher, api: account.api, index: index)
-                                    } catch {
-                                        print(error)
-                                    }
-                                    
-                                }
-                                
-                            } ){
-                                if (favourite) {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.yellow)
-                                } else {
-                                    Image(systemName: "star")
-                                }
-                            }.buttonStyle(.plain)
+                            FavoriteButton(favorite: $favorite, cipher: $cipher, account: account)
                             
                             
                         }
@@ -142,7 +118,6 @@ extension ItemView {
                 }
                 
             }
-            )
             
         }
 }

@@ -5,15 +5,15 @@ import SwiftUI
 
 struct ItemView : View {
     @State var cipher: Cipher? = Cipher()
-    //    @State var hostname: String?
     @EnvironmentObject var account : Account
     
-    @State var favourite: Bool
+    @State var favorite: Bool
+    
     @State var showPassword = false
     @State var hostname: String = ""
     
     @State var editing: Bool = false
-    
+    @State var hovering: Bool = false
     //Editing view
     @State var name: String = ""
     
@@ -21,14 +21,13 @@ struct ItemView : View {
     @State var password: String = ""
     @State var url: String = ""
     
-    @State var favorite: Bool = false
     @State var folder: Folder = Folder(id: "", name: "")
     @State var reprompt: Bool = false
     
     @State var uris: [Uris] = [Uris(url: "")]
     
+    
     var body: some View {
-        
             GroupBox{
                 if let cipher {
                     if !editing{
@@ -49,6 +48,7 @@ struct ItemView : View {
                             .padding(20)
                             .frame(maxWidth: 800)
                     }
+                    
                 }
                 
         }
@@ -75,10 +75,8 @@ struct ItemView : View {
             let account = Account()
             
             Group {
-                ItemView(cipher: cipher, favourite: true)
+                ItemView(cipher: cipher, favorite: true)
                     .environmentObject(account)
-                //            ItemView(cipher: cipher, hostname: "test.com", favourite: true, editing: true)
-                //                .environmentObject(account)
             }
         }
     }

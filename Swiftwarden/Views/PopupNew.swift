@@ -8,7 +8,7 @@ struct PopupNew: View {
     @State private var password = ""
     @State private var url = ""
     @State private var folder = "Server"
-    @State private var favourite = false
+    @State private var favorite = false
     @State private var reprompt = false
     @State private var uris: [Uris] = [Uris(url: "")]
     
@@ -58,11 +58,11 @@ struct PopupNew: View {
                     }
                     //
                     HStack{
-                        Text("Favourite")
+                        Text("favorite")
                             .frame(alignment: .trailing)
                             .foregroundColor(.gray)
                         Spacer()
-                        Toggle("Favourite", isOn: $favourite).labelsHidden()
+                        Toggle("favorite", isOn: $favorite).labelsHidden()
                     }
                     
                     HStack{
@@ -98,7 +98,7 @@ struct PopupNew: View {
                         Task {
                             let url = uris.first?.uri
                             let newCipher = Cipher(
-                                favorite: favourite,
+                                favorite: favorite,
                                 fields: nil,
                                 folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
                                 

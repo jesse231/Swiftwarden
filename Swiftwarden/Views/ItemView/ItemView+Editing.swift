@@ -69,21 +69,7 @@ extension ItemView {
                                     .font(.system(size: 10))
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
-                            Button (action: {
-                                favorite = !favorite
-                                account.selectedCipher.favorite = favorite
-                                Task {
-                                    try await account.api.updatePassword(cipher: account.selectedCipher)
-                                }
-                            } ){
-                                if (favorite) {
-                                    Image(systemName: "star.fill")
-                                        .foregroundColor(.yellow)
-                                } else {
-                                    Image(systemName: "star")
-                                    
-                                }
-                            }.buttonStyle(.plain)
+                            FavoriteButton(favorite: $favorite, cipher: $cipher, account: account)
                         }
                         Divider()
                         EditingField(title: "Username", text: $username, buttons: {}).padding(.bottom, 8)

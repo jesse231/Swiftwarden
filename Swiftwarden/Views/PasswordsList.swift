@@ -59,7 +59,7 @@ struct PasswordsList: View {
                         if let card = cipher.card {
                             CardView(card: card)
                         } else {
-                            ItemView(cipher: cipher, favourite: cipher.favorite ?? false).onAppear(perform: {
+                            ItemView(cipher: cipher, favorite: cipher.favorite ?? false).onAppear(perform: {
                                 account.selectedCipher = cipher
                             }).environmentObject(account)
                         }

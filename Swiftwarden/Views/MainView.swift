@@ -21,7 +21,7 @@ struct MainView: View {
                 .frame(minWidth: 400)
                 .environmentObject(user)
             
-            ItemView(cipher: nil, favourite: false)
+            ItemView(cipher: nil, favorite: false)
         }
         .sheet(isPresented: $showEdit, content: {
             let selected = user.selectedCipher
