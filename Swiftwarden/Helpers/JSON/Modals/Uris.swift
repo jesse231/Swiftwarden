@@ -23,7 +23,7 @@ extension Uris {
     init(data: Data) throws {
         self = try newJSONDecoder().decode(Uris.self, from: data)
     }
-    
+
     init(url: String) {
         self.uri = url
     }

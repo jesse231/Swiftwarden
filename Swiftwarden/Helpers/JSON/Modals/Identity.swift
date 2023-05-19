@@ -18,27 +18,6 @@ struct Identity: Codable & Hashable {
     var state: JSONNull?
     var title: String?
     var username: JSONNull?
-
-    enum CodingKeys: String, CodingKey {
-        case address1 = "address1"
-        case address2 = "address2"
-        case address3 = "address3"
-        case city = "city"
-        case company = "company"
-        case country = "country"
-        case email = "email"
-        case firstName = "firstName"
-        case lastName = "lastName"
-        case licenseNumber = "licenseNumber"
-        case middleName = "middleName"
-        case passportNumber = "passportNumber"
-        case phone = "phone"
-        case postalCode = "postalCode"
-        case ssn = "ssn"
-        case state = "state"
-        case title = "title"
-        case username = "username"
-    }
 }
 
 // MARK: Identity convenience initializers and mutators

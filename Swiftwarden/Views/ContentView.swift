@@ -1,7 +1,6 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-    
 extension View {
     private func newWindowInternal(with title: String) -> NSWindow {
         let window = NSWindow(
@@ -15,13 +14,13 @@ extension View {
         window.makeKeyAndOrderFront(nil)
         return window
     }
-    
+
     func openNewWindow(with title: String = "new Window") {
         self.newWindowInternal(with: title).contentView = NSHostingView(rootView: self)
     }
 }
 
-class Account : ObservableObject {
+class Account: ObservableObject {
     @Published var user = User()
     @Published var selectedCipher = Cipher()
     @Published var api: Api = Api()
@@ -41,9 +40,8 @@ struct ContentView: View {
     }
 }
 
-
 struct ContentView_Previews: PreviewProvider {
-    
+
     static var previews: some View {
         Group {
             ContentView()

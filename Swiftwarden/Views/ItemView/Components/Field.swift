@@ -5,9 +5,9 @@ struct Field<Content: View>: View {
     var title: String
     var content: String
     @ViewBuilder var buttons: Content
-    
+
     @State private var isHovered = false
-    
+
     var body: some View {
         HStack {
             VStack {
@@ -18,11 +18,11 @@ struct Field<Content: View>: View {
                 Text(content)
                     .font(.system(size: 15))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                    
+
             }
             .padding()
-            if isHovered{
-                HStack{
+            if isHovered {
+                HStack {
                     buttons
                         .buttonStyle(.plain)
                 }
@@ -56,8 +56,8 @@ struct FieldPreview: PreviewProvider {
                 label: {
                     Image(systemName: "square.and.pencil")
                 }
-                //.padding(.trailing)
-                
+                // .padding(.trailing)
+
             })
         }
     }

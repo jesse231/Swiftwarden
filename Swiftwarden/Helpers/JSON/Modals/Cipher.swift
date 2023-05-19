@@ -5,7 +5,6 @@
 
 import Foundation
 
-
 // MARK: - Cipher
 struct Cipher: Codable & Hashable & Identifiable {
     var attachments: JSONNull?
@@ -63,7 +62,7 @@ struct Cipher: Codable & Hashable & Identifiable {
 // MARK: Cipher convenience initializers and mutators
 
 extension Cipher {
-    
+
     init(data: Data) throws {
         let decoder = newJSONDecoder()
         decoder.keyDecodingStrategy = .custom(DecodingStrategy.lowercase)

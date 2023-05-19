@@ -11,11 +11,6 @@ struct GlobalEquivalentDomain: Codable & Hashable {
     var excluded: Bool?
     var type: Int?
 
-    enum CodingKeys: String, CodingKey {
-        case domains = "domains"
-        case excluded = "excluded"
-        case type = "type"
-    }
 }
 
 // MARK: GlobalEquivalentDomain convenience initializers and mutators

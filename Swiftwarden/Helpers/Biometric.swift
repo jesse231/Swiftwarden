@@ -7,10 +7,9 @@ func authenticate(completion: @escaping (Bool) -> Void) {
 
     var error: NSError?
     let reason = "authenticate to view you're passwords"
-    
+
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-            success, authenticationError in
+        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
             if success {
                 print("Success")
                 DispatchQueue.main.async {

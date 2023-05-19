@@ -28,42 +28,6 @@ struct DataClass: Codable & Hashable {
     var state: JSONNull?
     var title: String?
 
-    enum CodingKeys: String, CodingKey {
-        case fields = "fields"
-        case name = "name"
-        case notes = "notes"
-        case password = "password"
-        case passwordHistory = "passwordHistory"
-        case uri = "uri"
-        case uris = "uris"
-        case username = "username"
-        case passwordRevisionDate = "passwordRevisionDate"
-        case totp = "totp"
-        case autofillOnPageLoad = "autofillOnPageLoad"
-        case brand = "brand"
-        case cardholderName = "cardholderName"
-        case code = "code"
-        case expMonth = "expMonth"
-        case expYear = "expYear"
-        case number = "number"
-        case address1 = "address1"
-        case address2 = "address2"
-        case address3 = "address3"
-        case city = "city"
-        case company = "company"
-        case country = "country"
-        case email = "email"
-        case firstName = "firstName"
-        case lastName = "lastName"
-        case licenseNumber = "licenseNumber"
-        case middleName = "middleName"
-        case passportNumber = "passportNumber"
-        case phone = "phone"
-        case postalCode = "postalCode"
-        case ssn = "ssn"
-        case state = "state"
-        case title = "title"
-    }
 }
 
 // MARK: DataClass convenience initializers and mutators

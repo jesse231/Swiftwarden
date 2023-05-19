@@ -8,12 +8,12 @@
 import Foundation
 
 struct Card: Codable & Hashable {
-    var brand, cardholderName, code, expMonth: String?
+    var brand, cardHolderName, code, expMonth: String?
     var expYear, number: String?
 
     enum CodingKeys: String, CodingKey {
         case brand = "brand"
-        case cardholderName = "cardholderName"
+        case cardHolderName = "cardholdername"
         case code = "code"
         case expMonth = "expMonth"
         case expYear = "expYear"
@@ -41,7 +41,7 @@ extension Card {
 
     func with(
         brand: String?? = nil,
-        cardholderName: String?? = nil,
+        cardHolderName: String?? = nil,
         code: String?? = nil,
         expMonth: String?? = nil,
         expYear: String?? = nil,
@@ -49,7 +49,7 @@ extension Card {
     ) -> Card {
         return Card(
             brand: brand ?? self.brand,
-            cardholderName: cardholderName ?? self.cardholderName,
+            cardHolderName: cardHolderName ?? self.cardHolderName,
             code: code ?? self.code,
             expMonth: expMonth ?? self.expMonth,
             expYear: expYear ?? self.expYear,

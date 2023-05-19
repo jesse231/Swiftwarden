@@ -2,17 +2,15 @@ import SwiftUI
 
 struct MainView: View {
 //    @StateObject var allPasswords = Passwords()
-    @EnvironmentObject var user : Account
-    @State var searchText : String = ""
+    @EnvironmentObject var user: Account
+    @State var searchText: String = ""
     @State private var showEdit: Bool = false
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
     @State private var toggleSidebar = false
-    
-    
-    
+
     var body: some View {
-        NavigationView{
+        NavigationView {
             SideBar(searchResults: $searchText).environmentObject(user)
 //                .toolbar {
 //                    Spacer()
@@ -20,7 +18,7 @@ struct MainView: View {
             PasswordsList(searchText: $searchText, display: .normal)
                 .frame(minWidth: 400)
                 .environmentObject(user)
-            
+
             ItemView(cipher: nil, favorite: false)
         }
         .sheet(isPresented: $showEdit, content: {
@@ -33,7 +31,7 @@ struct MainView: View {
     }
 }
 
-struct Previews_MainView_Previews: PreviewProvider {
+struct MainViewPreviews: PreviewProvider {
     static var previews: some View {
         MainView().environmentObject(Account())
     }

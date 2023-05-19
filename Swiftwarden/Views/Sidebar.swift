@@ -4,13 +4,13 @@ struct SideBar: View {
     @EnvironmentObject var account: Account
     @Binding var searchResults: String
     @State var selection: Int? = 0
-    
+
     struct MenuItem: View {
             let label: String
             let icon: String
             let color: Color
             let destination: AnyView
-            
+
             var body: some View {
                 NavigationLink(
                     destination: destination,
@@ -49,7 +49,7 @@ struct SideBar: View {
                     destination: AnyView(PasswordsList(searchText: $searchResults, display: .trash).environmentObject(account))
                 )
             }
-            
+
             Section(header: Text("Types")) {
                 MenuItem(
                     label: "Login",
@@ -64,7 +64,7 @@ struct SideBar: View {
                     destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(account))
                 )
             }
-            
+
             Section(header: Text("Folders")) {
                 let folders = account.user.getFolders()
                 ForEach(folders) { folder in
@@ -83,9 +83,9 @@ struct SideBar: View {
 
 struct SideBar_Previews: PreviewProvider {
     @State static var searchResults: String = ""
-    
+
     static var previews: some View {
-        NavigationView{
+        NavigationView {
             SideBar(searchResults: $searchResults)
                 .environmentObject(Account())
                 .previewLayout(.sizeThatFits)

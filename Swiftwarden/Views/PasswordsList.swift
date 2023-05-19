@@ -4,7 +4,7 @@ import SwiftUI
 import CoreImage
 
 struct PasswordsList: View {
-    @Binding var searchText : String
+    @Binding var searchText: String
     @EnvironmentObject var account: Account
     @State var deleteDialog = false
     @State private var showNew = false
@@ -25,7 +25,7 @@ struct PasswordsList: View {
             return account.user.getCiphersInFolder(folderID: folderID)
         }
     }
-    
+
     enum PasswordListType {
         case normal
         case trash
@@ -33,10 +33,10 @@ struct PasswordsList: View {
         case card
         case folder
     }
-    
+
     func extractHost(cipher: Cipher) -> String {
         if let uri = cipher.login?.uri {
-            if let noScheme = uri.split(separator:"//").dropFirst().first, let host = noScheme.split(separator:"/").first {
+            if let noScheme = uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
                 return String(host)
             } else {
                 return uri
@@ -44,16 +44,14 @@ struct PasswordsList: View {
         }
         return ""
     }
-    
+
     var body: some View {
         let filtered = passwordsToDisplay().filter { cipher in
             cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
         }
-        
-        
+
         return List {
             ForEach(filtered, id: \.self.id) { cipher in
-                let hostname = extractHost(cipher: cipher) // Move the declaration here
                 NavigationLink(
                     destination: {
                         if let card = cipher.card {
@@ -65,15 +63,15 @@ struct PasswordsList: View {
                         }
                     },
                     label: {
-                        Icon(hostname: hostname ?? "", account: account)
+                        Icon(hostname: extractHost(cipher: cipher), account: account)
                         Spacer().frame(width: 20)
-                        VStack{
+                        VStack {
                             if let name = cipher.name {
                                 Text(name)
                                     .font(.system(size: 15)).fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
-                            
+
                             if let username = cipher.login?.username {
                                 if username != ""{
                                     Spacer().frame(height: 5)
@@ -92,7 +90,7 @@ struct PasswordsList: View {
 //        .listStyle(.inset(alternatesRowBackgrounds: true))
         .toolbar {
             ToolbarItem {
-                Button{
+                Button {
                     showNew = true
                 }
                 label: {Image(systemName: "plus")}

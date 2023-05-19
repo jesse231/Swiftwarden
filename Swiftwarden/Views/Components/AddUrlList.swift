@@ -10,29 +10,29 @@ import SwiftUI
 struct AddUrlList: View {
     @Binding var urls: [Uris]
     var body: some View {
-        VStack{
+        VStack {
             Text("Website")
                 .font(.system(size: 10))
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 .foregroundColor(.gray)
             ForEach(urls.indices, id: \.self) {index in
-                HStack{
+                HStack {
                     GroupBox {
-                        HStack{
+                        HStack {
                             Button {
-                                urls.remove(at:index)
-                            } label : {
+                                urls.remove(at: index)
+                            } label: {
                                 Image(systemName: "minus.circle")
                             }
-                            TextField("URL", text:$urls[index].uri)
+                            TextField("URL", text: $urls[index].uri)
                                 .textFieldStyle(.plain)
                         }
                     }
                 }
             }
-            HStack{
+            HStack {
                 Spacer()
-                Button() {
+                Button {
                     urls.append(Uris(url: ""))
                 } label: {
                     Image(systemName: "plus.circle")
@@ -47,7 +47,7 @@ struct AddUrlList: View {
 struct AddUrlList_Previews: PreviewProvider {
     static var previews: some View {
         @State var urls = [Uris(url: "test.com"), Uris(url: "example.com")]
-        GroupBox{
+        GroupBox {
             AddUrlList(urls: $urls)
         }
     }

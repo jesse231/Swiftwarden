@@ -5,7 +5,7 @@
 
 import Foundation
 //
-//// MARK: - Field
+// MARK: - Field
 struct CustomField: Codable & Hashable {
     var type: Int?
     var name, value: String?

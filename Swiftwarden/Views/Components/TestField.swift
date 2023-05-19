@@ -5,12 +5,12 @@ struct Popout: View {
     @State var username = "username"
     @State var password = "password"
     var body: some View {
-        VStack{
-            HStack{
+        VStack {
+            HStack {
                 Text("Username:")
                 TextField("test", text: $username)
             }
-            HStack{
+            HStack {
                 Text("Password:")
                 TextField("password", text: $password)
             }

@@ -3,8 +3,7 @@ import Security
 private let service = "Swiftwarden"
 
 class KeyChain {
-    
-    
+
     static func saveUser(account: String, password: String) -> Bool {
             guard let passwordData = password.data(using: String.Encoding.utf8) else {
                 return false
@@ -21,7 +20,7 @@ class KeyChain {
 
             return status == errSecSuccess
     }
-    
+
     static func getUser (account: String) -> String? {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -31,10 +30,10 @@ class KeyChain {
             kSecReturnAttributes as String: true,
             kSecReturnData as String: true
         ]
-        
+
         var item: CFTypeRef?
         let status = SecItemCopyMatching(query as CFDictionary, &item)
-        
+
         guard status == errSecSuccess,
               let existingItem = item as? [String: Any],
               let passwordData = existingItem[kSecValueData as String] as? Data,
@@ -42,10 +41,10 @@ class KeyChain {
         else {
             return nil
         }
-        
+
         return password
     }
-    
+
     static func deleteUser(account: String) {
         let query: [String: Any] = [
             kSecClass as String: kSecClassInternetPassword,
@@ -55,9 +54,9 @@ class KeyChain {
             kSecReturnAttributes as String: true,
             kSecReturnData as String: true
         ]
-        
+
         let status = SecItemDelete(query as CFDictionary)
-        
+
     }
- 
+
 }

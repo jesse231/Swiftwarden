@@ -13,7 +13,7 @@ extension ItemView {
         let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
         var modCipher = cipher!
         modCipher.name = name
-        
+
         modCipher.login?.username = username != "" ? username : nil
         modCipher.login?.password = password != "" ? password : nil
         if url != "" {
@@ -34,15 +34,14 @@ extension ItemView {
         account.selectedCipher = modCipher
         cipher = modCipher
     }
-    
-    
+
     var EditingView: some View {
-        return AnyView (
-            Group{
-                HStack{
-                    Button{
+        return AnyView(
+            Group {
+                HStack {
+                    Button {
                         self.editing = false
-                    } label : {
+                    } label: {
                         Text("Cancel")
                     }
                     Spacer()
@@ -55,11 +54,11 @@ extension ItemView {
                         Text("Done")
                     }
                 }
-                ScrollView{
-                    VStack{
-                        HStack{
+                ScrollView {
+                    VStack {
+                        HStack {
                             Icon(hostname: hostname, account: account)
-                            VStack{
+                            VStack {
                                 TextField("Name", text: $name)
                                     .font(.system(size: 15))
                                     .fontWeight(.bold)
@@ -73,7 +72,7 @@ extension ItemView {
                         }
                         Divider()
                         EditingField(title: "Username", text: $username, buttons: {}).padding(.bottom, 8)
-                        EditingField(title: "Password", text: $password, secure: true){
+                        EditingField(title: "Password", text: $password, secure: true) {
                             Button {
                             } label: {
                                 Image(systemName: "arrow.triangle.2.circlepath")
@@ -83,14 +82,14 @@ extension ItemView {
                             AddUrlList(urls: $uris)
                         }
                         //                    EditingField(title: "Website", content: $url).padding(.bottom, 8)
-                        
+
                         Picker(selection: $folder, label: Text("Folder")) {
-                            ForEach(account.user.getFolders(), id:\.self) {folder in
+                            ForEach(account.user.getFolders(), id: \.self) {folder in
                                 Text(folder.name)
                             }
                         }
                         //                }
-                        HStack{
+                        HStack {
                             Text("Master Password re-prompt")
                                 .frame(alignment: .trailing)
                                 .foregroundColor(.gray)
@@ -113,9 +112,9 @@ extension ItemView {
                             folder = account.user.getFolders().first!
                         }
                         reprompt = account.selectedCipher.reprompt == 1 ? true : false
-                        
+
                     })
-            
+
         )
     }
 }

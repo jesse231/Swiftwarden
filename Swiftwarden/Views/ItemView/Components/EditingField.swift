@@ -11,23 +11,23 @@ import Foundation
 struct EditingField<Content: View>: View {
     var title: String
     @Binding var text: String
-    
+
     var secure: Bool = false
-    
+
     @ViewBuilder var buttons: Content
-    
+
     @State private var isHovered = false
 
     var body: some View {
-            HStack{
-                VStack{
+            HStack {
+                VStack {
                     Text(title)
                         .font(.system(size: 10))
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                         .foregroundColor(.gray)
-                    GroupBox{
-                        HStack{
-                            if (!secure) {
+                    GroupBox {
+                        HStack {
+                            if !secure {
                                 TextField(title, text: $text)
                                     .textFieldStyle(.plain)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -41,7 +41,7 @@ struct EditingField<Content: View>: View {
                                 .cornerRadius(5)
                                 .buttonStyle(.plain)
                                 .onHover { hovering in
-                                    withAnimation{
+                                    withAnimation {
                                         isHovered = hovering
                                     }
                                 }
@@ -55,7 +55,7 @@ struct EditingField<Content: View>: View {
 
 struct EditingField_Previews: PreviewProvider {
     @State static var content: String = "Initial Value"
-    
+
     static var previews: some View {
         EditingField(title: "Title", text: $content, buttons: {
             Button {
@@ -63,7 +63,7 @@ struct EditingField_Previews: PreviewProvider {
             label: {
                 Image(systemName: "square.and.pencil")
             }
-        
+
         })
             .padding()
             .previewLayout(.sizeThatFits)

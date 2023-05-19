@@ -1,84 +1,79 @@
 import SwiftUI
 
-
 struct LoginView: View {
-    @Binding var loginSuccess : Bool
+    @Binding var loginSuccess: Bool
     @State var email: String = (ProcessInfo.processInfo.environment["Username"] ?? "")
     @State var password: String = (ProcessInfo.processInfo.environment["Password"] ?? "")
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
-    
+
     @State var storedEmail: String? = UserDefaults.standard.string(forKey: "email")
     @State var storedServer: String? = UserDefaults.standard.string(forKey: "server")
-    
+
     @State var attempt = false
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
     @State var isLoading = false
-    @EnvironmentObject var account : Account
-    
-    
-    func login (storedEmail : String? = nil, storedPassword : String? = nil, storedServer: String? = nil) async throws -> Bool{
-        
+    @EnvironmentObject var account: Account
+
+    func login (storedEmail: String? = nil, storedPassword: String? = nil, storedServer: String? = nil) async throws -> Bool {
+
         let username = storedEmail ?? email
         let pass = storedPassword ?? password
         var serv = storedServer ?? server
-        
-        
+
         var base = URL(string: serv)
         if let base, base.host == nil {
             serv = "https://" + serv
         }
-        
-        let api = try await Api(username: username, password: pass, base: URL(string: serv),    identityPath: nil, apiPath: nil, iconPath: nil)
-        
+
+        let api = try await Api(username: username, password: pass, base: URL(string: serv), identityPath: nil, apiPath: nil, iconPath: nil)
+
         account.api = api
-        
+
         let sync = try await api.sync()
         let privateKey = sync.profile?.privateKey
         var privateKeyDec = try Encryption.decrypt(str: privateKey!).toBase64()
-        
+
         // Turn the private key into PEM formatted key
         privateKeyDec = "-----BEGIN PRIVATE KEY-----\n" + privateKeyDec + "\n-----END PRIVATE KEY-----"
-        
+
         let pk = try SwKeyConvert.PrivateKey.pemToPKCS1DER(privateKeyDec)
         Encryption.privateKey = SecKeyCreateWithData(pk as CFData, [kSecAttrKeyType: kSecAttrKeyTypeRSA, kSecAttrKeyClass: kSecAttrKeyClassPrivate] as CFDictionary, nil)
-        
-        account.user = User(sync : sync)
-        
-        if (storedPassword == nil){
+
+        account.user = User(sync: sync)
+
+        if storedPassword == nil {
             KeyChain.saveUser(account: email, password: password)
             print(KeyChain.getUser(account: email))
         }
-        
-        if (storedEmail == nil) {
+
+        if storedEmail == nil {
             let defaults = UserDefaults.standard
             defaults.set(email, forKey: "email")
         }
-        if (storedServer == nil) {
+        if storedServer == nil {
             let defaults = UserDefaults.standard
             defaults.set(server, forKey: "server")
         }
-        
-        
+
         return true
     }
-    
-    
+
     var body: some View {
-        if let storedEmail, let storedServer{
+        if let storedEmail, let storedServer {
             let storedPassword = KeyChain.getUser(account: storedEmail)
-            VStack{
-                HStack{
-                    GroupBox{
+            VStack {
+                HStack {
+                    GroupBox {
                         SecureField("Master Password", text: $password)
                             .textFieldStyle(.plain)
                     }
-                    .textContentType(.oneTimeCode) //Hacky solution to disable password autofill prompt
+                    .textContentType(.oneTimeCode) // Hacky solution to disable password autofill prompt
                     .accessibilityIdentifier("Master Password")
                     .padding()
                     Button {
-                        authenticate() {_ in
-                            Task{
-                                do{
+                        authenticate {_ in
+                            Task {
+                                do {
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
                                     loginSuccess = true
                                 } catch let error as AuthError {
@@ -94,11 +89,11 @@ struct LoginView: View {
                         }
                     } label: {
                         Image(systemName: "touchid")
-                        
+
                     }
-                    
+
                 }
-                if (attempt == true){
+                if attempt == true {
                     Text(errorMessage)
                         .fixedSize(horizontal: false, vertical: false)
                         .containerShape(Rectangle())
@@ -107,7 +102,7 @@ struct LoginView: View {
                         .background(.pink.opacity(0.4))
                         .cornerRadius(5)
                 }
-                HStack{
+                HStack {
                     Button(action: {
                         UserDefaults.standard.set(nil, forKey: "email")
                         UserDefaults.standard.set(nil, forKey: "server")
@@ -122,7 +117,7 @@ struct LoginView: View {
                             .frame(width: 111, height: 22)
                             .background(Color.gray)
                             .foregroundColor(Color.white)
-                        
+
                     }
                     .buttonStyle(.plain)
                     .padding(22)
@@ -153,7 +148,7 @@ struct LoginView: View {
                             .frame(width: 111, height: 22)
                             .background(Color.blue)
                             .foregroundColor(Color.white)
-                        
+
                     }
                     .buttonStyle(.plain)
                     .padding(22)
@@ -164,29 +159,29 @@ struct LoginView: View {
                 }.padding().frame(maxWidth: 300)
             }.padding().frame(maxWidth: 300)
         } else {
-            VStack{
+            VStack {
                 Text("Log in").font(.title).bold()
                 Divider().padding(.bottom, 5)
-                GroupBox{
+                GroupBox {
                     TextField("Email Address", text: $email)
                         .textFieldStyle(.plain)
                         .padding(4)
                 }.padding(4)
-                GroupBox{
+                GroupBox {
                     SecureField("Password", text: $password)
                         .textFieldStyle(.plain)
                         .padding(4)
                         .disableAutocorrection(true)
-                        .textContentType(.oneTimeCode) //Hacky solution to disable password autofill prompt
+                        .textContentType(.oneTimeCode) // Hacky solution to disable password autofill prompt
                 }.padding(4)
                 Section(header: Text("Server URL")) {
-                    GroupBox{
+                    GroupBox {
                         TextField("https://bitwarden.com/", text: $server)
                             .textFieldStyle(.plain)
                             .padding(4)
                     }.padding(4)
                 }
-                if (attempt == true){
+                if attempt == true {
                     Text(errorMessage)
                         .fixedSize(horizontal: false, vertical: false)
                         .containerShape(Rectangle())
@@ -200,22 +195,22 @@ struct LoginView: View {
                         attempt = false
                         isLoading = true
                         do {
-                            
+
                             let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
-                            guard(email != "" && password != "") else {
+                            guard email != "" && password != "" else {
                                 errorMessage = "Please enter a valid email address and password."
                                 attempt = true
                                 isLoading = false
                                 return
                             }
-                            
-                            guard (email.contains(checkEmail)) else {
+
+                            guard email.contains(checkEmail) else {
                                 errorMessage = "Please enter a valid email address."
                                 isLoading = false
                                 attempt = true
                                 return
                             }
-                            
+
                             try await loginSuccess = login()
                         } catch let error as AuthError {
                             print(error)
@@ -240,7 +235,7 @@ struct LoginView: View {
                             .frame(width: 111, height: 22)
                             .background(Color.blue)
                             .foregroundColor(Color.white)
-                        
+
                     }
                 }
                 .buttonStyle(.plain)
@@ -260,5 +255,5 @@ struct LoginView_Previews: PreviewProvider {
         LoginView(loginSuccess: .constant(false))
             .environmentObject(Account())
     }
-    
+
 }

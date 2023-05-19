@@ -10,12 +10,6 @@ struct Folder: Codable & Hashable & Identifiable {
     var id, object, revisionDate: String?
     var name: String
 
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case name = "name"
-        case object = "object"
-        case revisionDate = "revisionDate"
-    }
 }
 
 // MARK: Folder convenience initializers and mutators

@@ -10,11 +10,10 @@ import NukeUI
 
 struct Icon: View {
     let hostname: String
-    let account : Account
+    let account: Account
     var body: some View {
         if hostname != ""{
-            LazyImage(url: account.api.getIcons(host: hostname))
-            { state in
+            LazyImage(url: account.api.getIcons(host: hostname)) { state in
                 if let image = state.image {
                     image.resizable()
                 }
@@ -40,7 +39,7 @@ struct Icon: View {
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
         let account = Account()
-        Icon(hostname:"", account: account)
-        Icon(hostname:"google.com", account: account)
+        Icon(hostname: "", account: account)
+        Icon(hostname: "google.com", account: account)
     }
 }

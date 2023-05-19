@@ -1,29 +1,29 @@
 import SwiftUI
 
 struct PopupEdit: View {
-    @State var name : String
-    @State var username : String
-    @State var password : String
+    @State var name: String
+    @State var username: String
+    @State var password: String
     @Binding var show: Bool
     var body: some View {
         VStack {
-            List{
-                HStack{
+            List {
+                HStack {
                     Text("Name:")
                     TextField("", text: $name).textFieldStyle(.roundedBorder)
                 }
-                HStack{
+                HStack {
                     Text("Username:")
                     TextField("", text: $username).textFieldStyle(.roundedBorder)
                 }
-                HStack{
+                HStack {
                     Text("Password:")
                     TextField("", text: $password)
                         .textFieldStyle(.roundedBorder)
                         .background()
                 }
                 Spacer()
-                HStack{
+                HStack {
                     Button("Cancel") {
                         show = false
                     }

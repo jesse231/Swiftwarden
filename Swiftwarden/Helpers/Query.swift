@@ -18,7 +18,7 @@ extension URLQueryItem {
 }
 
 extension Array where Element == URLQueryItem {
-    func percentEncoded() -> Array<Element> {
+    func percentEncoded() -> [Element] {
         return map { $0.percentEncoded() }
     }
 }

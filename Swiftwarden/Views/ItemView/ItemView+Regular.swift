@@ -3,10 +3,10 @@ import NukeUI
 import SwiftUI
 
 extension ItemView {
-    func delete() async throws{
-        if let cipher{
+    func delete() async throws {
+        if let cipher {
             do {
-                try await account.user.deleteCipher(cipher:cipher, api: account.api)
+                try await account.user.deleteCipher(cipher: cipher, api: account.api)
                 account.selectedCipher = Cipher()
                 self.cipher = nil
             } catch {
@@ -14,10 +14,10 @@ extension ItemView {
             }
         }
     }
-    func deletePermanently() async throws{
-        if let cipher{
+    func deletePermanently() async throws {
+        if let cipher {
             do {
-                try await account.user.deleteCipherPermanently(cipher:cipher, api: account.api)
+                try await account.user.deleteCipherPermanently(cipher: cipher, api: account.api)
                 account.selectedCipher = Cipher()
                 self.cipher = nil
             } catch {
@@ -25,18 +25,18 @@ extension ItemView {
             }
         }
     }
-    
+
     func extractHost(uri: Uris) -> String {
-        if let noScheme = uri.uri.split(separator:"//").dropFirst().first, let host = noScheme.split(separator:"/").first {
+        if let noScheme = uri.uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
                 return String(host)
             } else {
                 return uri.uri
         }
     }
-    
+
     var RegularView: some View {
-            Group{
-                    HStack{
+            Group {
+                    HStack {
                         if cipher?.deletedDate == nil {
                         Button {
                             Task {
@@ -62,12 +62,12 @@ extension ItemView {
                             }
                         }
                 }
-                    
-                ScrollView{
-                    VStack{
-                        HStack{
+
+                ScrollView {
+                    VStack {
+                        HStack {
                             Icon(hostname: hostname, account: account)
-                            VStack{
+                            VStack {
                                 Text(name)
                                     .font(.system(size: 15))
                                     .fontWeight(.semibold)
@@ -75,11 +75,10 @@ extension ItemView {
                                 Text(verbatim: "Login")
                                     .font(.system(size: 10))
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                                
+
                             }
                             FavoriteButton(favorite: $favorite, cipher: $cipher, account: account)
-                            
-                            
+
                         }
                         Divider()
                         if cipher?.login?.username != nil {
@@ -99,9 +98,9 @@ extension ItemView {
                                     Copy(content: password)
                                 })
                         }
-                        if let uris = cipher?.login?.uris{
+                        if let uris = cipher?.login?.uris {
                             ForEach(uris, id: \.self.id) { uri in
-                                if (uri.uri != "") {
+                                if uri.uri != "" {
                                     Field(
                                         title: "Website",
                                         content: extractHost(uri: uri),
@@ -112,12 +111,12 @@ extension ItemView {
                                 }
                             }
                         }
-                        
+
                     }
                     Spacer()
                 }
-                
+
             }
-            
+
         }
 }

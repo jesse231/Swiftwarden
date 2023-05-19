@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PopupNew: View {
-    @EnvironmentObject var account : Account
+    @EnvironmentObject var account: Account
     @Binding var show: Bool
     @State private var name = ""
     @State private var username = ""
@@ -11,30 +11,30 @@ struct PopupNew: View {
     @State private var favorite = false
     @State private var reprompt = false
     @State private var uris: [Uris] = [Uris(url: "")]
-    
-    @State private var selectedFolder : Folder = Folder(name: "")
-    
+
+    @State private var selectedFolder: Folder = Folder(name: "")
+
     var body: some View {
-        VStack{
-            if name.count != 0{
+        VStack {
+            if name.count != 0 {
                 Text(name).font(.title).bold()
             } else {
                 Text("New Password").font(.title).bold()
             }
             Divider()
-            ScrollView{
-                GroupBox{
+            ScrollView {
+                GroupBox {
                     TextField("Name", text: $name)
                         .textFieldStyle(.plain)
                         .padding(8)
                 }
                 .padding(.bottom, 4)
-                GroupBox{
+                GroupBox {
                     TextField("Username", text: $username)
                         .textFieldStyle(.plain)
                         .padding(8)
                 }.padding(.bottom, 4)
-                GroupBox{
+                GroupBox {
                     SecureField("Password", text: $password)
                         .textFieldStyle(.plain)
                         .padding(8)
@@ -43,13 +43,13 @@ struct PopupNew: View {
                 AddUrlList(urls: $uris)
                 Divider()
                 .padding(.bottom, 12)
-                VStack{
-                    HStack{
+                VStack {
+                    HStack {
                         Picker(selection: $selectedFolder, content: {
-                            ForEach(account.user.getFolders(), id:\.self) {folder in
+                            ForEach(account.user.getFolders(), id: \.self) {folder in
                                 Text(folder.name)
                             }
-                            
+
                         }) {
                             Text("Folder")
                                 .foregroundColor(.gray)
@@ -57,15 +57,15 @@ struct PopupNew: View {
                         }
                     }
                     //
-                    HStack{
+                    HStack {
                         Text("favorite")
                             .frame(alignment: .trailing)
                             .foregroundColor(.gray)
                         Spacer()
                         Toggle("favorite", isOn: $favorite).labelsHidden()
                     }
-                    
-                    HStack{
+
+                    HStack {
                         Text("Master Password re-prompt")
                             .frame(alignment: .trailing)
                             .foregroundColor(.gray)
@@ -73,12 +73,12 @@ struct PopupNew: View {
                         Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                     }
                     .padding(.bottom, 20)
-                    HStack{
+                    HStack {
                         Picker(selection: $selectedFolder, content: {
-                            ForEach(account.user.getFolders(), id:\.self) {folder in
+                            ForEach(account.user.getFolders(), id: \.self) {folder in
                                 Text(folder.name)
                             }
-                            
+
                         }) {
                             Text("Owner")
                                 .foregroundColor(.gray)
@@ -86,10 +86,10 @@ struct PopupNew: View {
                         }
                     }
                 }.padding(.bottom, 24)
-                HStack{
+                HStack {
                     Button {
                         show = false
-                        
+
                     } label: {
                         Text("Cancel")
                     }
@@ -101,7 +101,7 @@ struct PopupNew: View {
                                 favorite: favorite,
                                 fields: nil,
                                 folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
-                                
+
                                 login: Login(
                                     password: password != "" ? password : nil,
                                     uri: url,
@@ -114,14 +114,13 @@ struct PopupNew: View {
                             do {
                                 self.account.selectedCipher =
                                 try await account.user.addCipher(cipher: newCipher, api: account.api)
-                            }
-                            catch {
+                            } catch {
                                 print(error)
                             }
-                            
+
                         }
                         show = false
-                        
+
                     } label: {
                         Text("Save")
                     }
@@ -129,7 +128,7 @@ struct PopupNew: View {
             }
         }.padding()
             .frame(width: 500, height: 500)
-            .onAppear() {
+            .onAppear {
                 selectedFolder = account.user.getFolders().first!
             }
     }
@@ -137,7 +136,7 @@ struct PopupNew: View {
 
 struct PopupNew_Previews: PreviewProvider {
     @State static var show = true
-    var account : Account = Account()
+    var account: Account = Account()
     static var previews: some View {
         PopupNew(show: $show).environmentObject(Account())
     }
