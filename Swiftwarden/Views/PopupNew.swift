@@ -23,109 +23,113 @@ struct PopupNew: View {
             }
             Divider()
             ScrollView {
-                GroupBox {
-                    TextField("Name", text: $name)
-                        .textFieldStyle(.plain)
-                        .padding(8)
-                }
-                .padding(.bottom, 4)
-                GroupBox {
-                    TextField("Username", text: $username)
-                        .textFieldStyle(.plain)
-                        .padding(8)
-                }.padding(.bottom, 4)
-                GroupBox {
-                    SecureField("Password", text: $password)
-                        .textFieldStyle(.plain)
-                        .padding(8)
-                }.padding(.bottom, 12)
-                Divider()
-                AddUrlList(urls: $uris)
-                Divider()
-                .padding(.bottom, 12)
-                VStack {
-                    HStack {
-                        Picker(selection: $selectedFolder, content: {
-                            ForEach(account.user.getFolders(), id: \.self) {folder in
-                                Text(folder.name)
+                VStack{
+                    GroupBox {
+                        TextField("Name", text: $name)
+                            .textFieldStyle(.plain)
+                            .padding(8)
+                    }
+                    .padding(.bottom, 4)
+                    GroupBox {
+                        TextField("Username", text: $username)
+                            .textFieldStyle(.plain)
+                            .padding(8)
+                    }.padding(.bottom, 4)
+                    GroupBox {
+                        SecureField("Password", text: $password)
+                            .textFieldStyle(.plain)
+                            .padding(8)
+                    }.padding(.bottom, 12)
+                    Divider()
+                    AddUrlList(urls: $uris)
+                    Divider()
+                        .padding(.bottom, 12)
+                    VStack {
+                        HStack {
+                            Picker(selection: $selectedFolder, content: {
+                                ForEach(account.user.getFolders(), id: \.self) {folder in
+                                    Text(folder.name)
+                                }
+                                
+                            }) {
+                                Text("Folder")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 300)
                             }
-
-                        }) {
-                            Text("Folder")
+                        }
+                        //
+                        HStack {
+                            Text("favorite")
+                                .frame(alignment: .trailing)
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 300)
+                            Spacer()
+                            Toggle("favorite", isOn: $favorite).labelsHidden()
                         }
-                    }
-                    //
-                    HStack {
-                        Text("favorite")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("favorite", isOn: $favorite).labelsHidden()
-                    }
-
-                    HStack {
-                        Text("Master Password re-prompt")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("Reprompt", isOn: $reprompt).labelsHidden()
-                    }
-                    .padding(.bottom, 20)
-                    HStack {
-                        Picker(selection: $selectedFolder, content: {
-                            ForEach(account.user.getFolders(), id: \.self) {folder in
-                                Text(folder.name)
-                            }
-
-                        }) {
-                            Text("Owner")
+                        
+                        HStack {
+                            Text("Master Password re-prompt")
+                                .frame(alignment: .trailing)
                                 .foregroundColor(.gray)
-                                .padding(.trailing, 300)
+                            Spacer()
+                            Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                         }
-                    }
-                }.padding(.bottom, 24)
-                HStack {
-                    Button {
-                        show = false
-
-                    } label: {
-                        Text("Cancel")
-                    }
-                    Spacer()
-                    Button {
-                        Task {
-                            let url = uris.first?.uri
-                            let newCipher = Cipher(
-                                favorite: favorite,
-                                fields: nil,
-                                folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
-
-                                login: Login(
-                                    password: password != "" ? password : nil,
-                                    uri: url,
-                                    uris: uris,
-                                    username: username != "" ? username : nil),
-                                name: name,
-                                reprompt: reprompt ? 1 : 0,
-                                type: 1
-                            )
-                            do {
-                                self.account.selectedCipher =
-                                try await account.user.addCipher(cipher: newCipher, api: account.api)
-                            } catch {
-                                print(error)
+                        .padding(.bottom, 20)
+                        HStack {
+                            Picker(selection: $selectedFolder, content: {
+                                ForEach(account.user.getFolders(), id: \.self) {folder in
+                                    Text(folder.name)
+                                }
+                                
+                            }) {
+                                Text("Owner")
+                                    .foregroundColor(.gray)
+                                    .padding(.trailing, 300)
                             }
-
                         }
-                        show = false
-
-                    } label: {
-                        Text("Save")
+                    }.padding(.bottom, 24)
+                    HStack {
+                        Button {
+                            show = false
+                            
+                        } label: {
+                            Text("Cancel")
+                        }
+                        Spacer()
+                        Button {
+                            Task {
+                                let url = uris.first?.uri
+                                let newCipher = Cipher(
+                                    favorite: favorite,
+                                    fields: nil,
+                                    folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
+                                    
+                                    login: Login(
+                                        password: password != "" ? password : nil,
+                                        uri: url,
+                                        uris: uris,
+                                        username: username != "" ? username : nil),
+                                    name: name,
+                                    reprompt: reprompt ? 1 : 0,
+                                    type: 1
+                                )
+                                do {
+                                    self.account.selectedCipher =
+                                    try await account.user.addCipher(cipher: newCipher, api: account.api)
+                                } catch {
+                                    print(error)
+                                }
+                                
+                            }
+                            show = false
+                            
+                        } label: {
+                            Text("Save")
+                        }
                     }
                 }
+                .padding(.trailing)
             }
+            .frame(maxWidth: .infinity)
         }.padding()
             .frame(width: 500, height: 500)
             .onAppear {

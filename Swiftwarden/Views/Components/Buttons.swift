@@ -19,10 +19,7 @@ struct FavoriteButton: View {
                 }
             }
         } label: {
-            RoundedRectangle(cornerRadius: 5)
-                .frame(width: 30, height: 30)
-                .foregroundColor(hovering ? .gray.opacity(0.5) : .clear)
-                .overlay {
+            HoverSquare {
                     Image(systemName: favorite ? "star.fill" : "star")
                         .resizable()
                         .foregroundColor(favorite ? .yellow : .primary)
@@ -33,15 +30,36 @@ struct FavoriteButton: View {
     }
 }
 
+struct HoverSquare <Content: View>: View{
+    @ViewBuilder var element: Content
+    @State private var hovering = false
+    var body: some View {
+        RoundedRectangle(cornerRadius: 5)
+            .frame(width: 30, height: 30)
+            .foregroundColor(hovering ? .gray.opacity(0.5) : .clear)
+            .overlay {
+                element
+                    .onHover { hovering in
+                        withAnimation(.easeIn(duration: 0.2)) {
+                            self.hovering = hovering
+                        }
+                    }
+            }
+    }
+}
+
 struct Copy: View {
     var content: String
     let pasteboard = NSPasteboard.general
+    @State private var hovering = false
     var body: some View {
         Button {
             pasteboard.declareTypes([.string], owner: nil)
             pasteboard.setString(content, forType: .string)
         } label: {
-            Image(systemName: "square.on.square")
+            HoverSquare {
+                Image(systemName: "square.on.square")
+            }
         }
         .buttonStyle(.plain)
     }
@@ -53,7 +71,9 @@ struct Hide: View {
         Button {
             toggle = !toggle
         } label: {
-            Image(systemName: toggle ? "eye.slash.fill" : "eye.fill")
+            HoverSquare {
+                Image(systemName: toggle ? "eye.slash.fill" : "eye.fill")
+            }
         }
         .buttonStyle(.plain)
     }
@@ -64,7 +84,9 @@ struct Open: View {
     var body: some View {
         if let url = URL(string: link) {
             Link(destination: url) {
-                Image(systemName: "link").foregroundColor(.primary)
+                HoverSquare {
+                    Image(systemName: "link").foregroundColor(.primary)
+                }
             }
         } else {
             EmptyView()

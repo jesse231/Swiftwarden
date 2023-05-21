@@ -1,10 +1,13 @@
 import Foundation
 import SwiftUI
 
+import SwiftUI
+
 struct Field<Content: View>: View {
     var title: String
     var content: String
     @ViewBuilder var buttons: Content
+    var monospaced: Bool = false
 
     @State private var isHovered = false
 
@@ -16,21 +19,21 @@ struct Field<Content: View>: View {
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .foregroundColor(.gray)
                 Text(content)
-                    .font(.system(size: 15))
+                    .font(monospaced ? .system(size: 15, design: .monospaced) : .system(size: 15))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
-
             }
             .padding()
+            
             if isHovered {
                 HStack {
                     buttons
                         .buttonStyle(.plain)
                 }
-                    .padding(.trailing)
+                .padding(.trailing)
             }
         }
         .transition(.scale)
-        .background(isHovered ? .gray.opacity(0.2) : .clear)
+        .background(isHovered ? Color.gray.opacity(0.2) : Color.clear)
         .cornerRadius(5)
         .onHover { hovered in
             withAnimation {

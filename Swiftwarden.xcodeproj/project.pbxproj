@@ -34,6 +34,7 @@
 		3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AE289B78E5002164C9 /* Buttons.swift */; };
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B59FE1F2A1714BF005288F0 /* swiftlint in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59FE1E2A1714BF005288F0 /* swiftlint */; };
+		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
 		3BB5594229B1A27400AB9DAC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* User.swift */; };
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
@@ -133,6 +134,7 @@
 		3B4513AB289AF380002164C9 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
+		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
 		3BB5594129B1A27400AB9DAC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Swiftwarden/Models/User.swift; sourceTree = SOURCE_ROOT; };
 		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 		3B4513AA289AF36F002164C9 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3B59FE222A17FEE6005288F0 /* Buttons */,
 				3B2CF2672A13DE4D00E3D16F /* Icon.swift */,
 				3B4513AE289B78E5002164C9 /* Buttons.swift */,
 				3BD0746528A01FC000812AAB /* TestField.swift */,
@@ -302,6 +305,14 @@
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		3B59FE222A17FEE6005288F0 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */,
+			);
+			path = Buttons;
 			sourceTree = "<group>";
 		};
 		3BB5594029B1A26800AB9DAC /* Models */ = {
@@ -537,6 +548,7 @@
 				3B2C42062A11C5F100720E43 /* ItemView+Regular.swift in Sources */,
 				3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */,
 				3B0A8E04296209830055DA2D /* Encryption.swift in Sources */,
+				3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */,
 				3B2CF2682A13DE4D00E3D16F /* Icon.swift in Sources */,
 				3BC757A92A031BFA0065CCF0 /* Profile.swift in Sources */,
 				3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */,

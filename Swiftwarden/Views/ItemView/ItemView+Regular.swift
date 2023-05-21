@@ -113,10 +113,27 @@ extension ItemView {
                         }
 
                     }
-                    Spacer()
+                    .padding(.trailing)
+                    //Spacer()
                 }
+                .frame(maxWidth: .infinity)
 
+            }
+            .onDisappear {
+                showPassword = false
             }
 
         }
 }
+struct ItemViewRegularPreview: PreviewProvider {
+    static var previews: some View {
+        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+        let account = Account()
+
+        Group {
+            ItemView(cipher: cipher, favorite: true)
+                .environmentObject(account)
+        }
+    }
+}
+

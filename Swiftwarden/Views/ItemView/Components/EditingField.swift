@@ -13,42 +13,66 @@ struct EditingField<Content: View>: View {
     @Binding var text: String
 
     var secure: Bool = false
+    @State var isHovered = false
 
     @ViewBuilder var buttons: Content
 
-    @State private var isHovered = false
-
     var body: some View {
-            HStack {
-                VStack {
-                    Text(title)
-                        .font(.system(size: 10))
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                        .foregroundColor(.gray)
-                    GroupBox {
-                        HStack {
-                            if !secure {
-                                TextField(title, text: $text)
-                                    .textFieldStyle(.plain)
-                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                            } else {
-                                SecureField(title, text: $text)
-                                    .textFieldStyle(.plain)
-                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                            }
-                            buttons
-                                .background(isHovered ? .gray.opacity(0.2) : .clear)
-                                .cornerRadius(5)
-                                .buttonStyle(.plain)
-                                .onHover { hovering in
-                                    withAnimation {
-                                        isHovered = hovering
-                                    }
-                                }
-                                .padding(.trailing)
+//            HStack {
+//                VStack {
+//                    Text(title)
+//                        .font(.system(size: 10))
+//                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//                        .foregroundColor(.gray)
+//                    GroupBox {
+//                        HStack {
+//                            if !secure {
+//                                TextField(title, text: $text)
+//                                    .textFieldStyle(.plain)
+//                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+//                            } else {
+//                                SecureField(title, text: $text)
+//                                    .textFieldStyle(.plain)
+//                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+//                            }
+//                            HStack {
+//                                buttons
+//                            }
+//                                .padding(.trailing)
+//                        }
+//                    }
+//                }
+//        }
+        HStack {
+            VStack {
+                Text(title)
+                    .font(.system(size: 10))
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .foregroundColor(.gray)
+                GroupBox{
+                    HStack {
+                        if !secure {
+                            TextField(title, text: $text)
+                                .textFieldStyle(.plain)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .font(.system(size: 15))
+                        } else {
+                            SecureField(title, text: $text)
+                                .textFieldStyle(.plain)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .font(.system(size: 15))
                         }
+                        HStack {
+                            buttons
+                                .buttonStyle(.plain)
+                        }
+                        .padding(.trailing)
                     }
                 }
+                .padding(.top, -10)
+                .padding(.leading, -5)
+            }
+            .padding()
         }
     }
 }
@@ -58,11 +82,7 @@ struct EditingField_Previews: PreviewProvider {
 
     static var previews: some View {
         EditingField(title: "Title", text: $content, buttons: {
-            Button {
-            }
-            label: {
-                Image(systemName: "square.and.pencil")
-            }
+            GeneratePasswordButton(password: $content)
 
         })
             .padding()

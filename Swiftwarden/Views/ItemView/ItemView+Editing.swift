@@ -16,8 +16,8 @@ extension ItemView {
 
         modCipher.login?.username = username != "" ? username : nil
         modCipher.login?.password = password != "" ? password : nil
-        if url != "" {
-            modCipher.login?.uris = [Uris(uri: url)]
+        if let url = uris.first?.uri {
+            modCipher.login?.uris = uris
             modCipher.login?.uri = url
         } else {
             modCipher.login?.uris = nil
@@ -61,9 +61,10 @@ extension ItemView {
                             VStack {
                                 TextField("Name", text: $name)
                                     .font(.system(size: 15))
-                                    .fontWeight(.bold)
+                                    .fontWeight(.semibold)
                                     .textFieldStyle(.plain)
-                                    .textFieldStyle(.plain)
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                                    .padding(.bottom, -5)
                                 Text(verbatim: "Login")
                                     .font(.system(size: 10))
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -71,24 +72,32 @@ extension ItemView {
                             FavoriteButton(favorite: $favorite, cipher: $cipher, account: account)
                         }
                         Divider()
-                        EditingField(title: "Username", text: $username, buttons: {}).padding(.bottom, 8)
-                        EditingField(title: "Password", text: $password, secure: true) {
-                            Button {
-                            } label: {
-                                Image(systemName: "arrow.triangle.2.circlepath")
-                            }
-                    }.padding(.bottom, 8)
+                        EditingField(title: "Username", text: $username) {
+                            
+                        }
+                            .padding(.bottom, 4)
+                        if showPassword {
+                            EditingField(title: "Password", text: $password) {
+                                Hide(toggle: $showPassword)
+                                GeneratePasswordButton(password: $password)
+                            }.padding(.bottom, 4)
+                        } else {
+                            EditingField(title: "Password", text: $password, secure: true) {
+                                Hide(toggle: $showPassword)
+                                GeneratePasswordButton(password: $password)
+                        }.padding(.bottom, 4)
+                                .animation(.default)
+
+                        }
                         GroupBox {
                             AddUrlList(urls: $uris)
                         }
-                        //                    EditingField(title: "Website", content: $url).padding(.bottom, 8)
 
                         Picker(selection: $folder, label: Text("Folder")) {
                             ForEach(account.user.getFolders(), id: \.self) {folder in
                                 Text(folder.name)
                             }
                         }
-                        //                }
                         HStack {
                             Text("Master Password re-prompt")
                                 .frame(alignment: .trailing)
@@ -97,7 +106,10 @@ extension ItemView {
                             Toggle("Reprompt", isOn: $reprompt).labelsHidden()
                         }
                     }
+                    .padding(.trailing)
+                    //.padding(.leading)
                 }
+                .frame(maxWidth: .infinity)
             }
                 .onAppear(
                     perform: {
@@ -114,7 +126,24 @@ extension ItemView {
                         reprompt = account.selectedCipher.reprompt == 1 ? true : false
 
                     })
+                .onDisappear {
+                    showPassword = false
+                }
 
         )
+    }
+}
+
+struct ItemViewEditingPreview: PreviewProvider {
+    static var previews: some View {
+        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+        let account = Account()
+
+        Group {
+            ItemView(cipher: cipher, favorite: true, editing: true)
+                .environmentObject(account)
+            ItemView(cipher: cipher, favorite: true, editing: false)
+                .environmentObject(account)
+        }
     }
 }
