@@ -268,7 +268,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
     }
 
     func createPassword(cipher: Cipher) async throws -> Cipher {
-        let bearer = self.bearer
         let url = self.apiPath.appendingPathComponent("ciphers/")
 
         var request = URLRequest(url: url)
@@ -296,9 +295,61 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
     }
 
     func getIcons(host: String) -> URL? {
-        return self.iconPath.appendingPathComponent("\(host)/icon.png")
-        //    let (data, response) = try await URLSession.shared.data(from: url)
-        //    URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+        if host != "" {
+            return self.iconPath.appendingPathComponent("\(host)/icon.png")
+        } else {
+            return nil
+        }
+    }
+    
+    func createFolder(name: String) async throws -> Folder {
+        let url = apiPath.appendingPathComponent("folders/")
+        print(url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+        
+        
+        
+        let requestBody = [
+            "name": name,
+        ]
+        
+        
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        print(response)
+        
+        print(String(data: data, encoding: .utf8))
+        
+        let folder = try Folder(data: data)
+        print(folder)
+        
+        return try Encryption.decryptFolder(data: folder) 
+        
+        
+        
+        
+    }
+    
+    func deleteFolder(id: String) async throws {
+        let url = apiPath.appendingPathComponent("folders/" + id)
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        print(response)
+        print(String(data: data, encoding: .utf8))
     }
 
 }

@@ -15,9 +15,12 @@ struct AccountData {
 
 class User: ObservableObject {
     private var keys: [String: [UInt8]]
+    private var api: Api
+    private var email: String
     @Published private var data: AccountData
 
-    init(sync: Response) {
+    init(sync: Response, api: Api, email: String) {
+        self.api = api
         var symKeys: [String: [UInt8]] = [:]
         if let organizations = sync.profile?.organizations {
             for org in organizations {
@@ -27,11 +30,12 @@ class User: ObservableObject {
 
                 }
             }
-
         }
 
         self.keys = symKeys
         self.data = AccountData()
+        self.email = email
+
         if let ciphers = sync.ciphers {
             let decCiphers = decryptPasswords(dataList: ciphers)
             self.data.passwords = decCiphers
@@ -47,13 +51,16 @@ class User: ObservableObject {
     init (data: AccountData) {
         self.data = data
         self.keys = [:]
+        self.api = Api()
+        self.email = ""
     }
 
     // For testing
     init () {
         self.data = AccountData()
         self.keys = [:]
-
+        self.api = Api()
+        self.email = ""
         self.data.folders = [Folder(object: "Folder", name: "No Folder")]
     }
 
@@ -103,11 +110,14 @@ class User: ObservableObject {
                  dec.card?.expMonth = String(bytes: try Encryption.decrypt(str: card.expMonth ??  ""), encoding: .utf8) ?? card.expMonth
                  dec.card?.expYear = String(bytes: try Encryption.decrypt(str: card.expYear ?? ""), encoding: .utf8) ?? card.expYear
                  dec.card?.number = String(bytes: try Encryption.decrypt(str: card.number ?? ""), encoding: .utf8) ?? card.number
-
              }
          }
 
         return dec
+    }
+    
+    func getEmail () -> String {
+        return self.email
     }
 
     func getCiphers(deleted: Bool = false) -> [Cipher] {
@@ -138,7 +148,7 @@ class User: ObservableObject {
         return self.data.folders
     }
 
-    func deleteCipher(cipher: Cipher, api: Api) async throws {
+    func deleteCipher(cipher: Cipher) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
                 try await api.deletePassword(id: id)
@@ -149,7 +159,7 @@ class User: ObservableObject {
         }
     }
 
-    func deleteCipherPermanently(cipher: Cipher, api: Api) async throws {
+    func deleteCipherPermanently(cipher: Cipher) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
                 try await api.deletePasswordPermanently(id: id)
@@ -158,7 +168,7 @@ class User: ObservableObject {
         }
     }
 
-    func addCipher(cipher: Cipher, api: Api) async throws -> Cipher {
+    func addCipher(cipher: Cipher) async throws -> Cipher {
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
@@ -167,11 +177,23 @@ class User: ObservableObject {
         return modCipher
     }
 
-    func updateCipher(cipher: Cipher, api: Api, index: Array<Cipher>.Index? = nil) async throws {
+    func updateCipher(cipher: Cipher, index: Array<Cipher>.Index? = nil) async throws {
             try await api.updatePassword(cipher: cipher)
         if let index {
             data.passwords[index] = cipher
         }
     }
-
+    
+    func addFolder(name: String) async throws {
+        let encName = try Encryption.encrypt(str: name)
+        let folder = try await api.createFolder(name: encName)
+        data.folders.append(folder)
+    }
+    
+    func deleteFolder(id: String) async throws {
+        try await api.deleteFolder(id: id)
+        if let index = self.data.folders.firstIndex(where: {$0.id == id}) {
+            self.data.folders.remove(at: index)
+        }
+    }
 }

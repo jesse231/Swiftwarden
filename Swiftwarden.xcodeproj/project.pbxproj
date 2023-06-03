@@ -19,7 +19,7 @@
 		3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3C6296F30FC003A04A1 /* LoginView.swift */; };
 		3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CB296F315E003A04A1 /* MainView.swift */; };
 		3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */; };
-		3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */; };
+		3B2EC3D1296F3AC7003A04A1 /* AddNewItemPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2EC3D0296F3AC7003A04A1 /* AddNewItemPopup.swift */; };
 		3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B321EDE2A16E1F2006B0DEA /* Generator.swift */; };
 		3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48412870F673000D0D0C /* Swiftwarden.swift */; };
 		3B3E48442870F673000D0D0C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3E48432870F673000D0D0C /* ContentView.swift */; };
@@ -32,6 +32,8 @@
 		3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513A8289AF29F002164C9 /* ItemView.swift */; };
 		3B4513AC289AF380002164C9 /* Field.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AB289AF380002164C9 /* Field.swift */; };
 		3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B4513AE289B78E5002164C9 /* Buttons.swift */; };
+		3B521F322A1AAF4C0086E507 /* AddNewItem+Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B521F312A1AAF4C0086E507 /* AddNewItem+Password.swift */; };
+		3B521F342A1AB1680086E507 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B521F332A1AB1680086E507 /* ItemType.swift */; };
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B59FE1F2A1714BF005288F0 /* swiftlint in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59FE1E2A1714BF005288F0 /* swiftlint */; };
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
@@ -115,7 +117,7 @@
 		3B2EC3C6296F30FC003A04A1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		3B2EC3CB296F315E003A04A1 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
-		3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupNew.swift; sourceTree = "<group>"; };
+		3B2EC3D0296F3AC7003A04A1 /* AddNewItemPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewItemPopup.swift; sourceTree = "<group>"; };
 		3B2EC3D4296F520E003A04A1 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		3B321EDE2A16E1F2006B0DEA /* Generator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
 		3B3E483E2870F673000D0D0C /* Swiftwarden.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftwarden.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,9 +132,11 @@
 		3B3E485D2870F674000D0D0C /* SwiftwardenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftwardenUITests.swift; sourceTree = "<group>"; };
 		3B3E485F2870F674000D0D0C /* SwiftwardenUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftwardenUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3B4513A62899DAAB002164C9 /* PasswordsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordsList.swift; sourceTree = "<group>"; };
-		3B4513A8289AF29F002164C9 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.xcfilelist; };
+		3B4513A8289AF29F002164C9 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		3B4513AB289AF380002164C9 /* Field.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Field.swift; sourceTree = "<group>"; };
 		3B4513AE289B78E5002164C9 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		3B521F312A1AAF4C0086E507 /* AddNewItem+Password.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+Password.swift"; sourceTree = "<group>"; };
+		3B521F332A1AB1680086E507 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
 		3BB5594129B1A27400AB9DAC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Swiftwarden/Models/User.swift; sourceTree = SOURCE_ROOT; };
@@ -219,6 +223,7 @@
 		3B2EC3CD296F389E003A04A1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				3B521F302A1AAF2E0086E507 /* AddItem */,
 				3B2C41FC2A0C56AD00720E43 /* ItemView */,
 				3B4513AA289AF36F002164C9 /* Components */,
 				3B2EC3C6296F30FC003A04A1 /* LoginView.swift */,
@@ -227,7 +232,7 @@
 				3B2EC3CB296F315E003A04A1 /* MainView.swift */,
 				3B2EC3CE296F38B9003A04A1 /* Sidebar.swift */,
 				3B4513A62899DAAB002164C9 /* PasswordsList.swift */,
-				3B2EC3D0296F3AC7003A04A1 /* PopupNew.swift */,
+				3B521F332A1AB1680086E507 /* ItemType.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +310,15 @@
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		3B521F302A1AAF2E0086E507 /* AddItem */ = {
+			isa = PBXGroup;
+			children = (
+				3B2EC3D0296F3AC7003A04A1 /* AddNewItemPopup.swift */,
+				3B521F312A1AAF4C0086E507 /* AddNewItem+Password.swift */,
+			);
+			path = AddItem;
 			sourceTree = "<group>";
 		};
 		3B59FE222A17FEE6005288F0 /* Buttons */ = {
@@ -527,6 +541,7 @@
 				3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */,
 				3B2EC3CC296F315E003A04A1 /* MainView.swift in Sources */,
 				3B2EC3CF296F38B9003A04A1 /* Sidebar.swift in Sources */,
+				3B521F322A1AAF4C0086E507 /* AddNewItem+Password.swift in Sources */,
 				3BC757A12A031BFA0065CCF0 /* GlobalEquivalentDomain.swift in Sources */,
 				3BC757AB2A031C3C0065CCF0 /* Card.swift in Sources */,
 				3BF9B58F296CC40B0095B557 /* Query.swift in Sources */,
@@ -537,9 +552,10 @@
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
 				3B0486E02875018C007CCC5A /* Api.swift in Sources */,
-				3B2EC3D1296F3AC7003A04A1 /* PopupNew.swift in Sources */,
+				3B2EC3D1296F3AC7003A04A1 /* AddNewItemPopup.swift in Sources */,
 				3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */,
 				3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */,
+				3B521F342A1AB1680086E507 /* ItemType.swift in Sources */,
 				3B4513AC289AF380002164C9 /* Field.swift in Sources */,
 				3BC757A42A031BFA0065CCF0 /* CustomField.swift in Sources */,
 				3B3E48442870F673000D0D0C /* ContentView.swift in Sources */,

@@ -16,7 +16,9 @@ struct Folder: Codable & Hashable & Identifiable {
 
 extension Folder {
     init(data: Data) throws {
-        self = try newJSONDecoder().decode(Folder.self, from: data)
+        let decoder = newJSONDecoder()
+        decoder.keyDecodingStrategy = .custom(DecodingStrategy.lowercase)
+        self = try decoder.decode(Folder.self, from: data)
     }
 
     init(_ json: String, using encoding: String.Encoding = .utf8) throws {

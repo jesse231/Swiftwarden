@@ -13,7 +13,63 @@ struct LoginView: View {
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
     @State var isLoading = false
     @EnvironmentObject var account: Account
-
+    
+    func unlock() {
+        Task {
+            do {
+                try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
+                //                                print("test")
+            } catch let error as AuthError {
+                //                                print(error)
+                attempt = true
+                errorMessage = error.message
+                isLoading = false
+            } catch {
+                print(error)
+                attempt = true
+                errorMessage = error.localizedDescription
+                isLoading = false
+            }
+        }
+    }
+    
+    func validateAndLogin(storedEmail: String? = nil, storedPassword: String? = nil, storedServer: String? = nil) {
+        Task {
+            attempt = false
+            isLoading = true
+            do {
+                let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
+                guard email != "" && password != "" else {
+                    errorMessage = "Please enter a valid email address and password."
+                    attempt = true
+                    isLoading = false
+                    return
+                }
+                
+                guard email.contains(checkEmail) else {
+                    errorMessage = "Please enter a valid email address."
+                    isLoading = false
+                    attempt = true
+                    return
+                }
+                
+                try await loginSuccess = login()
+            } catch let error as AuthError {
+                print(error)
+                attempt = true
+                errorMessage = error.message
+                isLoading = false
+            } catch {
+                attempt = true
+                print(error)
+                errorMessage = error.localizedDescription
+                isLoading = false
+            }
+            isLoading = false
+        }
+    }
+    
+    
     func login (storedEmail: String? = nil, storedPassword: String? = nil, storedServer: String? = nil) async throws -> Bool {
 
         let username = storedEmail ?? email
@@ -27,8 +83,6 @@ struct LoginView: View {
 
         let api = try await Api(username: username, password: pass, base: URL(string: serv), identityPath: nil, apiPath: nil, iconPath: nil)
 
-        account.api = api
-
         let sync = try await api.sync()
         let privateKey = sync.profile?.privateKey
         var privateKeyDec = try Encryption.decrypt(str: privateKey!).toBase64()
@@ -39,7 +93,7 @@ struct LoginView: View {
         let pk = try SwKeyConvert.PrivateKey.pemToPKCS1DER(privateKeyDec)
         Encryption.privateKey = SecKeyCreateWithData(pk as CFData, [kSecAttrKeyType: kSecAttrKeyTypeRSA, kSecAttrKeyClass: kSecAttrKeyClassPrivate] as CFDictionary, nil)
 
-        account.user = User(sync: sync)
+        account.user = User(sync: sync, api: api, email: username)
 
         if storedPassword == nil {
             KeyChain.saveUser(account: email, password: password)
@@ -66,12 +120,15 @@ struct LoginView: View {
                     GroupBox {
                         SecureField("Master Password", text: $password)
                             .textFieldStyle(.plain)
+                            .onSubmit {
+                                unlock()
+                            }
                     }
                     .textContentType(.oneTimeCode) // Hacky solution to disable password autofill prompt
                     .accessibilityIdentifier("Master Password")
                     .padding()
                     Button {
-                        authenticate {_ in
+                        authenticate { _ in
                             Task {
                                 do {
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
@@ -89,9 +146,7 @@ struct LoginView: View {
                         }
                     } label: {
                         Image(systemName: "touchid")
-
                     }
-
                 }
                 if attempt == true {
                     Text(errorMessage)
@@ -117,7 +172,6 @@ struct LoginView: View {
                             .frame(width: 111, height: 22)
                             .background(Color.gray)
                             .foregroundColor(Color.white)
-
                     }
                     .buttonStyle(.plain)
                     .padding(22)
@@ -125,24 +179,9 @@ struct LoginView: View {
                     .background(Color.gray)
                     .foregroundColor(Color.white)
                     .cornerRadius(5)
-                    Button(action: {
-                        Task {
-                            do {
-                                try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
-                                //                                print("test")
-                            } catch let error as AuthError {
-                                //                                print(error)
-                                attempt = true
-                                errorMessage = error.message
-                                isLoading = false
-                            } catch {
-                                print(error)
-                                attempt = true
-                                errorMessage = error.localizedDescription
-                                isLoading = false
-                            }
-                        }
-                    }) {
+                    Button {
+                        unlock()
+                    } label: {
                         Text("Unlock")
                             .padding(22)
                             .frame(width: 111, height: 22)
@@ -164,11 +203,17 @@ struct LoginView: View {
                 Divider().padding(.bottom, 5)
                 GroupBox {
                     TextField("Email Address", text: $email)
+                        .onSubmit {
+                            validateAndLogin()
+                        }
                         .textFieldStyle(.plain)
                         .padding(4)
                 }.padding(4)
                 GroupBox {
                     SecureField("Password", text: $password)
+                        .onSubmit {
+                            validateAndLogin()
+                        }
                         .textFieldStyle(.plain)
                         .padding(4)
                         .disableAutocorrection(true)
@@ -179,6 +224,9 @@ struct LoginView: View {
                         TextField("https://bitwarden.com/", text: $server)
                             .textFieldStyle(.plain)
                             .padding(4)
+                            .onSubmit {
+                                validateAndLogin()
+                            }
                     }.padding(4)
                 }
                 if attempt == true {
@@ -191,40 +239,7 @@ struct LoginView: View {
                         .cornerRadius(5)
                 }
                 Button {
-                    Task {
-                        attempt = false
-                        isLoading = true
-                        do {
-
-                            let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
-                            guard email != "" && password != "" else {
-                                errorMessage = "Please enter a valid email address and password."
-                                attempt = true
-                                isLoading = false
-                                return
-                            }
-
-                            guard email.contains(checkEmail) else {
-                                errorMessage = "Please enter a valid email address."
-                                isLoading = false
-                                attempt = true
-                                return
-                            }
-
-                            try await loginSuccess = login()
-                        } catch let error as AuthError {
-                            print(error)
-                            attempt = true
-                            errorMessage = error.message
-                            isLoading = false
-                        } catch {
-                            attempt = true
-                            print(error)
-                            errorMessage = error.localizedDescription
-                            isLoading = false
-                        }
-                        isLoading = false
-                    }
+                        validateAndLogin()
                 } label: {
                     if isLoading {
                         ProgressView() // Show loading animation
@@ -235,7 +250,6 @@ struct LoginView: View {
                             .frame(width: 111, height: 22)
                             .background(Color.blue)
                             .foregroundColor(Color.white)
-
                     }
                 }
                 .buttonStyle(.plain)
