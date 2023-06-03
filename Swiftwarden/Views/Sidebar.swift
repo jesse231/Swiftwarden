@@ -3,14 +3,21 @@ import SwiftUI
 struct SideBar: View {
     @EnvironmentObject var account: Account
     @Binding var searchResults: String
+    
     @State var selection: Int? = 0
-
+    @State var newFolder = false
+    @State var folderName = ""
+    @State var folders: [Folder] = []
+    @State var text: String = ""
+    
+    @FocusState private var isNewFolder: Bool
+    
     struct MenuItem: View {
             let label: String
             let icon: String
             let color: Color
             let destination: AnyView
-
+        
             var body: some View {
                 NavigationLink(
                     destination: destination,
@@ -64,20 +71,84 @@ struct SideBar: View {
                     destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(account))
                 )
             }
-
             Section(header: Text("Folders")) {
-                let folders = account.user.getFolders()
                 ForEach(folders) { folder in
+                    var editing = false
                     MenuItem(
                         label: folder.name,
                         icon: "folder.fill",
                         color: .gray,
                         destination: AnyView(PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder))
                     )
+                    .contextMenu {
+                        if folder.id != nil{
+                            Button {
+                                Task {
+                                    do {
+                                        await try account.user.deleteFolder(id: folder.id!)
+                                        folders = account.user.getFolders()
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            } label: {
+                                Text("Delete")
+                            }
+                        }
+                    }
+                }
+                if newFolder {
+                    TextField("", text: $folderName)
+                        .textFieldStyle(.roundedBorder)
+                    .onExitCommand(perform: {
+//                        //folderName = ""
+                        newFolder = false
+                    })
+                    .focused($isNewFolder)
+                    .onSubmit {
+                        print(folderName)
+                                Task {
+                                    do {
+                                        await try account.user.addFolder(name: folderName)
+                                        folderName = ""
+                                        folders = account.user.getFolders()
+                                    } catch {
+                                        print(error)
+                                    }
+                                    newFolder = false
+                            }
+                    }
+                    .onChange(of: isNewFolder, perform: { new in
+                        print(new)
+                        if new == false {
+                            newFolder = false
+                        }
+                        
+                    })
                 }
             }
         }
+        .onAppear {
+            folders = account.user.getFolders()
+        }
         .listStyle(SidebarListStyle())
+        .toolbar {
+            ToolbarItem  {
+                Button {
+                    folderName = ""
+                    newFolder = true
+                    Task {
+                        // Fix swiftui set focus bug
+                        try? await Task.sleep(nanoseconds: 500)
+                        isNewFolder = true
+                        
+                    }
+                } label: {
+                    Image(systemName: "folder.fill")
+                }
+            }
+        }
+        .frame(minWidth: 150)
     }
 }
 
