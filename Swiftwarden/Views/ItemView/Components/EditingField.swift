@@ -47,7 +47,7 @@ struct EditingField<Content: View>: View {
                 .padding(.top, -10)
                 .padding(.leading, -5)
             }
-            .padding()
+//            .padding()
         }
     }
 }

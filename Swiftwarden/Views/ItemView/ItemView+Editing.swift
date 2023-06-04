@@ -97,7 +97,7 @@ extension ItemView {
                             HStack {
                                 Icon(hostname: extractHost(cipher: cipher), account: account)
                                 VStack {
-                                    TextField("Name", text: $name)
+                                    TextField("No Name", text: $name)
                                         .font(.system(size: 15))
                                         .fontWeight(.semibold)
                                         .textFieldStyle(.plain)
@@ -111,24 +111,23 @@ extension ItemView {
                             }
                             Divider()
                             EditingField(title: "Username", text: $username) {
-//
                             }
-                            //.padding()
+                            .padding()
                             if showPassword {
                                 EditingField(title: "Password", text: $password) {
                                     Hide(toggle: $showPassword)
                                     GeneratePasswordButton(password: $password)
-                                }//.padding()
+                                }
+                                .padding()
                             } else {
                                 EditingField(title: "Password", text: $password, secure: true) {
                                     Hide(toggle: $showPassword)
                                     GeneratePasswordButton(password: $password)
-                                }//.padding()
+                                }.padding()
 //                                    .animation(.default)
                             }
-                            GroupBox {
-                                AddUrlList(urls: $uris)
-                            }
+                            AddUrlList(urls: $uris)
+                            .padding()
                             
                             Picker(selection: $folder, label: Text("Folder")) {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
@@ -136,11 +135,11 @@ extension ItemView {
                                 }
                             }
                             HStack {
-                                Text("Master Password re-prompt")
+                                Text("Master Password Re-prompt")
                                     .frame(alignment: .trailing)
-                                    .foregroundColor(.gray)
+                                    //.foregroundColor(.gray)
                                 Spacer()
-                                Toggle("Reprompt", isOn: Binding<Bool>(
+                                Toggle("", isOn: Binding<Bool>(
                                                 get: {
                                                     return self.reprompt.reprompt()
                                                 },
@@ -150,8 +149,8 @@ extension ItemView {
                                             ))
                             }
                         }
-                        //                    .padding(.trailing)
-                        //.padding(.leading)
+                        .padding(.trailing)
+                        .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
                 }
