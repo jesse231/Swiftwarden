@@ -2,42 +2,54 @@ import Foundation
 import NukeUI
 import SwiftUI
 
-extension ItemView {
-    func delete() async throws {
-        if let cipher {
-            do {
-                try await account.user.deleteCipher(cipher: cipher)
-                account.selectedCipher = Cipher()
-                self.cipher = nil
-            } catch {
-                print(error)
-            }
-        }
-    }
-    func deletePermanently() async throws {
-        if let cipher {
-            do {
-                try await account.user.deleteCipherPermanently(cipher: cipher)
-                account.selectedCipher = Cipher()
-                self.cipher = nil
-            } catch {
-                print(error)
-            }
-        }
-    }
-
-    func extractHost(uri: Uris) -> String {
-        if let noScheme = uri.uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
+func extractHost(cipher: Cipher?) -> String {
+    if let cipher {
+        if let uri = cipher.login?.uri {
+            if let noScheme = uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
                 return String(host)
             } else {
-                return uri.uri
+                return uri
+            }
         }
     }
+    return ""
+}
 
-    var RegularView: some View {
-            Group {
-                    HStack {
-                        if cipher?.deletedDate == nil {
+extension ItemView {
+    struct RegularView: View {
+        @Binding var cipher: Cipher?
+        @Binding var editing: Bool
+        @State var showPassword: Bool = false
+        
+        @StateObject var account: Account
+        
+        func delete() async throws {
+            if let cipher {
+                do {
+                    try await account.user.deleteCipher(cipher: cipher)
+                    account.selectedCipher = Cipher()
+                    self.cipher = nil
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        func deletePermanently() async throws {
+            if let cipher {
+                do {
+                    try await account.user.deleteCipherPermanently(cipher: cipher)
+                    account.selectedCipher = Cipher()
+                    self.cipher = nil
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
+        var body: some View {
+            Group{
+                HStack {
+                    if cipher?.deletedDate == nil {
                         Button {
                             Task {
                                 try await delete()
@@ -51,37 +63,37 @@ extension ItemView {
                         } label: {
                             Text("Edit")
                         }
-                        } else {
-                            Spacer()
-                            Button {
-                                Task {
-                                    try await deletePermanently()
-                                }
-                            } label: {
-                                Text("Delete Permanently")
+                    } else {
+                        Spacer()
+                        Button {
+                            Task {
+                                try await deletePermanently()
                             }
+                        } label: {
+                            Text("Delete Permanently")
                         }
+                    }
                 }
-
+                
                 ScrollView {
                     VStack {
                         HStack {
-                            Icon(hostname: hostname, account: account)
+                            Icon(hostname: extractHost(cipher: cipher), account: account)
                             VStack {
-                                Text(name)
+                                Text(cipher?.name ?? "")
                                     .font(.system(size: 15))
                                     .fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                                 Text(verbatim: "Login")
                                     .font(.system(size: 10))
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
-
+                                
                             }
-                            FavoriteButton(favorite: $favorite, cipher: $cipher, account: account)
-
+                            FavoriteButton(cipher: $cipher, account: account)
+                            
                         }
                         Divider()
-                        if cipher?.login?.username != nil {
+                        if let username = cipher?.login?.username {
                             Field(
                                 title: "Username",
                                 content: username,
@@ -89,7 +101,7 @@ extension ItemView {
                                     Copy(content: username)
                                 })
                         }
-                        if cipher?.login?.password != nil {
+                        if let password = cipher?.login?.password {
                             Field(
                                 title: "Password",
                                 content: (showPassword ? password : String(repeating: "•", count: password.count)),
@@ -103,7 +115,7 @@ extension ItemView {
                                 if uri.uri != "" {
                                     Field(
                                         title: "Website",
-                                        content: extractHost(uri: uri),
+                                        content: extractHost(cipher: cipher),
                                         buttons: {
                                             Open(link: uri.uri)
                                             Copy(content: uri.uri)
@@ -111,19 +123,20 @@ extension ItemView {
                                 }
                             }
                         }
-
+                        
                     }
                     .padding(.trailing)
-                    //Spacer()
                 }
-                .frame(maxWidth: .infinity)
+            }
+                    .frame(maxWidth: .infinity)
+                .onDisappear {
+                    showPassword = false
+                }
 
             }
-            .onDisappear {
-                showPassword = false
-            }
+    }
 
-        }
+    
 }
 struct ItemViewRegularPreview: PreviewProvider {
     static var previews: some View {

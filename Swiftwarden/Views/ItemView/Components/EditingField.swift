@@ -18,31 +18,6 @@ struct EditingField<Content: View>: View {
     @ViewBuilder var buttons: Content
 
     var body: some View {
-//            HStack {
-//                VStack {
-//                    Text(title)
-//                        .font(.system(size: 10))
-//                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                        .foregroundColor(.gray)
-//                    GroupBox {
-//                        HStack {
-//                            if !secure {
-//                                TextField(title, text: $text)
-//                                    .textFieldStyle(.plain)
-//                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-//                            } else {
-//                                SecureField(title, text: $text)
-//                                    .textFieldStyle(.plain)
-//                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-//                            }
-//                            HStack {
-//                                buttons
-//                            }
-//                                .padding(.trailing)
-//                        }
-//                    }
-//                }
-//        }
         HStack {
             VStack {
                 Text(title)

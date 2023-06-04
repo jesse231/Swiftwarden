@@ -2,31 +2,32 @@ import Foundation
 import SwiftUI
 
 struct FavoriteButton: View {
-    @Binding var favorite: Bool
     @Binding var cipher: Cipher?
     @ObservedObject var account: Account
-    @State private var hovering = false
+    
     var body: some View {
-        Button {
-            favorite.toggle()
-            let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-            account.selectedCipher.favorite = favorite
-            Task {
-                do {
-                    try await account.user.updateCipher(cipher: account.selectedCipher, index: index)
-                } catch {
-                    print(error)
+        if let favorite = cipher?.favorite {
+            Button {
+                cipher?.favorite?.toggle()
+                let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
+                account.selectedCipher.favorite = cipher?.favorite
+                Task {
+                    do {
+                        try await account.user.updateCipher(cipher: account.selectedCipher, index: index)
+                    } catch {
+                        print(error)
+                    }
                 }
-            }
-        } label: {
-            HoverSquare {
+            } label: {
+                HoverSquare {
                     Image(systemName: favorite ? "star.fill" : "star")
                         .resizable()
                         .foregroundColor(favorite ? .yellow : .primary)
                         .frame(width: 20, height: 20)
                 }
+            }
+            .buttonStyle(.borderless)
         }
-        .buttonStyle(.borderless)
     }
 }
 
