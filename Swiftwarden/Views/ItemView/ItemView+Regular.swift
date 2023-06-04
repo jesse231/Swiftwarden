@@ -15,6 +15,17 @@ func extractHost(cipher: Cipher?) -> String {
     return ""
 }
 
+func extractHostURI(uri: String?) -> String {
+    if let uri {
+        if let noScheme = uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
+                return String(host)
+            } else {
+                return uri
+            }
+        }
+    return ""
+}
+
 extension ItemView {
     struct RegularView: View {
         @Binding var cipher: Cipher?
@@ -87,10 +98,10 @@ extension ItemView {
                                 Text(verbatim: "Login")
                                     .font(.system(size: 10))
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
-                                
+
                             }
                             FavoriteButton(cipher: $cipher, account: account)
-                            
+
                         }
                         Divider()
                         if let username = cipher?.login?.username {
@@ -112,13 +123,14 @@ extension ItemView {
                         }
                         if let uris = cipher?.login?.uris {
                             ForEach(uris, id: \.self.id) { uri in
-                                if uri.uri != "" {
+                                let url = uri.uri
+                                if url != "" {
                                     Field(
                                         title: "Website",
-                                        content: extractHost(cipher: cipher),
+                                        content: extractHostURI(uri: url),
                                         buttons: {
-                                            Open(link: uri.uri)
-                                            Copy(content: uri.uri)
+                                            Open(link: url)
+                                            Copy(content: url)
                                         })
                                 }
                             }
