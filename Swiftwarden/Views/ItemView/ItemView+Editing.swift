@@ -133,11 +133,10 @@ extension ItemView {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
                                     Text(folder.name)
                                 }
-                            }
+                            }.padding()
                             HStack {
                                 Text("Master Password Re-prompt")
                                     .frame(alignment: .trailing)
-                                    //.foregroundColor(.gray)
                                 Spacer()
                                 Toggle("", isOn: Binding<Bool>(
                                                 get: {
@@ -147,7 +146,7 @@ extension ItemView {
                                                     self.reprompt = newValue ? .require : .none
                                                 }
                                             ))
-                            }
+                            }.padding()
                         }
                         .padding(.trailing)
                         .padding(.leading)
