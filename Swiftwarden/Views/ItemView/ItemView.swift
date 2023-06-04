@@ -42,6 +42,7 @@ struct ItemView: View {
 
     @State var editing: Bool = false
     @State var hovering: Bool = false
+    @State var reprompt: RepromptState = .none
     // Editing view
 //    @State var name: String = ""
 //
@@ -58,7 +59,7 @@ struct ItemView: View {
             GroupBox {
                 if let cipher {
                     if !editing {
-                        RegularView(cipher: self.$cipher, editing: $editing, account: account)
+                        RegularView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     } else {
@@ -92,8 +93,8 @@ struct ItemView: View {
             let account = Account()
 
             Group {
-                ItemView(cipher: cipher, favorite: true)
-                    .environmentObject(account)
+//                ItemView(cipher: cipher, favorite: true, reprompt: $reprompt)
+//                    .environmentObject(account)
             }
         }
     }

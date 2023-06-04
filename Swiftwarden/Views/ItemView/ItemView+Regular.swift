@@ -30,6 +30,8 @@ extension ItemView {
     struct RegularView: View {
         @Binding var cipher: Cipher?
         @Binding var editing: Bool
+        @Binding var reprompt: RepromptState
+        @State var showReprompt: Bool = false
         @State var showPassword: Bool = false
         
         @StateObject var account: Account
@@ -117,7 +119,7 @@ extension ItemView {
                                 title: "Password",
                                 content: (showPassword ? password : String(repeating: "•", count: password.count)),
                                 buttons: {
-                                    Hide(toggle: $showPassword)
+                                    TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     Copy(content: password)
                                 })
                         }
@@ -141,9 +143,9 @@ extension ItemView {
                 }
             }
                     .frame(maxWidth: .infinity)
-                .onDisappear {
-                    showPassword = false
-                }
+                    .popover(isPresented: $showReprompt) {
+                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
+                    }
 
             }
     }

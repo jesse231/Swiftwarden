@@ -66,14 +66,47 @@ struct Copy: View {
     }
 }
 
-struct Hide: View {
-    @Binding var toggle: Bool
+struct RepromptPopup: View {
+    @Binding var showReprompt: Bool
+    @Binding var showPassword: Bool
+    @Binding var reprompt: RepromptState
+    @StateObject var account: Account
+    
+    @State private var masterPassword: String = ""
+    
+    var body: some View {
+        Text("Master Password Reprompt")
+            .font(.title)
+            
+        SecureField("", text: $masterPassword)
+            .onSubmit {
+                if (masterPassword == KeyChain.getUser(account: account.user.getEmail())) {
+                    reprompt = .unlocked
+                    showPassword = true
+                    showReprompt = false
+                }
+            }
+    }
+}
+
+
+struct TogglePassword: View {
+    @Binding var showPassword: Bool
+    
+    @Binding var reprompt: RepromptState
+    @Binding var showReprompt: Bool
+    
     var body: some View {
         Button {
-            toggle = !toggle
+            if reprompt == .require {
+                showReprompt = true
+            } else {
+                reprompt = .unlocked
+                showPassword.toggle()
+            }
         } label: {
             HoverSquare {
-                Image(systemName: toggle ? "eye.slash.fill" : "eye.fill")
+                Image(systemName: showPassword ? "eye.slash.fill" : "eye.fill")
             }
         }
         .buttonStyle(.plain)

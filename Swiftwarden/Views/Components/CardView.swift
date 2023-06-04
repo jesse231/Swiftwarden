@@ -16,7 +16,7 @@ struct CardView: View {
             title: "Number",
             content: (showNumber ? card.number ?? "" : String(repeating: "•", count: card.number?.count ?? 0)),
             buttons: {
-                Hide(toggle: $showNumber)
+//                TogglePassword(toggle: $showNumber)
                 Copy(content: card.number ?? "")
             })
 
@@ -36,7 +36,7 @@ struct CardView: View {
             title: "Code",
             content: (showCode ? card.code ?? "" : String(repeating: "•", count: card.code?.count ?? 0)),
             buttons: {
-                Hide(toggle: $showCode)
+//                TogglePassword(toggle: $showCode)
                 Copy(content: card.code ?? "")
             })
     }

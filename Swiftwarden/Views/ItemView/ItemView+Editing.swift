@@ -28,6 +28,8 @@ extension ItemView {
 
         @State var uris: [Uris] // = [Uris(url: "")]
         
+        @State var showReprompt: Bool = false
+        
         init(cipher: Binding<Cipher?>, editing: Binding<Bool>, account: Account) {
             _cipher = cipher
             
@@ -115,20 +117,20 @@ extension ItemView {
                             .padding()
                             if showPassword {
                                 EditingField(title: "Password", text: $password) {
-                                    Hide(toggle: $showPassword)
+                                    TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     GeneratePasswordButton(password: $password)
                                 }
                                 .padding()
                             } else {
                                 EditingField(title: "Password", text: $password, secure: true) {
-                                    Hide(toggle: $showPassword)
+                                    TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     GeneratePasswordButton(password: $password)
                                 }.padding()
 //                                    .animation(.default)
                             }
                             AddUrlList(urls: $uris)
                             .padding()
-                            
+
                             Picker(selection: $folder, label: Text("Folder")) {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
                                     Text(folder.name)
@@ -178,8 +180,8 @@ struct ItemViewEditingPreview: PreviewProvider {
         let account = Account()
 
         Group {
-            ItemView(cipher: cipher, favorite: true, editing: true)
-                .environmentObject(account)
+//            ItemView(cipher: cipher, favorite: true, editing: true, reprompt: <#RepromptState#>)
+//                .environmentObject(account)
 //            ItemView(cipher: cipher, favorite: true, editing: false)
 //                .environmentObject(account)
         }
