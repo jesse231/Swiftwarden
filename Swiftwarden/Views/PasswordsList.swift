@@ -97,7 +97,7 @@ struct PasswordsList: View {
             }
         }
         .sheet(isPresented: $showNew) {
-            PopupNew(show: $showNew)
+            AddNewItemPopup(show: $showNew, itemType: .password)
                 .environmentObject(account)
                 .onDisappear {
                     account.user.objectWillChange.send()

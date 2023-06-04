@@ -30,7 +30,7 @@ extension ItemView {
         }
         modCipher.favorite = favorite
         modCipher.reprompt = reprompt ? 1 : 0
-        try await account.user.updateCipher(cipher: modCipher, api: account.api, index: index)
+        try await account.user.updateCipher(cipher: modCipher, index: index)
         account.selectedCipher = modCipher
         cipher = modCipher
     }

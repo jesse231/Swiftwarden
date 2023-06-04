@@ -6,7 +6,7 @@ extension ItemView {
     func delete() async throws {
         if let cipher {
             do {
-                try await account.user.deleteCipher(cipher: cipher, api: account.api)
+                try await account.user.deleteCipher(cipher: cipher)
                 account.selectedCipher = Cipher()
                 self.cipher = nil
             } catch {
@@ -17,7 +17,7 @@ extension ItemView {
     func deletePermanently() async throws {
         if let cipher {
             do {
-                try await account.user.deleteCipherPermanently(cipher: cipher, api: account.api)
+                try await account.user.deleteCipherPermanently(cipher: cipher)
                 account.selectedCipher = Cipher()
                 self.cipher = nil
             } catch {
