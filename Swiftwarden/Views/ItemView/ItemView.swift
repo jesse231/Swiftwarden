@@ -32,16 +32,14 @@ enum RepromptState {
 
 
 struct ItemView: View {
-    @State var cipher: Cipher? = Cipher()
+    @State var cipher: Cipher?
     @EnvironmentObject var account: Account
 
     @State var favorite: Bool
 
     @State var showPassword = false
-    @State var hostname: String = ""
 
     @State var editing: Bool = false
-    @State var hovering: Bool = false
     @State var reprompt: RepromptState = .none
     // Editing view
 //    @State var name: String = ""
@@ -54,7 +52,16 @@ struct ItemView: View {
 //    @State var reprompt: Bool = false
 //
 //    @State var uris: [Uris] = [Uris(url: "")]
-
+    init (cipher: Cipher?){
+        _cipher = State(initialValue: cipher)
+        if let repromptInt = cipher?.reprompt {
+            reprompt = RepromptState.fromInt(repromptInt)
+        }
+        _favorite = State(initialValue:cipher?.favorite ?? false)
+        
+        editing = false
+        showPassword = false
+    }
     var body: some View {
             GroupBox {
                 if let cipher {

@@ -137,13 +137,12 @@ extension ItemView {
                                 }
                             }
                         }
-                        
                     }
                     .padding(.trailing)
                 }
             }
                     .frame(maxWidth: .infinity)
-                    .popover(isPresented: $showReprompt) {
+                    .sheet(isPresented: $showReprompt) {
                         RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
                     }
 
@@ -158,7 +157,7 @@ struct ItemViewRegularPreview: PreviewProvider {
         let account = Account()
 
         Group {
-            ItemView(cipher: cipher, favorite: true)
+            ItemView(cipher: cipher)
                 .environmentObject(account)
         }
     }

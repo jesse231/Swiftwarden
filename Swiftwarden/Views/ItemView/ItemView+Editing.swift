@@ -155,21 +155,6 @@ extension ItemView {
                     }
                     .frame(maxWidth: .infinity)
                 }
-//                    .onAppear(
-//                        perform: {
-//                            name = account.selectedCipher.name ?? ""
-//                            username = account.selectedCipher.login?.username ?? ""
-//                            password = account.selectedCipher.login?.password ?? ""
-//                            url = account.selectedCipher.login?.uris?.first?.uri ?? ""
-//                            favorite = account.selectedCipher.favorite ?? false
-//                            if let folderID = account.selectedCipher.folderID {
-//                                self.folder = account.user.getFolders().filter({$0.id == folderID}).first!
-//                            } else {
-//                                folder = account.user.getFolders().first!
-//                            }
-//                            reprompt = account.selectedCipher.reprompt == 1 ? true : false
-//
-//                        })
         }
     }
 }

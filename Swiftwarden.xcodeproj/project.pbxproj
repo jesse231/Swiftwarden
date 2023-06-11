@@ -35,7 +35,6 @@
 		3B521F322A1AAF4C0086E507 /* AddNewItem+Password.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B521F312A1AAF4C0086E507 /* AddNewItem+Password.swift */; };
 		3B521F342A1AB1680086E507 /* ItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B521F332A1AB1680086E507 /* ItemType.swift */; };
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
-		3B59FE1F2A1714BF005288F0 /* swiftlint in Frameworks */ = {isa = PBXBuildFile; productRef = 3B59FE1E2A1714BF005288F0 /* swiftlint */; };
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
 		3BB5594229B1A27400AB9DAC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* User.swift */; };
@@ -173,7 +172,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BDEA7F92A0591510007DFB4 /* Nuke in Frameworks */,
-				3B59FE1F2A1714BF005288F0 /* swiftlint in Frameworks */,
 				3BDEA7FF2A0591510007DFB4 /* NukeVideo in Frameworks */,
 				3B2C420A2A12EF7200720E43 /* CryptoSwift.xcframework in Frameworks */,
 				3BDEA7FB2A0591510007DFB4 /* NukeExtensions in Frameworks */,
@@ -401,7 +399,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				3B59FE212A1714DF005288F0 /* PBXTargetDependency */,
 			);
 			name = Swiftwarden;
 			packageProductDependencies = (
@@ -409,7 +406,6 @@
 				3BDEA7FA2A0591510007DFB4 /* NukeExtensions */,
 				3BDEA7FC2A0591510007DFB4 /* NukeUI */,
 				3BDEA7FE2A0591510007DFB4 /* NukeVideo */,
-				3B59FE1E2A1714BF005288F0 /* swiftlint */,
 			);
 			productName = Bitwarden;
 			productReference = 3B3E483E2870F673000D0D0C /* Swiftwarden.app */;
@@ -485,7 +481,6 @@
 			mainGroup = 3B3E48352870F673000D0D0C;
 			packageReferences = (
 				3BDEA7F72A0591510007DFB4 /* XCRemoteSwiftPackageReference "Nuke" */,
-				3B59FE1D2A1714BF005288F0 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = 3B3E483F2870F673000D0D0C /* Products */;
 			projectDirPath = "";
@@ -611,10 +606,6 @@
 			isa = PBXTargetDependency;
 			target = 3B3E483D2870F673000D0D0C /* Swiftwarden */;
 			targetProxy = 3B3E485A2870F674000D0D0C /* PBXContainerItemProxy */;
-		};
-		3B59FE212A1714DF005288F0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 3B59FE202A1714DF005288F0 /* SwiftLintPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -903,14 +894,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3B59FE1D2A1714BF005288F0 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/realm/SwiftLint";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.52.2;
-			};
-		};
 		3BDEA7F72A0591510007DFB4 /* XCRemoteSwiftPackageReference "Nuke" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kean/Nuke";
@@ -922,16 +905,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3B59FE1E2A1714BF005288F0 /* swiftlint */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B59FE1D2A1714BF005288F0 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = swiftlint;
-		};
-		3B59FE202A1714DF005288F0 /* SwiftLintPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 3B59FE1D2A1714BF005288F0 /* XCRemoteSwiftPackageReference "SwiftLint" */;
-			productName = "plugin:SwiftLintPlugin";
-		};
 		3BDEA7F82A0591510007DFB4 /* Nuke */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3BDEA7F72A0591510007DFB4 /* XCRemoteSwiftPackageReference "Nuke" */;

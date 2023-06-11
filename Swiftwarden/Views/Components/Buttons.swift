@@ -75,17 +75,21 @@ struct RepromptPopup: View {
     @State private var masterPassword: String = ""
     
     var body: some View {
-        Text("Master Password Reprompt")
-            .font(.title)
-            
-        SecureField("", text: $masterPassword)
-            .onSubmit {
-                if (masterPassword == KeyChain.getUser(account: account.user.getEmail())) {
-                    reprompt = .unlocked
-                    showPassword = true
+        Group {
+            Text("Master Password Reprompt")
+                .font(.title)
+                .padding(.bottom, 10)
+                EditingField(title: "", text: $masterPassword, secure: true, buttons: {})
+                .padding([.leading, .trailing, .bottom])
+                .onSubmit {
+                    if (masterPassword == KeyChain.getUser(account: account.user.getEmail())) {
+                        reprompt = .unlocked
+                        showPassword = true
+                    }
                     showReprompt = false
                 }
-            }
+        }
+        .padding()
     }
 }
 
