@@ -6,8 +6,9 @@ import CoreImage
 struct PasswordsList: View {
     @Binding var searchText: String
     @EnvironmentObject var account: Account
-    @State var deleteDialog = false
+    @State private var deleteDialog = false
     @State private var showNew = false
+    @State private var itemType: ItemType = .password
     var folderID: String?
 
     var display: PasswordListType
@@ -91,14 +92,32 @@ struct PasswordsList: View {
 //        .listStyle(.inset(alternatesRowBackgrounds: true))
         .toolbar {
             ToolbarItem {
-                Button {
-                    showNew = true
-                }
-                label: {Image(systemName: "plus")}
+                Menu {
+                    
+                    Button {
+                        showNew = true
+                        itemType = .password
+                    } label: {
+                        Label("Add Password", systemImage: "key")
+                    }
+                    Button {
+                        showNew = true
+                        itemType = .card
+                    } label: {
+                        Label("Add Card", systemImage: "creditcard")
+                    }
+                    Button {
+                        showNew = true
+                        itemType = .identity
+                    } label: {
+                        Label("Add Password", systemImage: "person")
+                    }
+                    
+                } label: {Image(systemName: "plus")}
             }
         }
         .sheet(isPresented: $showNew) {
-            AddNewItemPopup(show: $showNew, itemType: .password)
+            AddNewItemPopup(show: $showNew, itemType: itemType)
                 .environmentObject(account)
                 .onDisappear {
                     account.user.objectWillChange.send()

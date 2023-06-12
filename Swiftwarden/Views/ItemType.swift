@@ -12,5 +12,4 @@ enum ItemType {
     case card
     case identity
     case folder
-    case none
 }
