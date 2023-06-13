@@ -26,6 +26,18 @@ struct AddUrlList: View {
                             }
                             TextField("URL", text: $urls[index].uri)
                                 .textFieldStyle(.plain)
+                            Picker("", selection: Binding(
+                                get: { urls[index].match ?? -1 },
+                                set: { urls[index].match = ($0 == -1) ? nil : $0 }
+                            )) {
+                                Text("Default").tag(-1)
+                                Text("Base Domain").tag(0)
+                                Text("Host").tag(1)
+                                Text("Starts With").tag(2)
+                                Text("Regular Expression").tag(4)
+                                Text("Exact").tag(3)
+                                Text("Never").tag(5)
+                            }
                         }
                     }
                 }
