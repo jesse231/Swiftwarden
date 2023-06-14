@@ -15,30 +15,31 @@ struct AddUrlList: View {
                 .font(.system(size: 10))
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 .foregroundColor(.gray)
-            ForEach(urls.indices, id: \.self) {index in
-                HStack {
-                    GroupBox {
-                        HStack {
-                            Button {
-                                urls.remove(at: index)
-                            } label: {
-                                Image(systemName: "minus.circle")
-                            }
-                            TextField("URL", text: $urls[index].uri)
-                                .textFieldStyle(.plain)
-                            Picker("", selection: Binding(
-                                get: { urls[index].match ?? -1 },
-                                set: { urls[index].match = ($0 == -1) ? nil : $0 }
-                            )) {
-                                Text("Default").tag(-1)
-                                Text("Base Domain").tag(0)
-                                Text("Host").tag(1)
-                                Text("Starts With").tag(2)
-                                Text("Regular Expression").tag(4)
-                                Text("Exact").tag(3)
-                                Text("Never").tag(5)
-                            }
+            GroupBox {
+                ForEach(urls.indices, id: \.self) {index in
+                    HStack {
+                        Button {
+                            urls.remove(at: index)
+                        } label: {
+                            Image(systemName: "minus.circle")
                         }
+                        TextField("URL", text: $urls[index].uri)
+                            .textFieldStyle(.plain)
+                        Picker("", selection: Binding(
+                            get: { urls[index].match ?? -1 },
+                            set: { urls[index].match = ($0 == -1) ? nil : $0 }
+                        )) {
+                            Text("Default").tag(-1)
+                            Text("Base Domain").tag(0)
+                            Text("Host").tag(1)
+                            Text("Starts With").tag(2)
+                            Text("Regular Expression").tag(4)
+                            Text("Exact").tag(3)
+                            Text("Never").tag(5)
+                        }
+                    }
+                    if index != urls.count - 1 {
+                        Divider()
                     }
                 }
             }
