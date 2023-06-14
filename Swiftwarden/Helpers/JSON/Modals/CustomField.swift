@@ -9,7 +9,7 @@ import Foundation
 struct CustomField: Codable & Hashable {
     var type: Int?
     var name, value: String?
-    var linkedID: JSONNull?
+    var linkedID: Int?
 
     enum CodingKeys: String, CodingKey {
         case type, name, value
