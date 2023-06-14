@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3B0486E02875018C007CCC5A /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0486DF2875018C007CCC5A /* Api.swift */; };
 		3B0A8E04296209830055DA2D /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A8E03296209830055DA2D /* Encryption.swift */; };
+		3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */; };
 		3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B194B052A37654400F6206D /* AddNewItem+Card.swift */; };
 		3B2C42022A0C581800720E43 /* EditingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42012A0C581800720E43 /* EditingField.swift */; };
 		3B2C42042A11C11500720E43 /* ItemView+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42032A11C11500720E43 /* ItemView+Editing.swift */; };
@@ -66,7 +67,7 @@
 		3BDEA7FB2A0591510007DFB4 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7FA2A0591510007DFB4 /* NukeExtensions */; };
 		3BDEA7FD2A0591510007DFB4 /* NukeUI in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7FC2A0591510007DFB4 /* NukeUI */; };
 		3BDEA7FF2A0591510007DFB4 /* NukeVideo in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7FE2A0591510007DFB4 /* NukeVideo */; };
-		3BF0BE802A38FCC200989419 /* CustomFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF0BE7F2A38FCC200989419 /* CustomFields.swift */; };
+		3BF0BE802A38FCC200989419 /* CustomFieldsEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */; };
 		3BF9B589296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
 		3BF9B58A296C9C180095B557 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
 		3BF9B58F296CC40B0095B557 /* Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BF9B58E296CC40B0095B557 /* Query.swift */; };
@@ -108,6 +109,7 @@
 /* Begin PBXFileReference section */
 		3B0486DF2875018C007CCC5A /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 		3B0A8E03296209830055DA2D /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
+		3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldsView.swift; sourceTree = "<group>"; };
 		3B112FB72982F9940018F53B /* SwCrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
 		3B194B052A37654400F6206D /* AddNewItem+Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+Card.swift"; sourceTree = "<group>"; };
 		3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftwardenDebug.entitlements; sourceTree = "<group>"; };
@@ -165,7 +167,7 @@
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
-		3BF0BE7F2A38FCC200989419 /* CustomFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFields.swift; sourceTree = "<group>"; };
+		3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldsEditView.swift; sourceTree = "<group>"; };
 		3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CryptoSwift.xcframework; sourceTree = "<group>"; };
 		3BF9B58E296CC40B0095B557 /* Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Query.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -310,7 +312,8 @@
 				3BD0746528A01FC000812AAB /* TestField.swift */,
 				3B2EC3C3296F27F6003A04A1 /* CardView.swift */,
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
-				3BF0BE7F2A38FCC200989419 /* CustomFields.swift */,
+				3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */,
+				3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -532,6 +535,7 @@
 			files = (
 				3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */,
 				3BC757AF2A031CDF0065CCF0 /* SecureNote.swift in Sources */,
+				3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */,
 				3BC757A32A031BFA0065CCF0 /* Domains.swift in Sources */,
 				3BC757A52A031BFA0065CCF0 /* Cipher.swift in Sources */,
 				3BC757A82A031BFA0065CCF0 /* Login.swift in Sources */,
@@ -553,7 +557,7 @@
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
 				3B0486E02875018C007CCC5A /* Api.swift in Sources */,
-				3BF0BE802A38FCC200989419 /* CustomFields.swift in Sources */,
+				3BF0BE802A38FCC200989419 /* CustomFieldsEditView.swift in Sources */,
 				3B2EC3D1296F3AC7003A04A1 /* AddNewItemPopup.swift in Sources */,
 				3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */,
 				3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */,

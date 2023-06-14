@@ -47,9 +47,8 @@ extension AddNewItemPopup {
                     Divider()
                     AddUrlList(urls: $uris)
                     Divider()
-                    CustomFields(fields: $fields)
+                    CustomFieldsEdit(fields: $fields)
                     Divider()
-//                    VStack {
                         Form {
                             Picker("Folder", selection: $selectedFolder) {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
@@ -65,10 +64,6 @@ extension AddNewItemPopup {
                         .scrollDisabled(true)
                         .formStyle(.grouped)
                         .scrollContentBackground(.hidden)
-//                    }
-//                    .background(.red)
-//                    Spacer()
-//                        .padding(.bottom)
                 }
         }
     }

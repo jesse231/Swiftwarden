@@ -64,7 +64,7 @@ struct ToggleItem: View {
     }
 }
 
-struct CustomFields: View {
+struct CustomFieldsEdit: View {
     @Binding var fields: [CustomField]
     @State var showOptions = false
     @State var option: String = ""
@@ -87,32 +87,39 @@ struct CustomFields: View {
                 .foregroundColor(.gray)
             ForEach(0..<fields.count, id: \.self) { index in
                 VStack {
-                    GroupBox{
-                        let name = Binding(
-                            get: { fields[index].name ?? "" },
-                            set: { fields[index].name = $0 }
-                        )
-                        let value = Binding(
-                            get: { fields[index].value ?? "" },
-                            set: { fields[index].value = $0 }
-                        )
-                        let type = fields[index].type
-                        if  type == 0 {
-                            TextItem(name: name, value: value)
-                        } else if type == 1 {
-                            TextItem(name: name, value: value, showButton: true)
-                        } else if type == 2 {
-                            let isOn = Binding<Bool>(
-                                get:
-                                    {return fields[index].value == "True"},
-                                set:{ fields[index].value = $0 ? "True" : "False"})
-                            ToggleItem(isOn: isOn, name: name)
-                        } else if type == 3 {
-                            let linked = Binding(
-                                get: { fields[index].linkedID ?? 100 as Int? },
-                                set: { fields[index].linkedID = $0 as Int? }
+                    HStack{
+                        Button {
+                            fields.remove(at: index)
+                        } label: {
+                            Image(systemName: "minus.circle")
+                        }
+                        GroupBox{
+                            let name = Binding(
+                                get: { fields[index].name ?? "" },
+                                set: { fields[index].name = $0 }
                             )
-                            LinkedItem(linked: linked, name: name)
+                            let value = Binding(
+                                get: { fields[index].value ?? "" },
+                                set: { fields[index].value = $0 }
+                            )
+                            let type = fields[index].type
+                            if  type == 0 {
+                                TextItem(name: name, value: value)
+                            } else if type == 1 {
+                                TextItem(name: name, value: value, showButton: true)
+                            } else if type == 2 {
+                                let isOn = Binding<Bool>(
+                                    get:
+                                        {return fields[index].value == "True"},
+                                    set:{ fields[index].value = $0 ? "True" : "False"})
+                                ToggleItem(isOn: isOn, name: name)
+                            } else if type == 3 {
+                                let linked = Binding(
+                                    get: { fields[index].linkedID ?? 100 as Int? },
+                                    set: { fields[index].linkedID = $0 as Int? }
+                                )
+                                LinkedItem(linked: linked, name: name)
+                            }
                         }
                     }
                 }
@@ -158,6 +165,6 @@ struct CustomFields: View {
 struct CustomFields_Previews: PreviewProvider {
     static var previews: some View {
         @State var custom: [CustomField] = [CustomField(type: 0), CustomField(type: 1), CustomField(type: 2), CustomField(type: 3)]
-        CustomFields(fields: $custom)
+        CustomFieldsEdit(fields: $custom)
     }
 }
