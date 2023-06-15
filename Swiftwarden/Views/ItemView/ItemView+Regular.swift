@@ -117,9 +117,11 @@ extension ItemView {
                         if let password = cipher?.login?.password {
                             Field(
                                 title: "Password",
-                                content: (showPassword ? password : String(repeating: "•", count: password.count)),
+                                content: password,
+                                secure: true,
+                                reprompt: $reprompt,
+                                showReprompt: $showReprompt,
                                 buttons: {
-                                    TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     Copy(content: password)
                                 })
                         }
@@ -137,6 +139,9 @@ extension ItemView {
                                 }
                             }
                         }
+                        if let fields = cipher?.fields {
+                            CustomFieldsView(fields)
+                        }
                     }
                     .padding(.trailing)
                 }
@@ -153,7 +158,7 @@ extension ItemView {
 }
 struct ItemViewRegularPreview: PreviewProvider {
     static var previews: some View {
-        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+        let cipher = Cipher(fields: [CustomField(type: 0, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
 
         Group {

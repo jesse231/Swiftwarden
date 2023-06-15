@@ -28,7 +28,6 @@ struct CustomFieldsView: View {
                             Copy(content: field.value ?? "")
                         })
                     }
-                    
                 }
             }.padding(.leading)
         

@@ -40,7 +40,7 @@ struct GeneratePasswordPopup: View {
     
     var body: some View {
         VStack {
-            Field(title: "Password", content: password, buttons: {Copy(content: password)}, monospaced: true )
+            Field(title: "Password", content: password, monospaced: true, buttons: {Copy(content: password)} )
                 .padding()
             Text("Password Length: \(Int(length))")
             Slider(value: $length, in: 5...128)

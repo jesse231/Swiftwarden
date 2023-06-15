@@ -96,9 +96,14 @@ struct RepromptPopup: View {
 
 struct TogglePassword: View {
     @Binding var showPassword: Bool
-    
     @Binding var reprompt: RepromptState
     @Binding var showReprompt: Bool
+    
+    init(showPassword: Binding<Bool>, reprompt: Binding<RepromptState>? = nil, showReprompt: Binding<Bool>? = nil) {
+        _showPassword = showPassword
+        _reprompt = reprompt ?? .constant(.none)
+        _showReprompt = showReprompt ?? .constant(false)
+    }
     
     var body: some View {
         Button {

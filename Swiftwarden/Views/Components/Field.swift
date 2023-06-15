@@ -6,9 +6,27 @@ import SwiftUI
 struct Field<Content: View>: View {
     var title: String
     var content: String
-    @ViewBuilder var buttons: Content
+    var secure: Bool = false
     var monospaced: Bool = false
-
+    @ViewBuilder var buttons: Content
+    @Binding var reprompt: RepromptState
+    @Binding var showReprompt: Bool
+    init(title: String,
+         content: String,
+         secure: Bool = false,
+         reprompt: Binding<RepromptState>? = nil,
+         showReprompt: Binding<Bool>? = nil,
+         monospaced: Bool = false,
+         @ViewBuilder buttons: () -> Content) {
+        self.title = title
+        self.content = content
+        self.secure = secure
+        self.monospaced = monospaced
+        self._reprompt = reprompt ?? .constant(.none)
+        self._showReprompt = showReprompt ?? .constant(false)
+        self.buttons = buttons()
+    }
+    @State private var showPassword: Bool = false
     @State private var isHovered = false
 
     var body: some View {
@@ -18,14 +36,24 @@ struct Field<Content: View>: View {
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .foregroundColor(.gray)
-                Text(content)
-                    .font(monospaced ? .system(size: 15, design: .monospaced) : .system(size: 15))
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                if !secure || showPassword {
+                    Text(content)
+                        .font(monospaced ? .system(size: 15, design: .monospaced) : .system(size: 15))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                } else {
+                    Text(String(repeating: "•", count: content.count))
+                        .font(monospaced ? .system(size: 15, design: .monospaced) : .system(size: 15))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                
+                }
             }
             .padding()
             
             if isHovered {
                 HStack {
+                    if secure {
+                        TogglePassword(showPassword: $showPassword, reprompt: reprompt != .none ? $reprompt : nil )
+                    }
                     buttons
                         .buttonStyle(.plain)
                 }
@@ -59,8 +87,21 @@ struct FieldPreview: PreviewProvider {
                 label: {
                     Image(systemName: "square.and.pencil")
                 }
-                // .padding(.trailing)
-
+            })
+            Field(title: "Password",
+                  content: "test",
+                  secure: true,
+                  buttons: {
+                Button {
+                }
+                label: {
+                    Image(systemName: "square.and.pencil")
+                }
+                Button {
+                }
+                label: {
+                    Image(systemName: "square.and.pencil")
+                }
             })
         }
     }
