@@ -46,40 +46,16 @@ struct GeneratePasswordPopup: View {
             Slider(value: $length, in: 5...128)
                 .padding()
             Divider()
-            ScrollView {
                 VStack {
-                    HStack {
-                        Text("Capital Letters (A-Z)")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("", isOn: $upperCase).labelsHidden()
+                    Form {
+                        Toggle("Capital Letters (A-Z)", isOn: $upperCase)
+                        Toggle("Lowercase Letters (a-z)", isOn: $lowerCase)
+                        Toggle("Numbers (0-9)", isOn: $numbers)
+                        Toggle("Special Characters (!@#$%^&*)", isOn: $specialChar)
                     }
-                    .padding()
-                    HStack {
-                        Text("Lowercase Letters (a-z)")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("", isOn: $lowerCase).labelsHidden()
-                    }
-                    .padding()
-                    HStack {
-                        Text("Numbers (0-9)")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("", isOn: $numbers).labelsHidden()
-                    }
-                    .padding()
-                    HStack {
-                        Text("Special Characters (!@#$%^&*)")
-                            .frame(alignment: .trailing)
-                            .foregroundColor(.gray)
-                        Spacer()
-                        Toggle("", isOn: $specialChar).labelsHidden()
-                    }
-                    .padding()
+                    .formStyle(.grouped)
+                    .scrollDisabled(true)
+                    .scrollContentBackground(.hidden)
                     Spacer()
                     HStack {
                         Button {
@@ -96,46 +72,43 @@ struct GeneratePasswordPopup: View {
                             Text("Use")
                         }
                     }
+                    .padding()
                 }
                 .padding(.leading)
                 .padding(.trailing)
-            }
-            .frame(maxWidth: .infinity)
-            //.padding()
-            .alert(isPresented: $showAlert) {
-                Alert(title: Text("Overwrite Password"), message: Text("Are you sure you want to overwrite your current password?"),
-                      primaryButton: .default(Text("Overwrite"), action: {
-                    show = false
-                    switchPassword = true
-                }),
-                      secondaryButton: .cancel(Text("Cancel")))
-            }
-            .onChange(of: Options(length: Int(length), upperCase: upperCase, lowerCase: lowerCase, numbers: numbers, specialChar: specialChar)) { options in
-                
-                do {
-                    if !(options.lowerCase || options.upperCase || options.numbers || options.specialChar) {
-                        lowerCase = true
-                    }
-                    password = try Generator.makePassword(size: options.length, upper: upperCase, lower: lowerCase, num: numbers, special: specialChar)
-                } catch {
-                    print(error)
-                }
-            }
-            .onAppear {
-                do {
-                    password = try Generator.makePassword(size: Int(length))
-                } catch {
-                    print(error)
-                }
-            }
-            .onDisappear {
-                if switchPassword {
-                    change = password
-                }
-            }
-            .padding()
         }
-        .frame(width: 400, height: 500)
+        .frame(width: 400, height: 430)
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Overwrite Password"), message: Text("Are you sure you want to overwrite your current password?"),
+                  primaryButton: .default(Text("Overwrite"), action: {
+                show = false
+                switchPassword = true
+            }),
+                  secondaryButton: .cancel(Text("Cancel")))
+        }
+        .onChange(of: Options(length: Int(length), upperCase: upperCase, lowerCase: lowerCase, numbers: numbers, specialChar: specialChar)) { options in
+            
+            do {
+                if !(options.lowerCase || options.upperCase || options.numbers || options.specialChar) {
+                    lowerCase = true
+                }
+                password = try Generator.makePassword(size: options.length, upper: upperCase, lower: lowerCase, num: numbers, special: specialChar)
+            } catch {
+                print(error)
+            }
+        }
+        .onAppear {
+            do {
+                password = try Generator.makePassword(size: Int(length))
+            } catch {
+                print(error)
+            }
+        }
+        .onDisappear {
+            if switchPassword {
+                change = password
+            }
+        }
     }
         
 }
@@ -155,6 +128,15 @@ struct GeneratePasswordButton: View {
         .sheet(isPresented: $showPopup) {
             GeneratePasswordPopup(show: $showPopup, change: $password)
         }
+    }
+}
+
+
+// Preview
+struct GeneratePasswordButton_Previews: PreviewProvider {
+    static var previews: some View {
+        GeneratePasswordPopup(show: .constant(true), change: .constant(""))
+    
     }
 }
 
