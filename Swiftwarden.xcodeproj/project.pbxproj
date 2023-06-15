@@ -265,7 +265,7 @@
 			children = (
 				3B3E48412870F673000D0D0C /* Swiftwarden.swift */,
 				3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */,
-				3BB5594029B1A26800AB9DAC /* Models */,
+				3BB5594029B1A26800AB9DAC /* Classes */,
 				3B2EC3CD296F389E003A04A1 /* Views */,
 				3BF9B58D296CC3FC0095B557 /* Helpers */,
 				3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */,
@@ -336,17 +336,17 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
-		3BB5594029B1A26800AB9DAC /* Models */ = {
+		3BB5594029B1A26800AB9DAC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
 				3BB5594129B1A27400AB9DAC /* User.swift */,
 				3B5865152A05A87400A39868 /* SaveData.swift */,
 				3B0486DF2875018C007CCC5A /* Api.swift */,
 			);
-			path = Models;
+			path = Classes;
 			sourceTree = "<group>";
 		};
-		3BC7578F2A031BE20065CCF0 /* Modals */ = {
+		3BC7578F2A031BE20065CCF0 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				3BC757AA2A031C3C0065CCF0 /* Card.swift */,
@@ -367,13 +367,13 @@
 				3BC757AE2A031CDF0065CCF0 /* SecureNote.swift */,
 				3BC757912A031BF90065CCF0 /* Uris.swift */,
 			);
-			path = Modals;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		3BDEA75B2A0480240007DFB4 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				3BC7578F2A031BE20065CCF0 /* Modals */,
+				3BC7578F2A031BE20065CCF0 /* Models */,
 				3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */,
 				3BDEA75C2A0480870007DFB4 /* Parser.swift */,
 			);
