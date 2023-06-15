@@ -124,40 +124,43 @@ struct CustomFieldsEdit: View {
                     }
                 }
             }
-            Button {
-                showOptions = true
+//            Button {
+//                showOptions = true
+//            } label: {
+//                Label("Add Field", systemImage: "plus")
+//            }
+            Menu {
+                Button {
+                    fields.append(CustomField(type: 0))
+                    showOptions = false
+                } label: {
+                    Text("Text")
+                }
+                Button {
+                    fields.append(CustomField(type: 1))
+                    showOptions = false
+                } label: {
+                    Text("Hidden")
+                }
+                Button {
+                    fields.append(CustomField(type: 2))
+                    showOptions = false
+                } label: {
+                    Text("Boolean")
+                }
+                Button {
+                    fields.append(CustomField(type: 3))
+                    showOptions = false
+                } label: {
+                    Text("Linked")
+                }
             } label: {
                 Label("Add Field", systemImage: "plus")
             }
-            .popover(isPresented: $showOptions) {
-                Group{
-                    Button {
-                        fields.append(CustomField(type: 0))
-                        showOptions = false
-                    } label: {
-                        Text("Text")
-                    }
-                    Button {
-                        fields.append(CustomField(type: 1))
-                        showOptions = false
-                    } label: {
-                        Text("Hidden")
-                    }
-                    Button {
-                        fields.append(CustomField(type: 2))
-                        showOptions = false
-                    } label: {
-                        Text("Boolean")
-                    }
-                    Button {
-                        fields.append(CustomField(type: 3))
-                        showOptions = false
-                    } label: {
-                        Text("Linked")
-                    }
-                }
-                .padding()
-            }
+            .frame(width: 100, height: 50, alignment: .center)
+            .padding()
+            .menuStyle(.button)
+            .menuIndicator(.hidden)
         }
     }
 }
