@@ -39,7 +39,6 @@
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
-		3BB5594229B1A27400AB9DAC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB5594129B1A27400AB9DAC /* User.swift */; };
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
@@ -60,6 +59,7 @@
 		3BC757B12A031D3B0065CCF0 /* Organization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757B02A031D3B0065CCF0 /* Organization.swift */; };
 		3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */; };
 		3BC757B52A0321D40065CCF0 /* PreLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757B42A0321D40065CCF0 /* PreLogin.swift */; };
+		3BC8C2912A3B944A004B2B14 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2902A3B944A004B2B14 /* User.swift */; };
 		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
@@ -143,7 +143,6 @@
 		3B521F332A1AB1680086E507 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
-		3BB5594129B1A27400AB9DAC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = User.swift; path = Swiftwarden/Models/User.swift; sourceTree = SOURCE_ROOT; };
 		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
@@ -164,6 +163,7 @@
 		3BC757B02A031D3B0065CCF0 /* Organization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Organization.swift; sourceTree = "<group>"; };
 		3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSchemaSupport.swift; sourceTree = "<group>"; };
 		3BC757B42A0321D40065CCF0 /* PreLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLogin.swift; sourceTree = "<group>"; };
+		3BC8C2902A3B944A004B2B14 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
@@ -339,7 +339,7 @@
 		3BB5594029B1A26800AB9DAC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				3BB5594129B1A27400AB9DAC /* User.swift */,
+				3BC8C2902A3B944A004B2B14 /* User.swift */,
 				3B5865152A05A87400A39868 /* SaveData.swift */,
 				3B0486DF2875018C007CCC5A /* Api.swift */,
 			);
@@ -574,12 +574,12 @@
 				3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */,
 				3B2CF2682A13DE4D00E3D16F /* Icon.swift in Sources */,
 				3BC757A92A031BFA0065CCF0 /* Profile.swift in Sources */,
+				3BC8C2912A3B944A004B2B14 /* User.swift in Sources */,
 				3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */,
 				3B2EC3C4296F27F6003A04A1 /* CardView.swift in Sources */,
 				3BC757A02A031BFA0065CCF0 /* Folder.swift in Sources */,
 				3BC757B52A0321D40065CCF0 /* PreLogin.swift in Sources */,
 				3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */,
-				3BB5594229B1A27400AB9DAC /* User.swift in Sources */,
 				3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */,
 				3BC757B12A031D3B0065CCF0 /* Organization.swift in Sources */,
 				3B2C42042A11C11500720E43 /* ItemView+Editing.swift in Sources */,
