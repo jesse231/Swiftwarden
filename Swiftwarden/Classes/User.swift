@@ -103,6 +103,17 @@ class User: ObservableObject {
                      }
                  }
              }
+             if let fields = dec.fields {
+                    for (i, field) in fields.enumerated() {
+                        if let name = field.name {
+                            dec.fields?[i].name = String(bytes: try Encryption.decrypt(decKey: key, str: name), encoding: .utf8)
+                        }
+                        if let value = field.value {
+                            dec.fields?[i].value = String(bytes: try Encryption.decrypt(decKey: key, str: value), encoding: .utf8)
+                        }
+                    }
+             }
+             
              if let card = dec.card {
                  dec.card?.brand = String(bytes: try Encryption.decrypt(str: card.brand ??  ""), encoding: .utf8) ?? card.brand
                  dec.card?.cardHolderName = String(bytes: try Encryption.decrypt(str: card.cardHolderName ??  ""), encoding: .utf8) ?? card.cardHolderName

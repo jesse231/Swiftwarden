@@ -163,25 +163,34 @@ class Encryption {
     }
 
     static func encryptCipher(cipher: Cipher) throws -> Cipher {
-        var dec = cipher
-        dec.name = try Encryption.encrypt(str: cipher.name ?? "")
-        if let pass = dec.login?.password {
-            dec.login?.password = try encrypt(str: pass)
+        var enc = cipher
+        enc.name = try Encryption.encrypt(str: cipher.name ?? "")
+        if let pass = enc.login?.password {
+            enc.login?.password = try encrypt(str: pass)
         }
-        if let user = dec.login?.username {
-            dec.login?.username = try encrypt(str: user)
-        }
-
-        if let uri = dec.login?.uri {
-            dec.login?.uri = try encrypt(str: uri)
+        if let user = enc.login?.username {
+            enc.login?.username = try encrypt(str: user)
         }
 
-        if let uris = dec.login?.uris {
+        if let uri = enc.login?.uri {
+            enc.login?.uri = try encrypt(str: uri)
+        }
+
+        if let uris = enc.login?.uris {
             for (i, uri) in uris.enumerated() {
-                dec.login?.uris?[i].uri = try encrypt(str: uri.uri)
+                enc.login?.uris?[i].uri = try encrypt(str: uri.uri)
             }
         }
-        return dec
+        if let fields = enc.fields {
+            for (i, field) in fields.enumerated() {
+                enc.fields?[i].name = try encrypt(str: field.name ?? "")
+                if let value = enc.fields?[i].value {
+                    enc.fields?[i].value = try encrypt(str: value ?? "")
+                }
+            }
+        }
+        
+        return enc
     }
 
     static func decryptCipher(data: Cipher) throws -> Cipher {
