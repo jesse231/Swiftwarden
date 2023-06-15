@@ -11,6 +11,8 @@ extension AddNewItemPopup {
     struct AddPassword: View {
         var account: Account
         @Binding var name: String
+        @Binding var show: Bool
+        
         @State var username = ""
         @State var password = ""
         
@@ -20,35 +22,39 @@ extension AddNewItemPopup {
         @State var uris: [Uris] = [Uris(url: "")]
         @State var fields: [CustomField] = []
         @State var selectedFolder: Folder
-        init(account: Account, name: Binding<String>) {
+        init(account: Account, name: Binding<String>, show: Binding<Bool>) {
             self.account = account
             self._name = name
             _selectedFolder = State(initialValue: account.user.getFolders()[0])
+            _show = show
         }
         
+        
         var body: some View {
-                VStack{
-                    GroupBox {
-                        TextField("Name", text: $name)
-                            .textFieldStyle(.plain)
-                            .padding(8)
-                    }
-                    .padding(.bottom, 4)
-                    GroupBox {
-                        TextField("Username", text: $username)
-                            .textFieldStyle(.plain)
-                            .padding(8)
-                    }.padding(.bottom, 4)
-                    GroupBox {
-                        SecureField("Password", text: $password)
-                            .textFieldStyle(.plain)
-                            .padding(8)
-                    }.padding(.bottom, 12)
-                    Divider()
-                    AddUrlList(urls: $uris)
-                    Divider()
-                    CustomFieldsEdit(fields: $fields)
-                    Divider()
+            VStack {
+                ScrollView {
+                    VStack{
+                        GroupBox {
+                            TextField("Name", text: $name)
+                                .textFieldStyle(.plain)
+                                .padding(8)
+                        }
+                        .padding(.bottom, 4)
+                        GroupBox {
+                            TextField("Username", text: $username)
+                                .textFieldStyle(.plain)
+                                .padding(8)
+                        }.padding(.bottom, 4)
+                        GroupBox {
+                            SecureField("Password", text: $password)
+                                .textFieldStyle(.plain)
+                                .padding(8)
+                        }.padding(.bottom, 12)
+                        Divider()
+                        AddUrlList(urls: $uris)
+                        Divider()
+                        CustomFieldsEdit(fields: $fields)
+                        Divider()
                         Form {
                             Picker("Folder", selection: $selectedFolder) {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
@@ -64,7 +70,47 @@ extension AddNewItemPopup {
                         .scrollDisabled(true)
                         .formStyle(.grouped)
                         .scrollContentBackground(.hidden)
+                    }
+                    .padding()
                 }
+                HStack{
+                    Button {
+                        show = false
+                    } label: {
+                        Text("Cancel")
+                    }
+                    Spacer()
+                    Button {
+                        Task {
+                            let url = uris.first?.uri
+                            let newCipher = Cipher(
+                                favorite: favorite,
+                                fields: fields,
+                                folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
+                                login: Login(
+                                    password: password != "" ? password : nil,
+                                    uri: url,
+                                    uris: uris,
+                                    username: username != "" ? username : nil),
+                                name: name,
+                                reprompt: reprompt ? 1 : 0,
+                                type: 1
+                            )
+                            do {
+                                self.account.selectedCipher =
+                                try await account.user.addCipher(cipher: newCipher)
+                            }
+                            catch {
+                                print(error)
+                            }
+                            
+                        }
+                        show = false
+                    } label: {
+                        Text("Save")
+                    }
+                }
+            }
         }
     }
 }
