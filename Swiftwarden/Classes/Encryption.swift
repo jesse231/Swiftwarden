@@ -191,6 +191,9 @@ class Encryption {
                 }
             }
         }
+        if let notes = enc.notes {
+            enc.notes = try encrypt(str: notes)
+        }
         
         return enc
     }

@@ -18,14 +18,14 @@ extension ItemView {
         
         
         @State var name: String
-
+        
         @State var username: String
         @State var password: String
         @State var url: String
-
+        
         @State var folder: Folder// = Folder(id: "", name: "")
         @State var reprompt: RepromptState// = false
-
+        
         @State var uris: [Uris] // = [Uris(url: "")]
         
         @State var showReprompt: Bool = false
@@ -48,7 +48,7 @@ extension ItemView {
             _editing = editing
             _account = StateObject(wrappedValue: account)
         }
-
+        
         
         func edit () async throws {
             let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
@@ -77,7 +77,8 @@ extension ItemView {
         }
         
         var body: some View {
-                Group {
+            Group {
+                VStack {
                     HStack {
                         Button {
                             self.editing = false
@@ -94,24 +95,24 @@ extension ItemView {
                             Text("Done")
                         }
                     }
+                    HStack {
+                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        VStack {
+                            TextField("No Name", text: $name)
+                                .font(.system(size: 15))
+                                .fontWeight(.semibold)
+                                .textFieldStyle(.plain)
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                                .padding(.bottom, -5)
+                            Text(verbatim: "Login")
+                                .font(.system(size: 10))
+                                .frame(maxWidth: .infinity, alignment: .topLeading)
+                        }
+                        FavoriteButton(cipher: $cipher, account: account)
+                    }
+                    Divider()
                     ScrollView {
                         VStack {
-                            HStack {
-                                Icon(hostname: extractHost(cipher: cipher), account: account)
-                                VStack {
-                                    TextField("No Name", text: $name)
-                                        .font(.system(size: 15))
-                                        .fontWeight(.semibold)
-                                        .textFieldStyle(.plain)
-                                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                                        .padding(.bottom, -5)
-                                    Text(verbatim: "Login")
-                                        .font(.system(size: 10))
-                                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                                }
-                                FavoriteButton(cipher: $cipher, account: account)
-                            }
-                            Divider()
                             EditingField(title: "Username", text: $username) {
                             }
                             .padding()
@@ -126,35 +127,62 @@ extension ItemView {
                                     TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     GeneratePasswordButton(password: $password)
                                 }.padding()
-//                                    .animation(.default)
                             }
+                            Divider()
                             AddUrlList(urls: $uris)
-                            .padding()
-
-                            Picker(selection: $folder, label: Text("Folder")) {
-                                ForEach(account.user.getFolders(), id: \.self) {folder in
-                                    Text(folder.name)
+                                .padding()
+                            Divider()
+                            CustomFieldsEdit(fields: Binding<[CustomField]>(
+                                get: {
+                                    return cipher?.fields ?? []
+                                },
+                                set: { newValue in
+                                    cipher?.fields = newValue
                                 }
-                            }.padding()
-                            HStack {
-                                Text("Master Password Re-prompt")
-                                    .frame(alignment: .trailing)
-                                Spacer()
-                                Toggle("", isOn: Binding<Bool>(
-                                                get: {
-                                                    return self.reprompt.reprompt()
-                                                },
-                                                set: { newValue in
-                                                    self.reprompt = newValue ? .require : .none
-                                                }
-                                            ))
-                            }.padding()
+                            ))
+                            NotesEditView(Binding<String>(
+                                get: {
+                                    return cipher?.notes ?? ""
+                                },
+                                set: { newValue in
+                                    cipher?.notes = newValue
+                                }
+                            ))
+                            Divider()
+                            Form {
+                                Picker(selection: $folder, label: Text("Folder")) {
+                                    ForEach(account.user.getFolders(), id: \.self) {folder in
+                                        Text(folder.name)
+                                    }
+                                }
+                                Toggle("Favorite", isOn: Binding<Bool>(
+                                    get: {
+                                        return self.cipher?.favorite ?? false
+                                    },
+                                    set: { newValue in
+                                        self.cipher?.favorite = newValue
+                                    }
+                                )
+                                )
+                                Toggle("Master Password Re-prompt", isOn: Binding<Bool>(
+                                    get: {
+                                        return self.reprompt.reprompt()
+                                    },
+                                    set: { newValue in
+                                        self.reprompt = newValue ? .require : .none
+                                    }
+                                ))
+                                
+                            }
+                            .formStyle(.grouped)
+                            .scrollContentBackground(.hidden)
                         }
                         .padding(.trailing)
                         .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
                 }
+            }
         }
     }
 }
@@ -163,12 +191,12 @@ struct ItemViewEditingPreview: PreviewProvider {
     static var previews: some View {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
-
+        
         Group {
-//            ItemView(cipher: cipher, favorite: true, editing: true, reprompt: <#RepromptState#>)
-//                .environmentObject(account)
-//            ItemView(cipher: cipher, favorite: true, editing: false)
-//                .environmentObject(account)
+            //            ItemView(cipher: cipher, favorite: true, editing: true, reprompt: <#RepromptState#>)
+            //                .environmentObject(account)
+            //            ItemView(cipher: cipher, favorite: true, editing: false)
+            //                .environmentObject(account)
         }
     }
 }

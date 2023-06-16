@@ -61,6 +61,7 @@ extension ItemView {
         
         var body: some View {
             Group{
+            VStack {
                 HStack {
                     if cipher?.deletedDate == nil {
                         Button {
@@ -87,9 +88,8 @@ extension ItemView {
                         }
                     }
                 }
+                .padding(.bottom)
                 
-                ScrollView {
-                    VStack {
                         HStack {
                             Icon(hostname: extractHost(cipher: cipher), account: account)
                             VStack {
@@ -105,43 +105,54 @@ extension ItemView {
                             FavoriteButton(cipher: $cipher, account: account)
 
                         }
+                        .padding([.leading,.trailing], 5)
                         Divider()
-                        if let username = cipher?.login?.username {
-                            Field(
-                                title: "Username",
-                                content: username,
-                                buttons: {
-                                    Copy(content: username)
-                                })
-                        }
-                        if let password = cipher?.login?.password {
-                            Field(
-                                title: "Password",
-                                content: password,
-                                secure: true,
-                                reprompt: $reprompt,
-                                showReprompt: $showReprompt,
-                                buttons: {
-                                    Copy(content: password)
-                                })
-                        }
-                        if let uris = cipher?.login?.uris {
-                            ForEach(uris, id: \.self.id) { uri in
-                                let url = uri.uri
-                                if url != "" {
-                                    Field(
-                                        title: "Website",
-                                        content: extractHostURI(uri: url),
-                                        buttons: {
-                                            Open(link: url)
-                                            Copy(content: url)
-                                        })
+                    .padding([.leading,.trailing], 5)
+                    ScrollView {
+                        Group {
+                            if let username = cipher?.login?.username {
+                                Field(
+                                    title: "Username",
+                                    content: username,
+                                    buttons: {
+                                        Copy(content: username)
+                                    })
+                            }
+                            if let password = cipher?.login?.password {
+                                Field(
+                                    title: "Password",
+                                    content: password,
+                                    secure: true,
+                                    reprompt: $reprompt,
+                                    showReprompt: $showReprompt,
+                                    buttons: {
+                                        Copy(content: password)
+                                    })
+                            }
+                            if let uris = cipher?.login?.uris {
+                                ForEach(uris, id: \.self.id) { uri in
+                                    if let url = uri.uri {
+                                        if url != "" {
+                                            Field(
+                                                title: "Website",
+                                                content: extractHostURI(uri: url),
+                                                buttons: {
+                                                    Open(link: url)
+                                                    Copy(content: url)
+                                                })
+                                        }
+                                    }
                                 }
                             }
+                            if let fields = cipher?.fields {
+                                CustomFieldsView(fields)
+                            }
+                            
+                            if let notes = cipher?.notes {
+                                Field(title: "Note", content: notes, buttons: {})
+                            }
                         }
-                        if let fields = cipher?.fields {
-                            CustomFieldsView(fields)
-                        }
+                        .padding([.trailing])
                     }
                     .padding(.trailing)
                 }
@@ -159,10 +170,16 @@ extension ItemView {
 struct ItemViewRegularPreview: PreviewProvider {
     static var previews: some View {
         let cipher = Cipher(fields: [CustomField(type: 0, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
+        
+        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 0, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
+        
         let account = Account()
 
         Group {
             ItemView(cipher: cipher)
+                .environmentObject(account)
+            // Deleted
+            ItemView(cipher: cipherDeleted)
                 .environmentObject(account)
         }
     }

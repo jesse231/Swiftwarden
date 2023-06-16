@@ -97,8 +97,7 @@ class User: ObservableObject {
 
              if let uris = dec.login?.uris {
                  for (i, uri) in uris.enumerated() {
-                     let uri = uri.uri
-                     if let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
+                     if let uri = uri.uri, let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
                          dec.login?.uris?[i].uri = decrypt
                      }
                  }
@@ -112,6 +111,10 @@ class User: ObservableObject {
                             dec.fields?[i].value = String(bytes: try Encryption.decrypt(decKey: key, str: value), encoding: .utf8)
                         }
                     }
+             }
+             
+             if let notes = dec.notes {
+                 dec.notes = String(bytes: try Encryption.decrypt(decKey: key, str: notes), encoding: .utf8)
              }
              
              if let card = dec.card {

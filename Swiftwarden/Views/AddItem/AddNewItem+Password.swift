@@ -16,12 +16,14 @@ extension AddNewItemPopup {
         @State var username = ""
         @State var password = ""
         
-        @State var favorite = false
-        @State var reprompt = false
-        
         @State var uris: [Uris] = [Uris(url: "")]
         @State var fields: [CustomField] = []
+        @State var notes: String = ""
+        
+        @State var favorite = false
+        @State var reprompt = false
         @State var selectedFolder: Folder
+        
         init(account: Account, name: Binding<String>, show: Binding<Bool>) {
             self.account = account
             self._name = name
@@ -34,27 +36,31 @@ extension AddNewItemPopup {
             VStack {
                 ScrollView {
                     VStack{
-                        GroupBox {
-                            TextField("Name", text: $name)
-                                .textFieldStyle(.plain)
-                                .padding(8)
+                        Group {
+                            GroupBox {
+                                TextField("Name", text: $name)
+                                    .textFieldStyle(.plain)
+                                    .padding(8)
+                            }
+                            .padding(.bottom, 4)
+                            GroupBox {
+                                TextField("Username", text: $username)
+                                    .textFieldStyle(.plain)
+                                    .padding(8)
+                            }.padding(.bottom, 4)
+                            GroupBox {
+                                SecureField("Password", text: $password)
+                                    .textFieldStyle(.plain)
+                                    .padding(8)
+                            }.padding(.bottom, 12)
+                            Divider()
+                            AddUrlList(urls: $uris)
+                            Divider()
+                            CustomFieldsEdit(fields: $fields)
+                            Divider()
+                            NotesEditView($notes)
+                            Divider()
                         }
-                        .padding(.bottom, 4)
-                        GroupBox {
-                            TextField("Username", text: $username)
-                                .textFieldStyle(.plain)
-                                .padding(8)
-                        }.padding(.bottom, 4)
-                        GroupBox {
-                            SecureField("Password", text: $password)
-                                .textFieldStyle(.plain)
-                                .padding(8)
-                        }.padding(.bottom, 12)
-                        Divider()
-                        AddUrlList(urls: $uris)
-                        Divider()
-                        CustomFieldsEdit(fields: $fields)
-                        Divider()
                         Form {
                             Picker("Folder", selection: $selectedFolder) {
                                 ForEach(account.user.getFolders(), id: \.self) {folder in
@@ -93,6 +99,7 @@ extension AddNewItemPopup {
                                     uris: uris,
                                     username: username != "" ? username : nil),
                                 name: name,
+                                notes: notes != "" ? notes : nil,
                                 reprompt: reprompt ? 1 : 0,
                                 type: 1
                             )
