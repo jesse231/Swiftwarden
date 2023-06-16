@@ -7,7 +7,7 @@ import Foundation
 
 // MARK: - Uris
 struct Uris: Codable & Hashable & Identifiable {
-    var uri: String
+    var uri: String?
     var match: Int?
     var id: UUID = ID()
 

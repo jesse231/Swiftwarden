@@ -23,7 +23,11 @@ struct AddUrlList: View {
                         } label: {
                             Image(systemName: "minus.circle")
                         }
-                        TextField("URL", text: $urls[index].uri)
+                        let binding = Binding(
+                            get: { urls[index].uri ?? ""},
+                            set: { urls[index].uri = $0 }
+                        )
+                        TextField("URL", text: binding)
                             .textFieldStyle(.plain)
                         Picker("", selection: Binding(
                             get: { urls[index].match ?? -1 },
