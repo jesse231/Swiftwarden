@@ -60,6 +60,7 @@
 		3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */; };
 		3BC757B52A0321D40065CCF0 /* PreLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757B42A0321D40065CCF0 /* PreLogin.swift */; };
 		3BC8C2912A3B944A004B2B14 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2902A3B944A004B2B14 /* User.swift */; };
+		3BC8C2952A3CDDF3004B2B14 /* NotesEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */; };
 		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
@@ -164,6 +165,7 @@
 		3BC757B22A0320280065CCF0 /* JSONSchemaSupport.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSchemaSupport.swift; sourceTree = "<group>"; };
 		3BC757B42A0321D40065CCF0 /* PreLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLogin.swift; sourceTree = "<group>"; };
 		3BC8C2902A3B944A004B2B14 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditView.swift; sourceTree = "<group>"; };
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
@@ -314,6 +316,7 @@
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 				3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */,
 				3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */,
+				3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				3BC8C2902A3B944A004B2B14 /* User.swift */,
 				3B5865152A05A87400A39868 /* SaveData.swift */,
 				3B0486DF2875018C007CCC5A /* Api.swift */,
+				3B0A8E03296209830055DA2D /* Encryption.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -385,7 +389,6 @@
 			children = (
 				3BDEA75B2A0480240007DFB4 /* JSON */,
 				3B112FB72982F9940018F53B /* SwCrypt.swift */,
-				3B0A8E03296209830055DA2D /* Encryption.swift */,
 				3BF9B58E296CC40B0095B557 /* Query.swift */,
 				3BBF9C852A0827720058E82E /* Biometric.swift */,
 				3B321EDE2A16E1F2006B0DEA /* Generator.swift */,
@@ -537,6 +540,7 @@
 				3BC757AF2A031CDF0065CCF0 /* SecureNote.swift in Sources */,
 				3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */,
 				3BC757A32A031BFA0065CCF0 /* Domains.swift in Sources */,
+				3BC8C2952A3CDDF3004B2B14 /* NotesEditView.swift in Sources */,
 				3BC757A52A031BFA0065CCF0 /* Cipher.swift in Sources */,
 				3BC757A82A031BFA0065CCF0 /* Login.swift in Sources */,
 				3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */,

@@ -178,14 +178,16 @@ class Encryption {
 
         if let uris = enc.login?.uris {
             for (i, uri) in uris.enumerated() {
-                enc.login?.uris?[i].uri = try encrypt(str: uri.uri)
+                if let uri = uri.uri {
+                    enc.login?.uris?[i].uri = try encrypt(str: uri)
+                }
             }
         }
         if let fields = enc.fields {
             for (i, field) in fields.enumerated() {
                 enc.fields?[i].name = try encrypt(str: field.name ?? "")
                 if let value = enc.fields?[i].value {
-                    enc.fields?[i].value = try encrypt(str: value ?? "")
+                    enc.fields?[i].value = try encrypt(str: value)
                 }
             }
         }
@@ -206,7 +208,9 @@ class Encryption {
 
              if let uris = dec.login?.uris {
                  for (i, uri) in uris.enumerated() {
-                     dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri.uri), encoding: .utf8) ?? uri.uri
+                     if let uri = uri.uri {
+                         dec.login?.uris?[i].uri = String(bytes: try decrypt(str: uri), encoding: .utf8) ?? uri
+                     }
                  }
              }
              if let card = dec.card {
