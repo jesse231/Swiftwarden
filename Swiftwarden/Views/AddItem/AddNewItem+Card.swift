@@ -11,7 +11,7 @@ extension AddNewItemPopup {
     struct AddCard: View {
         var account: Account
         @Binding var name: String
-        @Binding var show: Bool
+        @Binding var itemType: ItemType?
         
         @State private var cardholderName = ""
         @State private var number = ""
@@ -127,9 +127,9 @@ extension AddNewItemPopup {
                     }
                     .padding()
                 }
-                HStack{
+                HStack {
                     Button {
-                        show = false
+                        itemType = nil
                     } label: {
                         Text("Cancel")
                     }
@@ -164,7 +164,7 @@ extension AddNewItemPopup {
                             }
                             
                         }
-                        show = false
+                        itemType = nil
                     } label: {
                         Text("Save")
                     }
@@ -177,7 +177,7 @@ extension AddNewItemPopup {
 
 struct AddNewItem_Card_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewItemPopup.AddCard(account: Account(), name: .constant("New Card"), show: .constant(true))
+        AddNewItemPopup.AddCard(account: Account(), name: .constant("New Card"), itemType: .constant(.card))
             .padding()
     }
 }

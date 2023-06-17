@@ -2,14 +2,12 @@ import SwiftUI
 
 struct AddNewItemPopup: View {
     @EnvironmentObject var account: Account
-    @Binding var show: Bool
+    @Binding var itemType: ItemType?
     @State private var name = ""
     private var defaultName: String
-    @State var itemType: ItemType
-    init(show: Binding<Bool>, itemType: ItemType) {
-        self._show = show
-        self.itemType = itemType
-        switch itemType {
+    init(itemType: Binding<ItemType?>) {
+        self._itemType = itemType
+        switch itemType.wrappedValue {
             case .password:
                 self.defaultName = "New Password"
             case .card:
@@ -20,6 +18,8 @@ struct AddNewItemPopup: View {
                 self.defaultName = "New Note"
             case .folder:
                 self.defaultName = "New Folder"
+            case .none:
+                self.defaultName = "Error"
         }
     
     }
@@ -32,11 +32,12 @@ struct AddNewItemPopup: View {
                 Text(defaultName).font(.title).bold()
             }
             Divider()
-            switch itemType {
+            if let itemType {
+                switch itemType {
                 case .password:
-                    AddPassword(account: account, name: $name, show: $show)
+                    AddPassword(account: account, name: $name, itemType: self.$itemType)
                 case .card:
-                    AddCard(account: account, name: $name, show: $show)
+                    AddCard(account: account, name: $name, itemType: self.$itemType)
                 case .identity:
                     Text("identity")
                 case .secureNote:
@@ -45,6 +46,7 @@ struct AddNewItemPopup: View {
                     Text("folder")
                 }
             }
+        }
         .padding()
         .frame(width: 500, height: 500)
     }
@@ -54,8 +56,8 @@ struct AddNewItemPopup: View {
             var account: Account = Account()
             static var previews: some View {
                 Group {
-                    AddNewItemPopup(show: $show, itemType: .password).environmentObject(Account())
-                    AddNewItemPopup(show: $show, itemType: .card).environmentObject(Account())
+                    AddNewItemPopup(itemType: .constant(.password)).environmentObject(Account())
+//                    AddNewItemPopup(show: $show, itemType: .card).environmentObject(Account())
                 }
             }
         }

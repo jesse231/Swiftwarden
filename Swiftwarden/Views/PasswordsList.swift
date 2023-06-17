@@ -7,7 +7,6 @@ struct PasswordsList: View {
     @Binding var searchText: String
     @EnvironmentObject var account: Account
     @State private var deleteDialog = false
-    @State private var showNew = false
     @State private var itemType: ItemType?
     var folderID: String?
 
@@ -99,7 +98,6 @@ struct PasswordsList: View {
                     Button {
                         Task {
                             itemType = .password
-                            showNew = true
                         }
                     } label: {
                         Label("Add Password", systemImage: "key")
@@ -107,14 +105,12 @@ struct PasswordsList: View {
                     Button {
                         Task {
                             itemType = .card
-                            showNew = true
                         }
                     } label: {
                         Label("Add Card", systemImage: "creditcard")
                     }
                     Button {
                         itemType = .identity
-                        showNew = true
                     } label: {
                         Label("Add Password", systemImage: "person")
                     }
@@ -123,7 +119,9 @@ struct PasswordsList: View {
             }
         }
         .sheet(item: $itemType) { itemType in
-            AddNewItemPopup(show: $showNew, itemType: itemType)
+            let binding = Binding<ItemType?>(get: { itemType }, set: { self.itemType = $0 })
+            
+            AddNewItemPopup(itemType: binding)
                 .environmentObject(account)
                 .onDisappear {
                     account.user.objectWillChange.send()

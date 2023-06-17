@@ -11,7 +11,7 @@ extension AddNewItemPopup {
     struct AddPassword: View {
         var account: Account
         @Binding var name: String
-        @Binding var show: Bool
+        @Binding var itemType: ItemType?
         
         @State var username = ""
         @State var password = ""
@@ -24,11 +24,11 @@ extension AddNewItemPopup {
         @State var reprompt = false
         @State var selectedFolder: Folder
         
-        init(account: Account, name: Binding<String>, show: Binding<Bool>) {
+        init(account: Account, name: Binding<String>, itemType: Binding<ItemType?>) {
             self.account = account
             self._name = name
-            _selectedFolder = State(initialValue: account.user.getFolders()[0])
-            _show = show
+            self._selectedFolder = State(initialValue: account.user.getFolders()[0])
+            self._itemType = itemType
         }
         
         
@@ -81,7 +81,7 @@ extension AddNewItemPopup {
                 }
                 HStack{
                     Button {
-                        show = false
+                        itemType = nil
                     } label: {
                         Text("Cancel")
                     }
@@ -112,7 +112,7 @@ extension AddNewItemPopup {
                             }
                             
                         }
-                        show = false
+                        itemType = nil
                     } label: {
                         Text("Save")
                     }
@@ -124,7 +124,7 @@ extension AddNewItemPopup {
 
 struct AddNewPassword_Previews: PreviewProvider {
     static var previews: some View {
-        @State var show = true
-        AddNewItemPopup(show: $show, itemType: .password).environmentObject(Account())
+        AddNewItemPopup.AddPassword(account: Account(), name: .constant(""), itemType: .constant(.password))
+            .padding()
     }
 }
