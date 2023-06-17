@@ -90,18 +90,18 @@ extension ItemView {
                     } else {
                         Button {
                             Task {
-                                try await restore()
-                            }
-                        } label: {
-                            Text("Restore")
-                        }
-                        Spacer()
-                        Button {
-                            Task {
                                 try await deletePermanently()
                             }
                         } label: {
                             Text("Delete Permanently")
+                        }
+                        Spacer()
+                        Button {
+                            Task {
+                                try await restore()
+                            }
+                        } label: {
+                            Text("Restore")
                         }
                     }
                 }
