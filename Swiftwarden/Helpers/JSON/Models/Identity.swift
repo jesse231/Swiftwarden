@@ -8,16 +8,16 @@
 import Foundation
 
 struct Identity: Codable & Hashable {
-    var address1, address2, address3, city: JSONNull?
-    var company, country, email: JSONNull?
+    var address1, address2, address3, city: String?
+    var company, country, email: String?
     var firstName, lastName: String?
-    var licenseNumber: JSONNull?
+    var licenseNumber: String?
     var middleName: String?
-    var passportNumber, phone, postalCode: JSONNull?
+    var passportNumber, phone, postalCode: String?
     var ssn: String?
-    var state: JSONNull?
+    var state: String?
     var title: String?
-    var username: JSONNull?
+    var username: String?
 }
 
 // MARK: Identity convenience initializers and mutators
@@ -39,24 +39,24 @@ extension Identity {
     }
 
     func with(
-        address1: JSONNull?? = nil,
-        address2: JSONNull?? = nil,
-        address3: JSONNull?? = nil,
-        city: JSONNull?? = nil,
-        company: JSONNull?? = nil,
-        country: JSONNull?? = nil,
-        email: JSONNull?? = nil,
+        address1: String?? = nil,
+        address2: String?? = nil,
+        address3: String?? = nil,
+        city: String?? = nil,
+        company: String?? = nil,
+        country: String?? = nil,
+        email: String?? = nil,
         firstName: String?? = nil,
         lastName: String?? = nil,
-        licenseNumber: JSONNull?? = nil,
+        licenseNumber: String?? = nil,
         middleName: String?? = nil,
-        passportNumber: JSONNull?? = nil,
-        phone: JSONNull?? = nil,
-        postalCode: JSONNull?? = nil,
+        passportNumber: String?? = nil,
+        phone: String?? = nil,
+        postalCode: String?? = nil,
         ssn: String?? = nil,
-        state: JSONNull?? = nil,
+        state: String?? = nil,
         title: String?? = nil,
-        username: JSONNull?? = nil
+        username: String?? = nil
     ) -> Identity {
         return Identity(
             address1: address1 ?? self.address1,

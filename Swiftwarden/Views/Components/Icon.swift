@@ -35,17 +35,30 @@ struct Icon: View {
             .clipShape(Rectangle())
             .cornerRadius(5)
             .frame(width: 35, height: 35)
-        } else if let systemImage {
+        } else if let systemImage, systemImage == "creditcard.fill" {
             Rectangle()
                 .foregroundColor(.white)
                 .frame(width: 35, height: 35)
                 .cornerRadius(5)
                 .overlay(
-                    Image(systemName: "creditcard")
+                    Image(systemName: systemImage)
                         .resizable()
                         .foregroundColor(.black)
                         .background(.white)
                         .frame(width: 30, height: 25)
+                )
+        } else if let systemImage, systemImage == "person.fill" {
+            let _ = print("Yes!")
+            Rectangle()
+                .foregroundColor(.white)
+                .frame(width: 35, height: 35)
+                .cornerRadius(5)
+                .overlay(
+                    Image(systemName: systemImage)
+                        .resizable()
+                        .foregroundColor(.black)
+                        .background(.white)
+                        .frame(width: 30, height: 30)
                 )
         } else {
             Circle()

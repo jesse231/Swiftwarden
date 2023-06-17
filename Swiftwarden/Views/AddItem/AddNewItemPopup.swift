@@ -39,7 +39,7 @@ struct AddNewItemPopup: View {
                 case .card:
                     AddCard(account: account, name: $name, itemType: self.$itemType)
                 case .identity:
-                    Text("identity")
+                    AddIdentity(account: account, name: $name, itemType: self.$itemType)
                 case .secureNote:
                     Text("Note")
                 case .folder:

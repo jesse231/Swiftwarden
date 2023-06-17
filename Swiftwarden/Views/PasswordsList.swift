@@ -64,10 +64,9 @@ struct PasswordsList: View {
                             Icon(hostname: extractHost(cipher: cipher), account: account)
                         } else if cipher.type == 3 {
                             Icon(systemImage: "creditcard.fill", account: account)
+                        } else if cipher.type == 4 {
+                            Icon(systemImage: "person.fill", account: account)
                         }
-                      //  } else {
-                            //Icon(systemImage: "identity", account: account)
-                        //}
                         Spacer().frame(width: 20)
                         VStack {
                             if let name = cipher.name {
@@ -91,7 +90,6 @@ struct PasswordsList: View {
             }
         }
         .animation(.default, value: filtered)
-//        .listStyle(.inset(alternatesRowBackgrounds: true))
         .toolbar {
             ToolbarItem {
                 Menu {
@@ -101,6 +99,7 @@ struct PasswordsList: View {
                         }
                     } label: {
                         Label("Add Password", systemImage: "key")
+                            .labelStyle(.titleAndIcon)
                     }
                     Button {
                         Task {
@@ -108,15 +107,23 @@ struct PasswordsList: View {
                         }
                     } label: {
                         Label("Add Card", systemImage: "creditcard")
+                            .labelStyle(.titleAndIcon)
                     }
                     Button {
                         itemType = .identity
                     } label: {
-                        Label("Add Password", systemImage: "person")
+                        Label("Add Identity", systemImage: "person")
+                            .labelStyle(.titleAndIcon)
                     }
-                    
+                    Button {
+                        itemType = .secureNote
+                    } label: {
+                        Label("Add Secure Note", systemImage: "doc.text")
+                            .labelStyle(.titleAndIcon)
+                    }
                 } label: {Image(systemName: "plus")}
             }
+            
         }
         .sheet(item: $itemType) { itemType in
             let binding = Binding<ItemType?>(get: { itemType }, set: { self.itemType = $0 })
