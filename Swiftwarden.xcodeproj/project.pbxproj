@@ -62,6 +62,7 @@
 		3BC8C2912A3B944A004B2B14 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2902A3B944A004B2B14 /* User.swift */; };
 		3BC8C2952A3CDDF3004B2B14 /* NotesEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */; };
 		3BC8C2972A3D655A004B2B14 /* ItemView+CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */; };
+		3BC8C2992A3E332A004B2B14 /* ItemView+CardEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */; };
 		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
@@ -168,6 +169,7 @@
 		3BC8C2902A3B944A004B2B14 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesEditView.swift; sourceTree = "<group>"; };
 		3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+CardView.swift"; sourceTree = "<group>"; };
+		3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+CardEditing.swift"; sourceTree = "<group>"; };
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
@@ -214,6 +216,7 @@
 				3B2C42092A11CC1600720E43 /* Components */,
 				3B4513A8289AF29F002164C9 /* ItemView.swift */,
 				3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */,
+				3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */,
 				3B2C42052A11C5F100720E43 /* ItemView+PasswordView.swift */,
 				3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */,
 			);
@@ -559,6 +562,7 @@
 				3BF9B58F296CC40B0095B557 /* Query.swift in Sources */,
 				3BC757A62A031BFA0065CCF0 /* Object.swift in Sources */,
 				3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */,
+				3BC8C2992A3E332A004B2B14 /* ItemView+CardEditing.swift in Sources */,
 				3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */,
 				3B5865162A05A87400A39868 /* SaveData.swift in Sources */,
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,

@@ -72,7 +72,9 @@ struct ItemView: View {
                         .padding(20)
                         .frame(maxWidth: 800)
                 } else {
-                    EmptyView()
+                    CardEditing(cipher: $cipher, editing: $editing, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
                 }
             }
         }

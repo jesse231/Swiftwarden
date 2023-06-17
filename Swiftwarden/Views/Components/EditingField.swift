@@ -13,7 +13,8 @@ struct EditingField<Content: View>: View {
     @Binding var text: String
 
     var secure: Bool = false
-    @State var isHovered = false
+    @State private var isHovered = false
+    @State private var showPassword = false
 
     @ViewBuilder var buttons: Content
 
@@ -26,7 +27,7 @@ struct EditingField<Content: View>: View {
                     .foregroundColor(.gray)
                 GroupBox{
                     HStack {
-                        if !secure {
+                        if !secure || showPassword {
                             TextField(title, text: $text)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -38,6 +39,7 @@ struct EditingField<Content: View>: View {
                                 .font(.system(size: 15))
                         }
                         HStack {
+                            TogglePassword(showPassword: $showPassword)
                             buttons
                                 .buttonStyle(.plain)
                         }
