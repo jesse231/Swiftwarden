@@ -56,42 +56,45 @@ extension AddNewItemPopup {
                                     Picker("Brand", selection: $brand) {
                                         Group {
                                             Text("Select").tag(nil as String?)
-                                            Text("Visa").tag("visa")
-                                            Text("Mastercard").tag("mastercard")
-                                            Text("American Express").tag("american-express")
+                                            Text("Visa").tag("" as String?)
+                                            Text("Mastercard").tag("mastercard" as String?)
+                                            Text("American Express").tag("american-express" as String?)
                                         }
-                                        Text("Discover").tag("discover")
-                                        Text("Diners Club").tag("diners-club")
-                                        Text("JCB").tag("jcb")
-                                        Text("Maestro").tag("maestro")
-                                        Text("UnionPay").tag("unionpay")
-                                        Text("RuPay").tag("rupay")
-                                        Text("Other").tag("other")
+                                        Text("Discover").tag("discover" as String?)
+                                        Text("Diners Club").tag("diners-club" as String?)
+                                        Text("JCB").tag("jcb" as String?)
+                                        Text("Maestro").tag("maestro" as String?)
+                                        Text("UnionPay").tag("unionpay" as String?)
+                                        Text("RuPay").tag("rupay" as String?)
+                                        Text("Other").tag("other" as String?)
                                     }
+
                                     Picker("Expiration Month", selection: $expirationMonth) {
                                         Group {
                                             Text("Select").tag(nil as String?)
-                                            Text("January").tag("01")
-                                            Text("February").tag("02")
-                                            Text("March").tag("03")
+                                            Text("January").tag("01" as String?)
+                                            Text("February").tag("02" as String?)
+                                            Text("March").tag("03" as String?)
                                         }
-                                        Text("April").tag("04")
-                                        Text("May").tag("05")
-                                        Text("June").tag("06")
-                                        Text("July").tag("07")
-                                        Text("August").tag("08")
-                                        Text("September").tag("09")
-                                        Text("October").tag("10")
-                                        Text("November").tag("11")
-                                        Text("December").tag("12")
+                                        Text("April").tag("04" as String?)
+                                        Text("May").tag("05" as String?)
+                                        Text("June").tag("06" as String?)
+                                        Text("July").tag("07" as String?)
+                                        Text("August").tag("08" as String?)
+                                        Text("September").tag("09" as String?)
+                                        Text("October").tag("10" as String?)
+                                        Text("November").tag("11" as String?)
+                                        Text("December").tag("12" as String?)
                                     }
+
                                     Picker("Expiration Year", selection: $expirationYear) {
                                         Text("Select").tag(nil as String?)
                                         let currentYear = Calendar.current.component(.year, from: Date())
                                         ForEach (currentYear...currentYear+10, id: \.self) { year in
-                                            Text("\(year)").tag("\(year)")
+                                            Text("\(String(year).replacingOccurrences(of: ",", with: ""))").tag("\(year)" as String?)
                                         }
                                     }
+
                                     HStack {
                                         Text("Security Code")
                                         GroupBox {
