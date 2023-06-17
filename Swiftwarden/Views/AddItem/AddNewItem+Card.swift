@@ -8,7 +8,7 @@
 import SwiftUI
 extension AddNewItemPopup {
 
-    struct AddNewCard: View {
+    struct AddCard: View {
         var account: Account
         @Binding var name: String
         @Binding var show: Bool
@@ -152,7 +152,7 @@ extension AddNewItemPopup {
                                 name: name,
                                 notes: notes != "" ? notes : nil,
                                 reprompt: reprompt ? 1 : 0,
-                                type: 1
+                                type: 3
                             )
                             do {
                                 self.account.selectedCipher =
@@ -176,7 +176,7 @@ extension AddNewItemPopup {
 
 struct AddNewItem_Card_Previews: PreviewProvider {
     static var previews: some View {
-        AddNewItemPopup.AddNewCard(account: Account(), name: .constant("New Card"), show: .constant(true))
+        AddNewItemPopup.AddCard(account: Account(), name: .constant("New Card"), show: .constant(true))
             .padding()
     }
 }

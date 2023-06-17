@@ -125,6 +125,6 @@ extension AddNewItemPopup {
 struct AddNewPassword_Previews: PreviewProvider {
     static var previews: some View {
         @State var show = true
-        AddNewItemPopup(show: $show, itemType: ItemType.password).environmentObject(Account())
+        AddNewItemPopup(show: $show, itemType: .password).environmentObject(Account())
     }
 }
