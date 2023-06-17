@@ -53,45 +53,46 @@ struct ItemView: View {
         showPassword = false
     }
     var body: some View {
-            GroupBox {
-                if cipher != nil {
-                    if !editing {
-                        PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
-                    } else {
-                        PasswordEditing(cipher: $cipher, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
-                    }
-
+        VStack {
+            if let cipher {
+                if cipher.type == 1 {
+                if !editing {
+                    PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
+                } else {
+                    PasswordEditing(cipher: $cipher, editing: $editing, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
                 }
-
+                
+            } else if cipher.type == 3 {
+                if !editing {
+                    CardView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
+                } else {
+                    EmptyView()
+                }
+            }
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         .toolbar {
             ToolbarItem {
                 Spacer()
             }
         }
-//        .onAppear {
-////            name = cipher?.name ?? ""
-////            username = cipher?.login?.username ?? ""
-////            password = cipher?.login?.password ?? ""
-////            if let uris = cipher?.login?.uris {
-////                self.uris = uris
-////            }
-//        }
     }
 
-    struct ItemView_Previews: PreviewProvider {
+    struct Preview: PreviewProvider {
         static var previews: some View {
-            let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+            let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
             let account = Account()
-
             Group {
-//                ItemView(cipher: cipher, favorite: true, reprompt: $reprompt)
-//                    .environmentObject(account)
+                ItemView(cipher: cipher)
+                    .environmentObject(account)
+                    .padding()
             }
         }
     }

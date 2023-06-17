@@ -55,14 +55,10 @@ struct PasswordsList: View {
             ForEach(filtered, id: \.self.id) { cipher in
                 NavigationLink(
                     destination: {
-                        if let card = cipher.card {
-                            CardView(card: card)
-                        } else {
                             ItemView(cipher: cipher
                             ).onAppear(perform: {
                                 account.selectedCipher = cipher
                             }).environmentObject(account)
-                        }
                     },
                     label: {
                         if cipher.type == 1 {
