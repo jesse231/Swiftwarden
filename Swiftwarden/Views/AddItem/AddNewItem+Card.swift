@@ -137,11 +137,12 @@ extension AddNewItemPopup {
                     Button {
                         Task {
                             let card = Card(
-                                brand: brand,
-                                cardHolderName: cardholderName,
-                                code: securityCode, expMonth: expirationMonth,
+                                brand: brand != "" ? brand : nil,
+                                cardHolderName: cardholderName != "" ? cardholderName : nil,
+                                code: securityCode != "" ? securityCode : nil,
+                                expMonth: expirationMonth,
                                 expYear: expirationYear,
-                                number: number
+                                number: number != "" ? number : nil
                             )
                             
                             let newCipher = Cipher(
