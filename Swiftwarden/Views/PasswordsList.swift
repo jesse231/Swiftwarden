@@ -8,7 +8,7 @@ struct PasswordsList: View {
     @EnvironmentObject var account: Account
     @State private var deleteDialog = false
     @State private var showNew = false
-    @State private var itemType: ItemType = .password
+    @State private var itemType: ItemType?
     var folderID: String?
 
     var display: PasswordListType
@@ -65,7 +65,14 @@ struct PasswordsList: View {
                         }
                     },
                     label: {
-                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        if cipher.type == 1 {
+                            Icon(hostname: extractHost(cipher: cipher), account: account)
+                        } else if cipher.type == 3 {
+                            Icon(systemImage: "creditcard.fill", account: account)
+                        }
+                      //  } else {
+                            //Icon(systemImage: "identity", account: account)
+                        //}
                         Spacer().frame(width: 20)
                         VStack {
                             if let name = cipher.name {
@@ -93,22 +100,25 @@ struct PasswordsList: View {
         .toolbar {
             ToolbarItem {
                 Menu {
-                    
                     Button {
-                        showNew = true
-                        itemType = .password
+                        Task {
+                            itemType = .password
+                            showNew = true
+                        }
                     } label: {
                         Label("Add Password", systemImage: "key")
                     }
                     Button {
-                        showNew = true
-                        itemType = .card
+                        Task {
+                            itemType = .card
+                            showNew = true
+                        }
                     } label: {
                         Label("Add Card", systemImage: "creditcard")
                     }
                     Button {
-                        showNew = true
                         itemType = .identity
+                        showNew = true
                     } label: {
                         Label("Add Password", systemImage: "person")
                     }
@@ -116,7 +126,7 @@ struct PasswordsList: View {
                 } label: {Image(systemName: "plus")}
             }
         }
-        .sheet(isPresented: $showNew) {
+        .sheet(item: $itemType) { itemType in
             AddNewItemPopup(show: $showNew, itemType: itemType)
                 .environmentObject(account)
                 .onDisappear {
