@@ -41,17 +41,7 @@ struct ItemView: View {
 
     @State var editing: Bool = false
     @State var reprompt: RepromptState = .none
-    // Editing view
-//    @State var name: String = ""
-//
-//    @State var username: String = ""
-//    @State var password: String = ""
-//    @State var url: String = ""
-//
-//    @State var folder: Folder = Folder(id: "", name: "")
-//    @State var reprompt: Bool = false
-//
-//    @State var uris: [Uris] = [Uris(url: "")]
+
     init (cipher: Cipher?){
         _cipher = State(initialValue: cipher)
         if let repromptInt = cipher?.reprompt {
@@ -64,13 +54,13 @@ struct ItemView: View {
     }
     var body: some View {
             GroupBox {
-                if let cipher {
+                if cipher != nil {
                     if !editing {
-                        RegularView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     } else {
-                        EditingView(cipher: $cipher, editing: $editing, account: account)
+                        PasswordEditing(cipher: $cipher, editing: $editing, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     }

@@ -27,7 +27,7 @@ func extractHostURI(uri: String?) -> String {
 }
 
 extension ItemView {
-    struct RegularView: View {
+    struct PasswordView: View {
         @Binding var cipher: Cipher?
         @Binding var editing: Bool
         @Binding var reprompt: RepromptState

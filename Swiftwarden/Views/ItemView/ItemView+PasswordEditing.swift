@@ -9,7 +9,7 @@ import SwiftUI
 import NukeUI
 
 extension ItemView {
-    struct EditingView: View {
+    struct PasswordEditing: View {
         @Binding var cipher: Cipher?
         @Binding var editing: Bool
         @StateObject var account: Account

@@ -12,8 +12,8 @@
 		3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */; };
 		3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B194B052A37654400F6206D /* AddNewItem+Card.swift */; };
 		3B2C42022A0C581800720E43 /* EditingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42012A0C581800720E43 /* EditingField.swift */; };
-		3B2C42042A11C11500720E43 /* ItemView+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42032A11C11500720E43 /* ItemView+Editing.swift */; };
-		3B2C42062A11C5F100720E43 /* ItemView+Regular.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42052A11C5F100720E43 /* ItemView+Regular.swift */; };
+		3B2C42042A11C11500720E43 /* ItemView+PasswordEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */; };
+		3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42052A11C5F100720E43 /* ItemView+PasswordView.swift */; };
 		3B2C420A2A12EF7200720E43 /* CryptoSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; };
 		3B2C420B2A12EF7200720E43 /* CryptoSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3B2CF2682A13DE4D00E3D16F /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2CF2672A13DE4D00E3D16F /* Icon.swift */; };
@@ -115,8 +115,8 @@
 		3B194B052A37654400F6206D /* AddNewItem+Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+Card.swift"; sourceTree = "<group>"; };
 		3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftwardenDebug.entitlements; sourceTree = "<group>"; };
 		3B2C42012A0C581800720E43 /* EditingField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingField.swift; sourceTree = "<group>"; };
-		3B2C42032A11C11500720E43 /* ItemView+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+Editing.swift"; sourceTree = "<group>"; };
-		3B2C42052A11C5F100720E43 /* ItemView+Regular.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+Regular.swift"; sourceTree = "<group>"; };
+		3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+PasswordEditing.swift"; sourceTree = "<group>"; };
+		3B2C42052A11C5F100720E43 /* ItemView+PasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+PasswordView.swift"; sourceTree = "<group>"; };
 		3B2CF2672A13DE4D00E3D16F /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		3B2EC3C3296F27F6003A04A1 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		3B2EC3C6296F30FC003A04A1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -211,8 +211,8 @@
 			children = (
 				3B2C42092A11CC1600720E43 /* Components */,
 				3B4513A8289AF29F002164C9 /* ItemView.swift */,
-				3B2C42032A11C11500720E43 /* ItemView+Editing.swift */,
-				3B2C42052A11C5F100720E43 /* ItemView+Regular.swift */,
+				3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */,
+				3B2C42052A11C5F100720E43 /* ItemView+PasswordView.swift */,
 			);
 			path = ItemView;
 			sourceTree = "<group>";
@@ -572,7 +572,7 @@
 				3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */,
 				3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */,
 				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
-				3B2C42062A11C5F100720E43 /* ItemView+Regular.swift in Sources */,
+				3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */,
 				3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */,
 				3B0A8E04296209830055DA2D /* Encryption.swift in Sources */,
 				3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */,
@@ -586,7 +586,7 @@
 				3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */,
 				3B3E48422870F673000D0D0C /* Swiftwarden.swift in Sources */,
 				3BC757B12A031D3B0065CCF0 /* Organization.swift in Sources */,
-				3B2C42042A11C11500720E43 /* ItemView+Editing.swift in Sources */,
+				3B2C42042A11C11500720E43 /* ItemView+PasswordEditing.swift in Sources */,
 				3BC757A22A031BFA0065CCF0 /* Response.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
