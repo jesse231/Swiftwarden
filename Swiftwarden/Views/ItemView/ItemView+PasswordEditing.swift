@@ -24,7 +24,7 @@ extension ItemView {
         @State var url: String
         
         @State var folder: Folder// = Folder(id: "", name: "")
-        @State var reprompt: RepromptState// = false
+        @State var reprompt: RepromptState
         
         @State var uris: [Uris] // = [Uris(url: "")]
         
@@ -188,7 +188,7 @@ extension ItemView {
     }
 }
 
-struct ItemViewEditingPreview: PreviewProvider {
+struct PasswordEditingPreview: PreviewProvider {
     static var previews: some View {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
