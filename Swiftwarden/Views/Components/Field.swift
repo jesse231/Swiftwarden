@@ -26,6 +26,7 @@ struct Field<Content: View>: View {
         self._showReprompt = showReprompt ?? .constant(false)
         self.buttons = buttons()
     }
+    
     @State private var showPassword: Bool = false
     @State private var isHovered = false
 
@@ -48,7 +49,6 @@ struct Field<Content: View>: View {
                 }
             }
             .padding()
-            
             if isHovered {
                 HStack {
                     if secure {
