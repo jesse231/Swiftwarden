@@ -181,6 +181,15 @@ class User: ObservableObject {
             }
         }
     }
+    
+    func restoreCipher(cipher: Cipher) async throws {
+        if let id = cipher.id {
+            try await api.restoreCipher(id: id)
+            if let index = self.data.passwords.firstIndex(of: cipher) {
+                self.data.passwords[index].deletedDate = nil
+            }
+        }
+    }
 
     func addCipher(cipher: Cipher) async throws -> Cipher {
         var modCipher = cipher
@@ -210,4 +219,5 @@ class User: ObservableObject {
             self.data.folders.remove(at: index)
         }
     }
+    
 }

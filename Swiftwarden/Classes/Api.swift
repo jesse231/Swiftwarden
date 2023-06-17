@@ -220,6 +220,18 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         print(syncData)
         return syncData
     }
+    
+    func restoreCipher(id cipherID: String) async throws {
+        let bearer = self.bearer
+        let url = self.apiPath.appendingPathComponent("ciphers/" + cipherID + "/restore/")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("Bearer " + bearer, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+        let (data, response) = try await URLSession.shared.data(for: request)
+    }
 
 //    static func getPasswords() async throws -> [Cipher]{
 //

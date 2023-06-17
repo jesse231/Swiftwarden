@@ -34,9 +34,19 @@ extension ItemView {
                 }
             }
         }
+        func restore() async throws {
+            if let cipher {
+                do {
+                    try await account.user.restoreCipher(cipher: cipher)
+                    account.selectedCipher = Cipher()
+                    self.cipher = nil
+                } catch {
+                    print(error)
+                }
+            }
+        }
         
         var body: some View {
-            Group{
                 VStack {
                     HStack {
                         if cipher?.deletedDate == nil {
@@ -54,6 +64,13 @@ extension ItemView {
                                 Text("Edit")
                             }
                         } else {
+                            Button {
+                                Task {
+                                    try await restore()
+                                }
+                            } label: {
+                                Text("Restore")
+                            }
                             Spacer()
                             Button {
                                 Task {
@@ -147,7 +164,6 @@ extension ItemView {
                         }
                         .padding(.trailing)
                     }
-                }
                 .frame(maxWidth: .infinity)
                 //                    .sheet(isPresented: $showReprompt) {
                 //                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)

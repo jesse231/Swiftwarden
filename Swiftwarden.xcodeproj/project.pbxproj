@@ -215,10 +215,10 @@
 			children = (
 				3B2C42092A11CC1600720E43 /* Components */,
 				3B4513A8289AF29F002164C9 /* ItemView.swift */,
-				3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */,
-				3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */,
 				3B2C42052A11C5F100720E43 /* ItemView+PasswordView.swift */,
+				3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */,
 				3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */,
+				3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */,
 			);
 			path = ItemView;
 			sourceTree = "<group>";

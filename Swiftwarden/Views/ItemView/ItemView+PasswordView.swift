@@ -58,6 +58,17 @@ extension ItemView {
                 }
             }
         }
+        func restore() async throws {
+            if let cipher {
+                do {
+                    try await account.user.restoreCipher(cipher: cipher)
+                    account.selectedCipher = Cipher()
+                    self.cipher = nil
+                } catch {
+                    print(error)
+                }
+            }
+        }
         
         var body: some View {
             VStack {
@@ -77,6 +88,13 @@ extension ItemView {
                             Text("Edit")
                         }
                     } else {
+                        Button {
+                            Task {
+                                try await restore()
+                            }
+                        } label: {
+                            Text("Restore")
+                        }
                         Spacer()
                         Button {
                             Task {
