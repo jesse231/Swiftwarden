@@ -95,6 +95,7 @@ extension ItemView {
                             Text("Done")
                         }
                     }
+                    .padding(.bottom)
                     HStack {
                         Icon(hostname: extractHost(cipher: cipher), account: account)
                         VStack {
@@ -192,11 +193,7 @@ struct ItemViewEditingPreview: PreviewProvider {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
         
-        Group {
-            //            ItemView(cipher: cipher, favorite: true, editing: true, reprompt: <#RepromptState#>)
-            //                .environmentObject(account)
-            //            ItemView(cipher: cipher, favorite: true, editing: false)
-            //                .environmentObject(account)
-        }
+        ItemView.PasswordEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
+            .padding()
     }
 }
