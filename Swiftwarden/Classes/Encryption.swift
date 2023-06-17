@@ -195,6 +195,27 @@ class Encryption {
             enc.notes = try encrypt(str: notes)
         }
         
+        if let card = enc.card {
+            if let brand = card.brand {
+                enc.card?.brand = try encrypt(str: brand)
+            }
+            if let exp = card.expMonth {
+                enc.card?.expMonth = try encrypt(str: exp)
+            }
+            if let exp = card.expYear {
+                enc.card?.expYear = try encrypt(str: exp)
+            }
+            if let code = card.code {
+                enc.card?.code = try encrypt(str: code)
+            }
+            if let name = card.cardHolderName {
+                enc.card?.cardHolderName = try encrypt(str: name)
+            }
+            if let number = card.number {
+                enc.card?.number = try encrypt(str: number)
+            }
+        }
+        
         return enc
     }
 
