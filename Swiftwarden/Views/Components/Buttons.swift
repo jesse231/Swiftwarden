@@ -70,19 +70,19 @@ struct RepromptPopup: View {
     @Binding var showReprompt: Bool
     @Binding var showPassword: Bool
     @Binding var reprompt: RepromptState
-    @StateObject var account: Account
+    var email: String
     
     @State private var masterPassword: String = ""
     
     var body: some View {
-        Group {
+        VStack {
             Text("Master Password Reprompt")
                 .font(.title)
                 .padding(.bottom, 10)
-                EditingField(title: "", text: $masterPassword, secure: true, buttons: {})
+                    EditingField(title: "", text: $masterPassword, secure: true, buttons: {})
                 .padding([.leading, .trailing, .bottom])
                 .onSubmit {
-                    if (masterPassword == KeyChain.getUser(account: account.user.getEmail())) {
+                    if masterPassword == KeyChain.getUser(account: email) {
                         reprompt = .unlocked
                         showPassword = true
                     }
@@ -90,6 +90,14 @@ struct RepromptPopup: View {
                 }
         }
         .padding()
+    }
+}
+// repromptpopup preview
+struct RepromptPopup_Previews: PreviewProvider {
+    static var previews: some View {
+        RepromptPopup(showReprompt: .constant(true), showPassword: .constant(false), reprompt: .constant(.require), email: "")
+            .padding()
+            .frame(width: 400, height: 300)
     }
 }
 

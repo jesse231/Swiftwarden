@@ -8,6 +8,7 @@ struct Field<Content: View>: View {
     var content: String
     var secure: Bool = false
     var monospaced: Bool = false
+    var email: String?
     @ViewBuilder var buttons: Content
     @Binding var reprompt: RepromptState
     @Binding var showReprompt: Bool
@@ -16,6 +17,7 @@ struct Field<Content: View>: View {
          secure: Bool = false,
          reprompt: Binding<RepromptState>? = nil,
          showReprompt: Binding<Bool>? = nil,
+         email: String? = nil,
          monospaced: Bool = false,
          @ViewBuilder buttons: () -> Content) {
         self.title = title
@@ -24,6 +26,7 @@ struct Field<Content: View>: View {
         self.monospaced = monospaced
         self._reprompt = reprompt ?? .constant(.none)
         self._showReprompt = showReprompt ?? .constant(false)
+        self.email = email
         self.buttons = buttons()
     }
     
@@ -52,12 +55,17 @@ struct Field<Content: View>: View {
             if isHovered {
                 HStack {
                     if secure {
-                        TogglePassword(showPassword: $showPassword, reprompt: reprompt != .none ? $reprompt : nil )
+                        TogglePassword(showPassword: $showPassword, reprompt: reprompt != .none ? $reprompt : nil, showReprompt: $showReprompt)
                     }
                     buttons
                         .buttonStyle(.plain)
                 }
                 .padding(.trailing)
+            }
+        }
+        .sheet(isPresented: $showReprompt) {
+            if let email {
+                RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, email: email)
             }
         }
         .transition(.scale)

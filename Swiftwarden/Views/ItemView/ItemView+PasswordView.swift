@@ -125,6 +125,7 @@ extension ItemView {
                                     secure: true,
                                     reprompt: $reprompt,
                                     showReprompt: $showReprompt,
+                                    email: account.user.getEmail(),
                                     buttons: {
                                         Copy(content: password)
                                     })
@@ -158,9 +159,9 @@ extension ItemView {
                 }
             }
                     .frame(maxWidth: .infinity)
-                    .sheet(isPresented: $showReprompt) {
-                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
-                    }
+//                    .sheet(isPresented: $showReprompt) {
+//                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
+//                    }
 
             }
     }
