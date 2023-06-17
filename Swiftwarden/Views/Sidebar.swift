@@ -9,7 +9,8 @@ struct SideBar: View {
     @State var folderName = ""
     @State var folders: [Folder] = []
     @State var text: String = ""
-    
+    @State private var deleteFolderWarning = false
+    @State private var folderID: String?
     @FocusState private var isNewFolder: Bool
     
     struct MenuItem: View {
@@ -73,7 +74,6 @@ struct SideBar: View {
             }
             Section(header: Text("Folders")) {
                 ForEach(folders) { folder in
-                    var editing = false
                     MenuItem(
                         label: folder.name,
                         icon: "folder.fill",
@@ -83,18 +83,27 @@ struct SideBar: View {
                     .contextMenu {
                         if folder.id != nil{
                             Button {
-                                Task {
-                                    do {
-                                        await try account.user.deleteFolder(id: folder.id!)
-                                        folders = account.user.getFolders()
-                                    } catch {
-                                        print(error)
-                                    }
-                                }
+                                deleteFolderWarning = true
+                                folderID = folder.id
                             } label: {
                                 Text("Delete")
                             }
                         }
+                    }
+                    .alert(isPresented: $deleteFolderWarning) {
+                        Alert(title: Text("Delete Folder"), message: Text("Are you sure you want to delete the selected folder?"),
+                              primaryButton: .default(Text("Delete"), action: {
+                            deleteFolderWarning = false
+                            Task {
+                                do {
+                                    try await account.user.deleteFolder(id: folderID ?? "")
+                                    folders = account.user.getFolders()
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }),
+                          secondaryButton: .cancel(Text("Cancel")))
                     }
                 }
                 if newFolder {
