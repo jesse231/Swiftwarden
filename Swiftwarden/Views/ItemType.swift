@@ -7,9 +7,11 @@
 
 import Foundation
 
-enum ItemType {
+enum ItemType: Identifiable {
+    var id: ItemType {self}
     case password
     case card
     case identity
+    case secureNote
     case folder
 }
