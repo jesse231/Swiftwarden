@@ -64,6 +64,8 @@
 		3BC8C2972A3D655A004B2B14 /* ItemView+CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */; };
 		3BC8C2992A3E332A004B2B14 /* ItemView+CardEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */; };
 		3BC8C29B2A3E5730004B2B14 /* AddNewItem+Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C29A2A3E5730004B2B14 /* AddNewItem+Identity.swift */; };
+		3BC8C29D2A3E62DF004B2B14 /* ItemView+IdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C29C2A3E62DF004B2B14 /* ItemView+IdentityView.swift */; };
+		3BC8C29F2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */; };
 		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
@@ -172,6 +174,8 @@
 		3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+CardView.swift"; sourceTree = "<group>"; };
 		3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+CardEditing.swift"; sourceTree = "<group>"; };
 		3BC8C29A2A3E5730004B2B14 /* AddNewItem+Identity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "AddNewItem+Identity.swift"; sourceTree = "<group>"; };
+		3BC8C29C2A3E62DF004B2B14 /* ItemView+IdentityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+IdentityView.swift"; sourceTree = "<group>"; };
+		3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+IdentityEditing.swift"; sourceTree = "<group>"; };
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
@@ -221,6 +225,8 @@
 				3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */,
 				3BC8C2962A3D655A004B2B14 /* ItemView+CardView.swift */,
 				3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */,
+				3BC8C29C2A3E62DF004B2B14 /* ItemView+IdentityView.swift */,
+				3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */,
 			);
 			path = ItemView;
 			sourceTree = "<group>";
@@ -568,6 +574,7 @@
 				3B4513AF289B78E5002164C9 /* Buttons.swift in Sources */,
 				3BC8C2992A3E332A004B2B14 /* ItemView+CardEditing.swift in Sources */,
 				3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */,
+				3BC8C29F2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift in Sources */,
 				3B5865162A05A87400A39868 /* SaveData.swift in Sources */,
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
@@ -577,6 +584,7 @@
 				3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */,
 				3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */,
 				3B521F342A1AB1680086E507 /* ItemType.swift in Sources */,
+				3BC8C29D2A3E62DF004B2B14 /* ItemView+IdentityView.swift in Sources */,
 				3B4513AC289AF380002164C9 /* Field.swift in Sources */,
 				3BC757A42A031BFA0065CCF0 /* CustomField.swift in Sources */,
 				3B3E48442870F673000D0D0C /* ContentView.swift in Sources */,

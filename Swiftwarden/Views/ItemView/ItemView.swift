@@ -76,6 +76,16 @@ struct ItemView: View {
                         .padding(20)
                         .frame(maxWidth: 800)
                 }
+            } else if cipher.type == 4 {
+                if !editing {
+                    IdentityView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
+                } else {
+                    IdentityEditing(cipher: $cipher, editing: $editing, account: account)
+                        .padding(20)
+                        .frame(maxWidth: 800)
+                }
             }
         }
         }

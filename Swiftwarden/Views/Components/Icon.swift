@@ -48,7 +48,6 @@ struct Icon: View {
                         .frame(width: 30, height: 25)
                 )
         } else if let systemImage, systemImage == "person.fill" {
-            let _ = print("Yes!")
             Rectangle()
                 .foregroundColor(.white)
                 .frame(width: 35, height: 35)
