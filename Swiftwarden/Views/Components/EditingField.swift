@@ -39,7 +39,9 @@ struct EditingField<Content: View>: View {
                                 .font(.system(size: 15))
                         }
                         HStack {
-                            TogglePassword(showPassword: $showPassword)
+                            if secure {
+                                TogglePassword(showPassword: $showPassword)
+                            }
                             buttons
                                 .buttonStyle(.plain)
                         }
