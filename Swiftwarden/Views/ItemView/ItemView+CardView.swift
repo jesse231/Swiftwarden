@@ -84,7 +84,7 @@ extension ItemView {
                     .padding(.bottom)
                     
                     HStack {
-                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        Icon(systemImage: "creditcard.fill", account: account)
                         VStack {
                             Text(cipher?.name ?? "")
                                 .font(.system(size: 15))
