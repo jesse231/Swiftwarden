@@ -244,7 +244,7 @@ extension ItemView {
     }
 }
 
-struct CardEditingPreview: PreviewProvider {
+struct IdentityEditing_Preview: PreviewProvider {
     static var previews: some View {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
