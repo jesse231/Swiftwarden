@@ -56,15 +56,26 @@ struct ItemView: View {
         VStack {
             if let cipher {
                 if cipher.type == 1 {
-                if !editing {
-                    PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
-                } else {
-                    PasswordEditing(cipher: $cipher, editing: $editing, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
-                }
+                    if !editing {
+                        PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    } else {
+                        PasswordEditing(cipher: $cipher, editing: $editing, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    }
+                } else if cipher.type == 2{
+                    if !editing {
+                        SecureNoteView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    } else {
+                        SecureNoteEditing(cipher: $cipher, editing: $editing, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    EmptyView()
+                    }
                 
             } else if cipher.type == 3 {
                 if !editing {

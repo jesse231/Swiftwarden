@@ -40,6 +40,8 @@
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
 		3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */; };
+		3B98714D2A41EF3000CABFDC /* ItemView+SecureNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714C2A41EF3000CABFDC /* ItemView+SecureNoteView.swift */; };
+		3B98714F2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */; };
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
@@ -151,6 +153,8 @@
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
 		3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+SecureNote.swift"; sourceTree = "<group>"; };
+		3B98714C2A41EF3000CABFDC /* ItemView+SecureNoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+SecureNoteView.swift"; sourceTree = "<group>"; };
+		3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+SecureNoteEditing.swift"; sourceTree = "<group>"; };
 		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
@@ -229,6 +233,8 @@
 				3BC8C2982A3E332A004B2B14 /* ItemView+CardEditing.swift */,
 				3BC8C29C2A3E62DF004B2B14 /* ItemView+IdentityView.swift */,
 				3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */,
+				3B98714C2A41EF3000CABFDC /* ItemView+SecureNoteView.swift */,
+				3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */,
 			);
 			path = ItemView;
 			sourceTree = "<group>";
@@ -584,12 +590,14 @@
 				3B0486E02875018C007CCC5A /* Api.swift in Sources */,
 				3BF0BE802A38FCC200989419 /* CustomFieldsEditView.swift in Sources */,
 				3B2EC3D1296F3AC7003A04A1 /* AddNewItemPopup.swift in Sources */,
+				3B98714F2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift in Sources */,
 				3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */,
 				3B321EDF2A16E1F2006B0DEA /* Generator.swift in Sources */,
 				3B521F342A1AB1680086E507 /* ItemType.swift in Sources */,
 				3BC8C29D2A3E62DF004B2B14 /* ItemView+IdentityView.swift in Sources */,
 				3B4513AC289AF380002164C9 /* Field.swift in Sources */,
 				3BC757A42A031BFA0065CCF0 /* CustomField.swift in Sources */,
+				3B98714D2A41EF3000CABFDC /* ItemView+SecureNoteView.swift in Sources */,
 				3B3E48442870F673000D0D0C /* ContentView.swift in Sources */,
 				3BC8C2972A3D655A004B2B14 /* ItemView+CardView.swift in Sources */,
 				3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */,
