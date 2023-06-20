@@ -108,7 +108,6 @@ extension ItemView {
                                     title: "Cardholder Name",
                                     content: cardholder,
                                     buttons: {
-                                        //                                        Copy(content: cardholder)
                                     })
                             }
                             if let number = cipher?.card?.number {
