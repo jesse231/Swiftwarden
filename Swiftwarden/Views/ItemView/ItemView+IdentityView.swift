@@ -84,7 +84,7 @@ extension ItemView {
                     .padding(.bottom)
                     
                     HStack {
-                        Icon(systemImage: "person.fill", account: account)
+                        Icon(itemType: .identity, account: account)
                         VStack {
                             Text(cipher?.name ?? "")
                                 .font(.system(size: 15))

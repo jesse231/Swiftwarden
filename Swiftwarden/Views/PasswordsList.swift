@@ -52,6 +52,7 @@ struct PasswordsList: View {
 
         return List {
             ForEach(filtered, id: \.self.id) { cipher in
+                
                 NavigationLink(
                     destination: {
                             ItemView(cipher: cipher
@@ -60,13 +61,7 @@ struct PasswordsList: View {
                             }).environmentObject(account)
                     },
                     label: {
-                        if cipher.type == 1 {
-                            Icon(hostname: extractHost(cipher: cipher), account: account)
-                        } else if cipher.type == 3 {
-                            Icon(systemImage: "creditcard.fill", account: account)
-                        } else if cipher.type == 4 {
-                            Icon(systemImage: "person.fill", account: account)
-                        }
+                        Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: extractHost(cipher: cipher), account: account)
                         Spacer().frame(width: 20)
                         VStack {
                             if let name = cipher.name {

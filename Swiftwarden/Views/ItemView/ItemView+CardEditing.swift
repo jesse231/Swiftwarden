@@ -40,7 +40,6 @@ extension ItemView {
             _cardholderName = State(initialValue: account.selectedCipher.card?.cardHolderName ?? "")
             _number = State(initialValue: account.selectedCipher.card?.number ?? "")
             _brand = State(initialValue: account.selectedCipher.card?.brand ?? "")
-            print(account.selectedCipher.card?.expMonth)
             _expirationMonth = State(initialValue: account.selectedCipher.card?.expMonth ?? nil as String?)
             _expirationYear = State(initialValue: account.selectedCipher.card?.expYear ?? nil as String?)
             _securityCode = State(initialValue: account.selectedCipher.card?.code ?? "")
@@ -68,6 +67,14 @@ extension ItemView {
             )
             modCipher.card = card
             
+            modCipher.notes = notes
+            modCipher.fields = fields
+            
+            modCipher.favorite = cipher?.favorite
+            modCipher.reprompt = reprompt.toInt()
+            modCipher.folderID = folder
+            
+            
             try await account.user.updateCipher(cipher: modCipher, index: index)
             account.selectedCipher = modCipher
             cipher = modCipher
@@ -94,7 +101,7 @@ extension ItemView {
                     }
                     .padding(.bottom)
                     HStack {
-                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        Icon(itemType: .card, account: account)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -102,7 +109,7 @@ extension ItemView {
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .padding(.bottom, -5)
-                            Text(verbatim: "Login")
+                            Text(verbatim: "Credit Card")
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }

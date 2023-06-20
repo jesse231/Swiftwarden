@@ -104,6 +104,14 @@ extension ItemView {
             )
             modCipher.identity = identity
             
+            modCipher.notes = notes
+            modCipher.fields = fields
+            
+            modCipher.favorite = cipher?.favorite
+            modCipher.reprompt = reprompt.toInt()
+            modCipher.folderID = folder
+            
+            
             try await account.user.updateCipher(cipher: modCipher, index: index)
             account.selectedCipher = modCipher
             cipher = modCipher
@@ -130,7 +138,7 @@ extension ItemView {
                     }
                     .padding(.bottom)
                     HStack {
-                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        Icon(itemType: .identity, account: account)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -138,7 +146,7 @@ extension ItemView {
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .padding(.bottom, -5)
-                            Text(verbatim: "Login")
+                            Text(verbatim: "Identity")
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }

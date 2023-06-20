@@ -97,7 +97,7 @@ extension ItemView {
                     }
                     .padding(.bottom)
                     HStack {
-                        Icon(hostname: extractHost(cipher: cipher), account: account)
+                        Icon(itemType: .password, account: account)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
