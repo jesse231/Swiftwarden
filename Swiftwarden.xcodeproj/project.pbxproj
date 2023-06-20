@@ -39,6 +39,7 @@
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
+		3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */; };
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
@@ -149,6 +150,7 @@
 		3B521F332A1AB1680086E507 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
+		3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+SecureNote.swift"; sourceTree = "<group>"; };
 		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 				3B521F312A1AAF4C0086E507 /* AddNewItem+Password.swift */,
 				3B194B052A37654400F6206D /* AddNewItem+Card.swift */,
 				3BC8C29A2A3E5730004B2B14 /* AddNewItem+Identity.swift */,
+				3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */,
 			);
 			path = AddItem;
 			sourceTree = "<group>";
@@ -591,6 +594,7 @@
 				3BC8C2972A3D655A004B2B14 /* ItemView+CardView.swift in Sources */,
 				3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */,
 				3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */,
+				3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */,
 				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
 				3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */,
 				3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */,

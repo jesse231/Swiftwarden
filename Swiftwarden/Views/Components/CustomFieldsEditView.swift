@@ -69,13 +69,16 @@ struct CustomFieldsEdit: View {
     @State var showOptions = false
     @State var option: String = ""
     @State var showItem: [Bool]
-    init(fields: Binding<[CustomField]>) {
+    var showLinked: Bool
+    
+    init(fields: Binding<[CustomField]>, showLinked: Bool? = nil) {
         self._fields = fields
         var show: [Bool] = []
         for _ in fields.wrappedValue {
             show.append(true)
         }
         _showItem = State(initialValue: show)
+        self.showLinked = showLinked ?? true
     }
     
     
@@ -148,11 +151,13 @@ struct CustomFieldsEdit: View {
                 } label: {
                     Text("Boolean")
                 }
-                Button {
-                    fields.append(CustomField(type: 3))
-                    showOptions = false
-                } label: {
-                    Text("Linked")
+                if showLinked {
+                    Button {
+                        fields.append(CustomField(type: 3))
+                        showOptions = false
+                    } label: {
+                        Text("Linked")
+                    }
                 }
             } label: {
                 Label("Add Field", systemImage: "plus")

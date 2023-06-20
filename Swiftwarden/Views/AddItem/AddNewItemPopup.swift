@@ -41,7 +41,7 @@ struct AddNewItemPopup: View {
                 case .identity:
                     AddIdentity(account: account, name: $name, itemType: self.$itemType)
                 case .secureNote:
-                    Text("Note")
+                    AddSecureNote(name: $name, itemType: self.$itemType).environmentObject(account)
                 case .folder:
                     Text("folder")
                 }

@@ -8,19 +8,10 @@
 import Foundation
 
 struct SecureNote: Codable & Hashable {
-    var autofillOnPageLoad: JSONNull?
-    var password: String?
-    var passwordRevisionDate, totp: JSONNull?
-    var uris: [Uris]?
-    var username: String?
+    var type: Int = 1
 
     enum CodingKeys: String, CodingKey {
-        case autofillOnPageLoad = "autofillOnPageLoad"
-        case password = "password"
-        case passwordRevisionDate = "passwordRevisionDate"
-        case totp = "totp"
-        case uris = "uris"
-        case username = "username"
+        case type
     }
 }
 
@@ -43,20 +34,10 @@ extension SecureNote {
     }
 
     func with(
-        autofillOnPageLoad: JSONNull?? = nil,
-        password: String?? = nil,
-        passwordRevisionDate: JSONNull?? = nil,
-        totp: JSONNull?? = nil,
-        uris: [Uris]?? = nil,
-        username: String?? = nil
+        type: Int? = 1
     ) -> SecureNote {
         return SecureNote(
-            autofillOnPageLoad: autofillOnPageLoad ?? self.autofillOnPageLoad,
-            password: password ?? self.password,
-            passwordRevisionDate: passwordRevisionDate ?? self.passwordRevisionDate,
-            totp: totp ?? self.totp,
-            uris: uris ?? self.uris,
-            username: username ?? self.username
+            type: type ?? self.type
         )
     }
 
