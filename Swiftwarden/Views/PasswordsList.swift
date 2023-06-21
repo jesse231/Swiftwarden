@@ -3,7 +3,15 @@ import NukeUI
 import SwiftUI
 import CoreImage
 
-struct PasswordsList: View {
+struct PasswordsList: View, Equatable {
+    static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
+            return lhs.searchText == rhs.searchText &&
+                   lhs.deleteDialog == rhs.deleteDialog &&
+                   lhs.itemType == rhs.itemType &&
+                   lhs.folderID == rhs.folderID &&
+                   lhs.display == rhs.display
+        }
+    
     @Binding var searchText: String
     @EnvironmentObject var account: Account
     @State private var deleteDialog = false
@@ -12,6 +20,7 @@ struct PasswordsList: View {
 
     var display: PasswordListType
     func passwordsToDisplay() -> [Cipher] {
+
         switch display {
         case .normal:
             return account.user.getCiphers()
@@ -50,9 +59,7 @@ struct PasswordsList: View {
             cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
         }
 
-        return List {
-            ForEach(filtered, id: \.self.id) { cipher in
-                
+        List(filtered, id: \.self.id) { cipher in
                 NavigationLink(
                     destination: {
                             ItemView(cipher: cipher
@@ -82,7 +89,6 @@ struct PasswordsList: View {
                     }
                 )
                 .padding(5)
-            }
         }
         .animation(.default, value: filtered)
         .toolbar {
