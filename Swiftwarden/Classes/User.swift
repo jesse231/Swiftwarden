@@ -92,7 +92,9 @@ class User: ObservableObject {
              }
 
              if let uri = dec.login?.uri {
-                 dec.login?.uri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+                 let decUri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+                 dec.login?.uri = decUri
+                 dec.login?.domain = extractHostURI(uri: decUri)
              }
 
              if let uris = dec.login?.uris {

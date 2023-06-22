@@ -12,7 +12,9 @@ struct Login: Codable & Hashable {
     var uris: [Uris]?
     var username, passwordRevisionDate, totp: String?
     var autofillOnPageLoad: JSONNull?
-
+    
+    // Custom addition:
+    var domain: String?
     enum CodingKeys: String, CodingKey {
         case password = "password"
         case uri = "uri"

@@ -43,17 +43,6 @@ struct PasswordsList: View, Equatable {
         case folder
     }
 
-    func extractHost(cipher: Cipher) -> String {
-        if let uri = cipher.login?.uri {
-            if let noScheme = uri.split(separator: "//").dropFirst().first, let host = noScheme.split(separator: "/").first {
-                return String(host)
-            } else {
-                return uri
-            }
-        }
-        return ""
-    }
-
     var body: some View {
         let filtered = passwordsToDisplay().filter { cipher in
             cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
@@ -68,7 +57,7 @@ struct PasswordsList: View, Equatable {
                             }).environmentObject(account)
                     },
                     label: {
-                        Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: extractHost(cipher: cipher), account: account)
+                        Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, account: account)
                         Spacer().frame(width: 20)
                         VStack {
                             if let name = cipher.name {
