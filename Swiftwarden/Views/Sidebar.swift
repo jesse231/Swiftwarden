@@ -71,7 +71,7 @@ struct SideBar: View {
                     label: "Login",
                     icon: "arrow.right.square.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account)),
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .login).environmentObject(account)),
                     tag: 3,
                     selection: $selection
                 )
@@ -83,6 +83,22 @@ struct SideBar: View {
                     tag: 4,
                     selection: $selection
                 )
+                MenuItem(
+                    label: "Identity",
+                    icon: "person.fill",
+                    color: .gray,
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .identity).environmentObject(account)),
+                    tag: 5,
+                    selection: $selection
+                )
+                MenuItem(
+                    label: "Secure Note",
+                    icon: "note.text",
+                    color: .gray,
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .secureNote).environmentObject(account)),
+                    tag: 6,
+                    selection: $selection
+                )
             }
             Section(header: Text("Folders")) {
                 ForEach(folders) { folder in
@@ -90,7 +106,7 @@ struct SideBar: View {
                         label: folder.name,
                         icon: "folder.fill",
                         color: .gray,
-                        destination: AnyView(PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder)),
+                        destination: AnyView(PasswordsList(searchText: $searchResults, display: .folder, folderID: folder.id)),
                         tag: folder.hashValue,
                         selection: $selection
                     )
@@ -129,7 +145,6 @@ struct SideBar: View {
                     })
                     .focused($isNewFolder)
                     .onSubmit {
-                        print(folderName)
                                 Task {
                                     do {
                                         await try account.user.addFolder(name: folderName)
