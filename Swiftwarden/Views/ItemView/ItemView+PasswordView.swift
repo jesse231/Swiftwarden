@@ -16,7 +16,7 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.deleteCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
+//                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -27,7 +27,7 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.deleteCipherPermanently(cipher: cipher)
-                    account.selectedCipher = Cipher()
+//                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -38,7 +38,7 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.restoreCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
+//                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -49,42 +49,7 @@ extension ItemView {
         var body: some View {
             VStack {
                 HStack {
-                    if cipher?.deletedDate == nil {
-                        Button {
-                            Task {
-                                try await delete()
-                            }
-                        } label: {
-                            Text("Delete")
-                        }
-                        Spacer()
-                        Button {
-                            editing = true
-                        } label: {
-                            Text("Edit")
-                        }
-                    } else {
-                        Button {
-                            Task {
-                                try await deletePermanently()
-                            }
-                        } label: {
-                            Text("Delete Permanently")
-                        }
-                        Spacer()
-                        Button {
-                            Task {
-                                try await restore()
-                            }
-                        } label: {
-                            Text("Restore")
-                        }
-                    }
-                }
-                .padding(.bottom)
-                
-                HStack {
-                    Icon(itemType: .password, hostname: extractHost(cipher: cipher), account: account)
+                    Icon(itemType: .password, hostname: cipher?.login?.domain, account: account)
                     VStack {
                         Text(cipher?.name ?? "")
                             .font(.system(size: 15))
@@ -129,7 +94,7 @@ extension ItemView {
                                     if url != "" {
                                         Field(
                                             title: "Website",
-                                            content: extractHostURI(uri: url),
+                                            content: cipher?.login?.domain ?? url,
                                             buttons: {
                                                 if hasScheme(url) {
                                                     Open(link: url)
@@ -155,6 +120,9 @@ extension ItemView {
                 .padding(.trailing)
             }
             .frame(maxWidth: .infinity)
+            .toolbar {
+                RegularCipherOptions(cipher: $cipher, editing: $editing, account: account)
+        }
             
         }
     }

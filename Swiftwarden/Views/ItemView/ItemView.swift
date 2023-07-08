@@ -32,16 +32,19 @@ enum RepromptState {
 
 
 struct ItemView: View {
+    
+    
     @State var cipher: Cipher?
     @EnvironmentObject var account: Account
-
+    
     @State var favorite: Bool
-
+    
     @State var showPassword = false
-
+    
     @State var editing: Bool = false
     @State var reprompt: RepromptState = .none
-
+    
+    
     init (cipher: Cipher?){
         _cipher = State(initialValue: cipher)
         if let repromptInt = cipher?.reprompt {
@@ -54,6 +57,7 @@ struct ItemView: View {
     }
     var body: some View {
         VStack {
+            let cipherCopy = cipher
             if let cipher {
                 if cipher.type == 1 {
                     if !editing {
@@ -74,49 +78,51 @@ struct ItemView: View {
                         SecureNoteEditing(cipher: $cipher, editing: $editing, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
-                    EmptyView()
+                        EmptyView()
                     }
-                
-            } else if cipher.type == 3 {
-                if !editing {
-                    CardView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
-                } else {
-                    CardEditing(cipher: $cipher, editing: $editing, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
-                }
-            } else if cipher.type == 4 {
-                if !editing {
-                    IdentityView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
-                } else {
-                    IdentityEditing(cipher: $cipher, editing: $editing, account: account)
-                        .padding(20)
-                        .frame(maxWidth: 800)
+                    
+                } else if cipher.type == 3 {
+                    if !editing {
+                        CardView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    } else {
+                        CardEditing(cipher: $cipher, editing: $editing, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    }
+                } else if cipher.type == 4 {
+                    if !editing {
+                        IdentityView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    } else {
+                        IdentityEditing(cipher: $cipher, editing: $editing, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    }
                 }
             }
         }
-        }
-            .frame(maxWidth: .infinity, alignment: .topLeading)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .toolbar {
-            ToolbarItem {
-                Spacer()
+            if cipher == nil {
+                ToolbarItem {
+                    Spacer()
+                }
             }
         }
     }
+}
 
-    struct Preview: PreviewProvider {
-        static var previews: some View {
-            let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
-            let account = Account()
-            Group {
-                ItemView(cipher: cipher)
-                    .environmentObject(account)
-                    .padding()
-            }
+struct Preview: PreviewProvider {
+    static var previews: some View {
+        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
+        let account = Account()
+        Group {
+            ItemView(cipher: cipher)
+                .environmentObject(account)
+                .padding()
         }
     }
 }

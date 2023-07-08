@@ -70,73 +70,56 @@ extension ItemView {
             _fields = State(wrappedValue: cipher.wrappedValue?.fields ?? [])
             
             reprompt = RepromptState.fromInt(cipher.wrappedValue?.reprompt ?? 0)
-            _notes = State(initialValue: account.selectedCipher.notes ?? "")
-            _fields = State(initialValue: account.selectedCipher.fields ?? [])
-            _favorite = State(initialValue: account.selectedCipher.favorite ?? false)
+            _notes = State(initialValue: cipher.wrappedValue?.notes ?? "")
+            _fields = State(initialValue: cipher.wrappedValue?.fields ?? [])
+            _favorite = State(initialValue: cipher.wrappedValue?.favorite ?? false)
         }
         
         
         
-        func edit () async throws {
-            let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-            
-            var modCipher = cipher!
-            modCipher.name = name
-            let identity = Identity(
-                address1: address1 != "" ? address1 : nil,
-                address2: address2 != "" ? address2 : nil,
-                address3: address3 != "" ? address3 : nil,
-                city: city != "" ? city : nil,
-                company: company != "" ? company : nil,
-                country: country != "" ? country : nil,
-                email: email != "" ? email : nil,
-                firstName: firstName != "" ? firstName : nil,
-                lastName: lastName != "" ? lastName : nil,
-                licenseNumber: licenseNumber != "" ? licenseNumber : nil,
-                middleName: middleName != "" ? middleName : nil,
-                passportNumber: passportNumber != "" ? passportNumber : nil,
-                phone: phone != "" ? phone : nil,
-                postalCode: zip != "" ? zip : nil,
-                ssn: socialSecurityNumber != "" ? socialSecurityNumber : nil,
-                state: state != "" ? state : nil,
-                title: title != "" ? title : nil,
-                username: username != "" ? username : nil
-            )
-            modCipher.identity = identity
-            
-            modCipher.notes = notes
-            modCipher.fields = fields
-            
-            modCipher.favorite = cipher?.favorite
-            modCipher.reprompt = reprompt.toInt()
-            modCipher.folderID = folder
-            
-            
-            try await account.user.updateCipher(cipher: modCipher, index: index)
-            account.selectedCipher = modCipher
-            cipher = modCipher
+        func save() async throws{
+                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+                
+                var modCipher = cipher!
+                modCipher.name = name
+                let identity = Identity(
+                    address1: address1 != "" ? address1 : nil,
+                    address2: address2 != "" ? address2 : nil,
+                    address3: address3 != "" ? address3 : nil,
+                    city: city != "" ? city : nil,
+                    company: company != "" ? company : nil,
+                    country: country != "" ? country : nil,
+                    email: email != "" ? email : nil,
+                    firstName: firstName != "" ? firstName : nil,
+                    lastName: lastName != "" ? lastName : nil,
+                    licenseNumber: licenseNumber != "" ? licenseNumber : nil,
+                    middleName: middleName != "" ? middleName : nil,
+                    passportNumber: passportNumber != "" ? passportNumber : nil,
+                    phone: phone != "" ? phone : nil,
+                    postalCode: zip != "" ? zip : nil,
+                    ssn: socialSecurityNumber != "" ? socialSecurityNumber : nil,
+                    state: state != "" ? state : nil,
+                    title: title != "" ? title : nil,
+                    username: username != "" ? username : nil
+                )
+                modCipher.identity = identity
+                
+                modCipher.notes = notes
+                modCipher.fields = fields
+                
+                modCipher.favorite = favorite
+                modCipher.reprompt = reprompt.toInt()
+                modCipher.folderID = folder
+                
+                
+                try await account.user.updateCipher(cipher: modCipher, index: index)
+                account.selectedCipher = modCipher
+                cipher = modCipher
         }
         
         var body: some View {
             Group {
                 VStack {
-                    HStack {
-                        Button {
-                            self.editing = false
-                        } label: {
-                            Text("Cancel")
-                        }
-                        Spacer()
-                        Button {
-                            Task {
-                                try await edit()
-                                self.editing = false
-                            }
-                        } label: {
-                            Text("Done")
-                        }
-                    }
-                    .padding(.bottom)
                     HStack {
                         Icon(itemType: .identity, account: account)
                         VStack {
@@ -150,7 +133,7 @@ extension ItemView {
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        FavoriteButton(cipher: $cipher, account: account)
+                        FavoriteEditingButton(favorite: $favorite)
                     }
                     Divider()
                     ScrollView {
@@ -214,39 +197,18 @@ extension ItemView {
                                 EditingField(title: "Country", text: $country, buttons: {})
                                     .padding()
                             }
-                                Form {
-                                    Picker(selection: $folder, label: Text("Folder")) {
-                                        ForEach(account.user.getFolders(), id: \.self) {folder in
-                                            Text(folder.name)
-                                        }
-                                    }
-                                    Toggle("Favorite", isOn: Binding<Bool>(
-                                        get: {
-                                            return self.cipher?.favorite ?? false
-                                        },
-                                        set: { newValue in
-                                            self.cipher?.favorite = newValue
-                                        }
-                                    )
-                                    )
-                                    Toggle("Master Password Re-prompt", isOn: Binding<Bool>(
-                                        get: {
-                                            return self.reprompt.reprompt()
-                                        },
-                                        set: { newValue in
-                                            self.reprompt = newValue ? .require : .none
-                                        }
-                                    ))
-                                    
-                                }
-                                .formStyle(.grouped)
-                                .scrollContentBackground(.hidden)
-                            }
+                            CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
+                                .environmentObject(account)
+                            
+                        }
                         }
                         .padding(.trailing)
                         .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
+                    .toolbar {
+                        EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
+                    }
                 }
         }
     }

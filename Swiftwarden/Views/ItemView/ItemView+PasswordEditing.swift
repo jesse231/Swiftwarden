@@ -23,81 +23,61 @@ extension ItemView {
         @State var password: String
         @State var url: String
         
-        @State var folder: Folder// = Folder(id: "", name: "")
+        @State var folder: String?
+        @State var favorite: Bool
         @State var reprompt: RepromptState
         
-        @State var uris: [Uris] // = [Uris(url: "")]
+        @State var uris: [Uris]
         
         @State var showReprompt: Bool = false
         
         init(cipher: Binding<Cipher?>, editing: Binding<Bool>, account: Account) {
             _cipher = cipher
-            
-            _name = State(initialValue: account.selectedCipher.name ?? "")
-            _username = State(initialValue: account.selectedCipher.login?.username ?? "")
-            _password = State(initialValue: account.selectedCipher.login?.password ?? "")
-            _url = State(initialValue: account.selectedCipher.login?.uri ?? "")
-            if let folderID = account.selectedCipher.folderID {
-                self.folder = account.user.getFolders().filter({$0.id == folderID}).first!
-            } else {
-                folder = account.user.getFolders().first!
-            }
+            _name = State(initialValue: cipher.wrappedValue?.name ?? "")
+            _username = State(initialValue: cipher.wrappedValue?.login?.username ?? "")
+            _password = State(initialValue: cipher.wrappedValue?.login?.password ?? "")
+            _url = State(initialValue: cipher.wrappedValue?.login?.uri ?? "")
+            self.folder = cipher.wrappedValue?.folderID
+            self.favorite = cipher.wrappedValue?.favorite ?? false
             reprompt = RepromptState.fromInt(cipher.wrappedValue?.reprompt ?? 0)
-            _uris = State(initialValue: account.selectedCipher.login?.uris ?? [Uris(url: "")])
+            _uris = State(initialValue: cipher.wrappedValue?.login?.uris ?? [Uris(url: "")])
             
             _editing = editing
             _account = StateObject(wrappedValue: account)
         }
         
-        
-        func edit () async throws {
-            let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-            var modCipher = cipher!
-            modCipher.name = name
-            
-            modCipher.login?.username = username != "" ? username : nil
-            modCipher.login?.password = password != "" ? password : nil
-            if let url = uris.first?.uri {
-                modCipher.login?.uris = uris
-                modCipher.login?.uri = url
-            } else {
-                modCipher.login?.uris = nil
-                modCipher.login?.uri = nil
-            }
-            if let folderID = folder.id {
-                modCipher.folderID = folderID
-            } else {
-                modCipher.folderID = nil
-            }
-            modCipher.favorite = cipher?.favorite
-            modCipher.reprompt = reprompt.toInt()
-            try await account.user.updateCipher(cipher: modCipher, index: index)
-            account.selectedCipher = modCipher
-            cipher = modCipher
+        func save() {
+                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+                var modCipher = cipher!
+                modCipher.name = name
+                
+                modCipher.login?.username = username != "" ? username : nil
+                modCipher.login?.password = password != "" ? password : nil
+                if let url = uris.first?.uri {
+                    modCipher.login?.uris = uris
+                    modCipher.login?.uri = url
+                } else {
+                    modCipher.login?.uris = nil
+                    modCipher.login?.uri = nil
+                }
+                modCipher.folderID = folder
+                modCipher.favorite = favorite
+                modCipher.reprompt = reprompt.toInt()
+                account.user.updateCipher(cipher: modCipher, index: index)
+                cipher = modCipher
         }
+        
+        
         
         var body: some View {
             Group {
                 VStack {
                     HStack {
-                        Button {
-                            self.editing = false
-                        } label: {
-                            Text("Cancel")
+                        if let url = uris.first?.uri {
+                            Icon(itemType: .password, hostname: extractHostURI(uri: url), account: account)
+                        } else {
+                            Icon(itemType: .password, account: account)
                         }
-                        Spacer()
-                        Button {
-                            Task {
-                                try await edit()
-                                self.editing = false
-                            }
-                        } label: {
-                            Text("Done")
-                        }
-                    }
-                    .padding(.bottom)
-                    HStack {
-                        Icon(itemType: .password, account: account)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -109,7 +89,7 @@ extension ItemView {
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        FavoriteButton(cipher: $cipher, account: account)
+                        FavoriteEditingButton(favorite: $favorite)
                     }
                     Divider()
                     ScrollView {
@@ -125,7 +105,6 @@ extension ItemView {
                                 .padding()
                             } else {
                                 EditingField(title: "Password", text: $password, secure: true) {
-                                    TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     GeneratePasswordButton(password: $password)
                                 }.padding()
                             }
@@ -146,43 +125,21 @@ extension ItemView {
                                     return cipher?.notes ?? ""
                                 },
                                 set: { newValue in
-                                    cipher?.notes = newValue
+                                    cipher?.notes = newValue != "" ? newValue : nil
                                 }
                             ))
                             Divider()
-                            Form {
-                                Picker(selection: $folder, label: Text("Folder")) {
-                                    ForEach(account.user.getFolders(), id: \.self) {folder in
-                                        Text(folder.name)
-                                    }
-                                }
-                                Toggle("Favorite", isOn: Binding<Bool>(
-                                    get: {
-                                        return self.cipher?.favorite ?? false
-                                    },
-                                    set: { newValue in
-                                        self.cipher?.favorite = newValue
-                                    }
-                                )
-                                )
-                                Toggle("Master Password Re-prompt", isOn: Binding<Bool>(
-                                    get: {
-                                        return self.reprompt.reprompt()
-                                    },
-                                    set: { newValue in
-                                        self.reprompt = newValue ? .require : .none
-                                    }
-                                ))
-                                
-                            }
-                            .formStyle(.grouped)
-                            .scrollContentBackground(.hidden)
+                            CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
+                                .environmentObject(account)
                         }
                         .padding(.trailing)
                         .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
                 }
+            }
+            .toolbar {
+                EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
             }
         }
     }
@@ -193,7 +150,8 @@ struct PasswordEditingPreview: PreviewProvider {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
         
-        ItemView.PasswordEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
-            .padding()
+//        ItemView.PasswordEditing(cipher: .constant(cipher), editing: .constant(true), account: account, save: .constant({}))
+//            .padding()
+//            .frame(height: 1000)
     }
 }

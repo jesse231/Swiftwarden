@@ -16,7 +16,6 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.deleteCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -27,7 +26,6 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.deleteCipherPermanently(cipher: cipher)
-                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -38,7 +36,6 @@ extension ItemView {
             if let cipher {
                 do {
                     try await account.user.restoreCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -47,42 +44,7 @@ extension ItemView {
         }
         
         var body: some View {
-                VStack {
-                    HStack {
-                        if cipher?.deletedDate == nil {
-                            Button {
-                                Task {
-                                    try await delete()
-                                }
-                            } label: {
-                                Text("Delete")
-                            }
-                            Spacer()
-                            Button {
-                                editing = true
-                            } label: {
-                                Text("Edit")
-                            }
-                        } else {
-                            Button {
-                                Task {
-                                    try await deletePermanently()
-                                }
-                            } label: {
-                                Text("Delete Permanently")
-                            }
-                            Spacer()
-                            Button {
-                                Task {
-                                    try await restore()
-                                }
-                            } label: {
-                                Text("Restore")
-                            }
-                        }
-                    }
-                    .padding(.bottom)
-                    
+                VStack {                    
                     HStack {
                         Icon(itemType: .card, account: account)
                         VStack {
@@ -123,6 +85,7 @@ extension ItemView {
                                     })
                             }
                             if let brand = cipher?.card?.brand {
+                                let _ = print(brand)
                                 Field(
                                     title: "Brand",
                                     content: brand,
@@ -164,9 +127,9 @@ extension ItemView {
                         .padding(.trailing)
                     }
                 .frame(maxWidth: .infinity)
-                //                    .sheet(isPresented: $showReprompt) {
-                //                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
-                //                    }
+                .toolbar {
+                    RegularCipherOptions(cipher: $cipher, editing: $editing, account: account)
+            }
                 
             }
         }

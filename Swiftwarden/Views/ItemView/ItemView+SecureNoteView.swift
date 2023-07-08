@@ -9,80 +9,10 @@ extension ItemView {
         @Binding var reprompt: RepromptState
         @State var showReprompt: Bool = false
         @State var showPassword: Bool = false
-        
         @StateObject var account: Account
         
-        func delete() async throws {
-            if let cipher {
-                do {
-                    try await account.user.deleteCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func deletePermanently() async throws {
-            if let cipher {
-                do {
-                    try await account.user.deleteCipherPermanently(cipher: cipher)
-                    account.selectedCipher = Cipher()
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func restore() async throws {
-            if let cipher {
-                do {
-                    try await account.user.restoreCipher(cipher: cipher)
-                    account.selectedCipher = Cipher()
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        
         var body: some View {
-                VStack {
-                    HStack {
-                        if cipher?.deletedDate == nil {
-                            Button {
-                                Task {
-                                    try await delete()
-                                }
-                            } label: {
-                                Text("Delete")
-                            }
-                            Spacer()
-                            Button {
-                                editing = true
-                            } label: {
-                                Text("Edit")
-                            }
-                        } else {
-                            Button {
-                                Task {
-                                    try await deletePermanently()
-                                }
-                            } label: {
-                                Text("Delete Permanently")
-                            }
-                            Spacer()
-                            Button {
-                                Task {
-                                    try await restore()
-                                }
-                            } label: {
-                                Text("Restore")
-                            }
-                        }
-                    }
-                    .padding(.bottom)
-                    
+                VStack {                    
                     HStack {
                         Icon(itemType: .secureNote, account: account)
                         VStack {
@@ -114,9 +44,9 @@ extension ItemView {
                         .padding(.trailing)
                     }
                 .frame(maxWidth: .infinity)
-                //                    .sheet(isPresented: $showReprompt) {
-                //                        RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, account: account)
-                //                    }
+                .toolbar {
+                    RegularCipherOptions(cipher: $cipher, editing: $editing, account: account)
+            }
                 
             }
         }

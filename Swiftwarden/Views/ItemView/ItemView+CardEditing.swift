@@ -36,70 +36,52 @@ extension ItemView {
             _editing = editing
             _account = StateObject(wrappedValue: account)
             
-            _name = State(initialValue: account.selectedCipher.name ?? "")
-            _cardholderName = State(initialValue: account.selectedCipher.card?.cardHolderName ?? "")
-            _number = State(initialValue: account.selectedCipher.card?.number ?? "")
-            _brand = State(initialValue: account.selectedCipher.card?.brand ?? "")
-            _expirationMonth = State(initialValue: account.selectedCipher.card?.expMonth ?? nil as String?)
-            _expirationYear = State(initialValue: account.selectedCipher.card?.expYear ?? nil as String?)
-            _securityCode = State(initialValue: account.selectedCipher.card?.code ?? "")
-            _folder = State(initialValue: account.selectedCipher.folderID ?? nil as String?)
-            _favorite = State(initialValue: account.selectedCipher.favorite ?? false)
+            _name = State(initialValue: cipher.wrappedValue?.name ?? "")
+            _cardholderName = State(initialValue: cipher.wrappedValue?.card?.cardHolderName ?? "")
+            _number = State(initialValue: cipher.wrappedValue?.card?.number ?? "")
+            _brand = State(initialValue: cipher.wrappedValue?.card?.brand)
+            _expirationMonth = State(initialValue: cipher.wrappedValue?.card?.expMonth ?? nil as String?)
+            _expirationYear = State(initialValue: cipher.wrappedValue?.card?.expYear ?? nil as String?)
+            _securityCode = State(initialValue: cipher.wrappedValue?.card?.code ?? "")
+            _folder = State(initialValue: cipher.wrappedValue?.folderID ?? nil as String?)
+            _favorite = State(initialValue: cipher.wrappedValue?.favorite ?? false)
             reprompt = RepromptState.fromInt(cipher.wrappedValue?.reprompt ?? 0)
-            _notes = State(initialValue: account.selectedCipher.notes ?? "")
-            _fields = State(initialValue: account.selectedCipher.fields ?? [])
+            _notes = State(initialValue: cipher.wrappedValue?.notes ?? "")
+            _fields = State(initialValue: cipher.wrappedValue?.fields ?? [])
         }
         
         
         
-        func edit () async throws {
-            let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-            
-            var modCipher = cipher!
-            modCipher.name = name
-            let card = Card(
-                brand: brand != "" ? brand : nil,
-                cardHolderName: cardholderName != "" ? cardholderName : nil,
-                code: securityCode != "" ? securityCode : nil,
-                expMonth: expirationMonth,
-                expYear: expirationYear,
-                number: number != "" ? number : nil
-            )
-            modCipher.card = card
-            
-            modCipher.notes = notes
-            modCipher.fields = fields
-            
-            modCipher.favorite = cipher?.favorite
-            modCipher.reprompt = reprompt.toInt()
-            modCipher.folderID = folder
-            
-            
-            try await account.user.updateCipher(cipher: modCipher, index: index)
-            account.selectedCipher = modCipher
-            cipher = modCipher
+        func save() async throws {
+                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+                
+                var modCipher = cipher!
+                modCipher.name = name
+                let card = Card(
+                    brand: brand != "" ? brand : nil,
+                    cardHolderName: cardholderName != "" ? cardholderName : nil,
+                    code: securityCode != "" ? securityCode : nil,
+                    expMonth: expirationMonth,
+                    expYear: expirationYear,
+                    number: number != "" ? number : nil
+                )
+                modCipher.card = card
+                
+                modCipher.notes = notes != "" ? notes : nil
+                modCipher.fields = fields
+                
+                modCipher.favorite = favorite
+                modCipher.reprompt = reprompt.toInt()
+                modCipher.folderID = folder
+                
+                
+                try await account.user.updateCipher(cipher: modCipher, index: index)
+                cipher = modCipher
         }
         
         var body: some View {
             Group {
                 VStack {
-                    HStack {
-                        Button {
-                            self.editing = false
-                        } label: {
-                            Text("Cancel")
-                        }
-                        Spacer()
-                        Button {
-                            Task {
-                                try await edit()
-                                self.editing = false
-                            }
-                        } label: {
-                            Text("Done")
-                        }
-                    }
-                    .padding(.bottom)
                     HStack {
                         Icon(itemType: .card, account: account)
                         VStack {
@@ -113,14 +95,13 @@ extension ItemView {
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        FavoriteButton(cipher: $cipher, account: account)
+                        FavoriteEditingButton(favorite: $favorite)
                     }
                     Divider()
                     ScrollView {
                         VStack {
                             EditingField(title: "Cardholder Name", text: $cardholderName) {
                             }
-                            .padding()
                             EditingField(title: "Number", text: $number, secure: true) {
                             }
                             Divider()
@@ -128,7 +109,7 @@ extension ItemView {
                                 Picker("Brand", selection: $brand) {
                                     Group {
                                         Text("Select").tag(nil as String?)
-                                        Text("Visa").tag("" as String?)
+                                        Text("Visa").tag("Visa" as String?)
                                         Text("Mastercard").tag("mastercard" as String?)
                                         Text("American Express").tag("american-express" as String?)
                                     }
@@ -140,7 +121,7 @@ extension ItemView {
                                     Text("RuPay").tag("rupay" as String?)
                                     Text("Other").tag("other" as String?)
                                 }
-
+                                
                                 Picker("Expiration Month", selection: $expirationMonth) {
                                     Group {
                                         Text("Select").tag(nil as String?)
@@ -158,7 +139,7 @@ extension ItemView {
                                     Text("November").tag("11" as String?)
                                     Text("December").tag("12" as String?)
                                 }
-
+                                
                                 Picker("Expiration Year", selection: $expirationYear) {
                                     Text("Select").tag(nil as String?)
                                     let currentYear = Calendar.current.component(.year, from: Date())
@@ -166,15 +147,11 @@ extension ItemView {
                                         Text("\(String(year).replacingOccurrences(of: ",", with: ""))").tag("\(year)" as String?)
                                     }
                                 }
-
-                                HStack {
-                                    Text("Security Code")
-                                    GroupBox {
-                                        SecureField("", text: $securityCode)
-                                            .textFieldStyle(.plain)
-                                    }
-                                }
                             }
+                            .formStyle(.grouped)
+                            .padding([.leading, .trailing], -25)
+
+                                EditingField(title: "Security Code", text: $securityCode, buttons: {})
                             Divider()
                             Group {
                                 CustomFieldsEdit(fields: Binding<[CustomField]>(
@@ -195,36 +172,16 @@ extension ItemView {
                                 ))
                             }
                             Divider()
-                            Form {
-                                Picker(selection: $folder, label: Text("Folder")) {
-                                    ForEach(account.user.getFolders(), id: \.self) {folder in
-                                        Text(folder.name).tag(folder.id as String?)
-                                    }
-                                }
-                                Toggle("Favorite", isOn: Binding<Bool>(
-                                    get: {
-                                        return self.cipher?.favorite ?? false
-                                    },
-                                    set: { newValue in
-                                        self.cipher?.favorite = newValue
-                                    }
-                                )
-                                )
-                                Toggle("Master Password Re-prompt", isOn: Binding<Bool>(
-                                    get: {
-                                        return self.reprompt.reprompt()
-                                    },
-                                    set: { newValue in
-                                        self.reprompt = newValue ? .require : .none
-                                    }
-                                ))
-                                
-                            }
+                            CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
+                                .environmentObject(account)
                         }
                         .padding(.trailing)
                         .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
+                    .toolbar {
+                        EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
+                    }
                 }
             }
         }
