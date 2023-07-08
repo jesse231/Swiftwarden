@@ -125,6 +125,7 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         let (data, response) = try await URLSession.shared.data(for: request)
         print(response)
         print(String(data: data, encoding: .utf8)!)
+        return 
     }
 
     private func login (email: String, password: String) async throws -> Token {
@@ -193,8 +194,8 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 //                let decoder = try JSONDecoder()
 //                try decoder.keyDecodingStrategy = .convertFromSnakeCase
 //                let error = try decoder.decode(ErrorResponse.self, from: data)
-                print(response)
-                print(String(data: data, encoding: .utf8)!)
+//                print(response)
+//                print(String(data: data, encoding: .utf8)!)
                 throw AuthError(message: "Invalid email or password")
             }
         }
@@ -214,10 +215,10 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(response)
-        print(String(data: data, encoding: .utf8)!)
+//        print(response)
+//        print(String(data: data, encoding: .utf8)!)
         let syncData = try Response(data: data)
-        print(syncData)
+//        print(syncData)
         return syncData
     }
     
@@ -274,8 +275,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
-        print(response)
         return
     }
 
@@ -288,13 +287,10 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         encoder.outputFormatting = .prettyPrinted
         request.httpBody = try JSONEncoder().encode(try Encryption.encryptCipher(cipher: cipher))
 
-       // print(String(bytes: try encoder.encode(try Encryption.encryptCipher(cipher: cipher)), encoding: .utf8))
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(response)
-        print(String(data: data, encoding: .utf8)!)
 
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode != 200 {
@@ -316,7 +312,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
     
     func createFolder(name: String) async throws -> Folder {
         let url = apiPath.appendingPathComponent("folders/")
-        print(url)
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
@@ -335,12 +330,8 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        print(response)
-        
-        print(String(data: data, encoding: .utf8))
-        
+                
         let folder = try Folder(data: data)
-        print(folder)
         
         return try Encryption.decryptFolder(data: folder) 
         
@@ -360,8 +351,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         
         let (data, response) = try await URLSession.shared.data(for: request)
         
-        print(response)
-        print(String(data: data, encoding: .utf8))
     }
 
 }

@@ -16,6 +16,7 @@ struct PasswordsList: View, Equatable {
     @EnvironmentObject var account: Account
     @State private var deleteDialog = false
     @State private var itemType: ItemType?
+    @State var selection: Cipher?
     var folderID: String?
 
     var display: PasswordListType
@@ -35,14 +36,6 @@ struct PasswordsList: View, Equatable {
         }
     }
 
-    enum PasswordListType {
-        case normal
-        case trash
-        case favorite
-        case card
-        case folder
-    }
-
     var body: some View {
         let filtered = passwordsToDisplay().filter { cipher in
             cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
@@ -50,12 +43,16 @@ struct PasswordsList: View, Equatable {
 
         List(filtered, id: \.self.id) { cipher in
                 NavigationLink(
-                    destination: {
+                    destination:
                             ItemView(cipher: cipher
-                            ).onAppear(perform: {
-                                account.selectedCipher = cipher
-                            }).environmentObject(account)
-                    },
+                            )
+//                            .onAppear(perform: {
+//                                account.selectedCipher = cipher
+//                            })
+                .environmentObject(account)
+                    ,
+                    tag: cipher,
+                    selection: $selection,
                     label: {
                         Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, account: account)
                         Spacer().frame(width: 20)

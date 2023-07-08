@@ -18,12 +18,14 @@ struct SideBar: View {
             let icon: String
             let color: Color
             let destination: AnyView
+            let tag: Int
+            let selection: Binding<Int?>
         
             var body: some View {
                 NavigationLink(
                     destination: destination,
-//                    tag: 1,
-//                    selection: $selection,
+                    tag: tag,
+                    selection: self.selection,
                     label: {
                         Label {
                             Text(label)
@@ -42,19 +44,25 @@ struct SideBar: View {
                     label: "All Items",
                     icon: "shield.lefthalf.fill",
                     color: .blue,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account))
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account)),
+                    tag: 0,
+                    selection: $selection
                 )
                 MenuItem(
                     label: "Favorites",
                     icon: "star.fill",
                     color: .yellow,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .favorite).environmentObject(account))
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .favorite).environmentObject(account)),
+                    tag: 1,
+                    selection: $selection
                 )
                 MenuItem(
                     label: "Trash",
                     icon: "trash.fill",
                     color: .red,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .trash).environmentObject(account))
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .trash).environmentObject(account)),
+                    tag: 2,
+                    selection: $selection
                 )
             }
 
@@ -63,13 +71,17 @@ struct SideBar: View {
                     label: "Login",
                     icon: "arrow.right.square.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account))
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account)),
+                    tag: 3,
+                    selection: $selection
                 )
                 MenuItem(
                     label: "Card",
                     icon: "creditcard.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(account))
+                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(account)),
+                    tag: 4,
+                    selection: $selection
                 )
             }
             Section(header: Text("Folders")) {
@@ -78,7 +90,9 @@ struct SideBar: View {
                         label: folder.name,
                         icon: "folder.fill",
                         color: .gray,
-                        destination: AnyView(PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder))
+                        destination: AnyView(PasswordsList(searchText: $searchResults, folderID: folder.id, display: .folder)),
+                        tag: folder.hashValue,
+                        selection: $selection
                     )
                     .contextMenu {
                         if folder.id != nil{
