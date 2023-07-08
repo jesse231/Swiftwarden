@@ -21,13 +21,12 @@ extension AddNewItemPopup {
         @State var notes: String = ""
         
         @State var favorite = false
-        @State var reprompt = false
-        @State var selectedFolder: Folder
+        @State var reprompt: RepromptState = .none
+        @State var folder: String?
         
         init(account: Account, name: Binding<String>, itemType: Binding<ItemType?>) {
             self.account = account
             self._name = name
-            self._selectedFolder = State(initialValue: account.user.getFolders()[0])
             self._itemType = itemType
         }
         
@@ -61,21 +60,8 @@ extension AddNewItemPopup {
                             NotesEditView($notes)
                             Divider()
                         }
-                        Form {
-                            Picker("Folder", selection: $selectedFolder) {
-                                ForEach(account.user.getFolders(), id: \.self) {folder in
-                                    Text(folder.name)
-                                }
-                                
-                            }
-                            Toggle("Favorite", isOn: $favorite)
-                            Toggle("Master password re-prompt", isOn: $reprompt)
-                        }
-                        .scaledToFit()
-                        .scaledToFill()
-                        .scrollDisabled(true)
-                        .formStyle(.grouped)
-                        .scrollContentBackground(.hidden)
+                        CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
+                            .environmentObject(account)
                     }
                     .padding()
                 }
@@ -92,7 +78,7 @@ extension AddNewItemPopup {
                             let newCipher = Cipher(
                                 favorite: favorite,
                                 fields: fields,
-                                folderID: selectedFolder.id != "No Folder" ? selectedFolder.id : nil,
+                                folderID: folder,
                                 login: Login(
                                     password: password != "" ? password : nil,
                                     uri: url,
@@ -100,11 +86,10 @@ extension AddNewItemPopup {
                                     username: username != "" ? username : nil),
                                 name: name,
                                 notes: notes != "" ? notes : nil,
-                                reprompt: reprompt ? 1 : 0,
+                                reprompt: reprompt.toInt(),
                                 type: 1
                             )
                             do {
-                                self.account.selectedCipher =
                                 try await account.user.addCipher(cipher: newCipher)
                             }
                             catch {

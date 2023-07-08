@@ -23,7 +23,7 @@ extension AddNewItemPopup {
         
         @State private var folder: String?
         @State private var favorite = false
-        @State private var reprompt = false
+        @State private var reprompt: RepromptState = .none
         
         @State private var notes = ""
         
@@ -111,22 +111,8 @@ extension AddNewItemPopup {
                             NotesEditView($notes)
                             Divider()
                         }
-                        Form {
-                            Picker("Folder", selection: $folder) {
-                                Text("No Folder").tag(nil as String?)
-                                ForEach(account.user.getFolders(), id: \.self) {folder in
-                                    Text(folder.name).tag(folder.id)
-                                }
-                                
-                            }
-                            Toggle("Favorite", isOn: $favorite)
-                            Toggle("Master password re-prompt", isOn: $reprompt)
-                        }
-                        .scaledToFit()
-                        .scaledToFill()
-                        .scrollDisabled(true)
-                        .formStyle(.grouped)
-                        .scrollContentBackground(.hidden)
+                        CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
+                            .environmentObject(account)
                     }
                     .padding()
                 }
@@ -155,11 +141,10 @@ extension AddNewItemPopup {
                                 folderID: folder,
                                 name: name,
                                 notes: notes != "" ? notes : nil,
-                                reprompt: reprompt ? 1 : 0,
+                                reprompt: reprompt.toInt(),
                                 type: 3
                             )
                             do {
-                                self.account.selectedCipher =
                                 try await account.user.addCipher(cipher: newCipher)
                             }
                             catch {

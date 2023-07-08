@@ -44,6 +44,7 @@
 		3B98714F2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */; };
 		3B9871512A41F8FB00CABFDC /* UrlHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B9871502A41F8FB00CABFDC /* UrlHelpers.swift */; };
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
+		3BBF419E2A54C6AA004C5C69 /* PasswordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF419D2A54C6AA004C5C69 /* PasswordType.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
 		3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757912A031BF90065CCF0 /* Uris.swift */; };
@@ -72,6 +73,8 @@
 		3BC8C29F2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */; };
 		3BD0746628A01FC000812AAB /* TestField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746528A01FC000812AAB /* TestField.swift */; };
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
+		3BDBDF292A5509C2000E61F5 /* ItemView+ToolBarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */; };
+		3BDBDF2B2A5741FA000E61F5 /* CipherOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
 		3BDEA7F92A0591510007DFB4 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7F82A0591510007DFB4 /* Nuke */; };
 		3BDEA7FB2A0591510007DFB4 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7FA2A0591510007DFB4 /* NukeExtensions */; };
@@ -158,6 +161,7 @@
 		3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+SecureNoteEditing.swift"; sourceTree = "<group>"; };
 		3B9871502A41F8FB00CABFDC /* UrlHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlHelpers.swift; sourceTree = "<group>"; };
 		3BB8CE512A155C3F00644F5D /* AddUrlList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddUrlList.swift; sourceTree = "<group>"; };
+		3BBF419D2A54C6AA004C5C69 /* PasswordType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordType.swift; sourceTree = "<group>"; };
 		3BBF9C852A0827720058E82E /* Biometric.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Biometric.swift; sourceTree = "<group>"; };
 		3BC757902A031BF90065CCF0 /* DataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataClass.swift; sourceTree = "<group>"; };
 		3BC757912A031BF90065CCF0 /* Uris.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Uris.swift; sourceTree = "<group>"; };
@@ -186,6 +190,8 @@
 		3BC8C29E2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+IdentityEditing.swift"; sourceTree = "<group>"; };
 		3BD0746528A01FC000812AAB /* TestField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestField.swift; sourceTree = "<group>"; };
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
+		3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+ToolBarComponents.swift"; sourceTree = "<group>"; };
+		3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CipherOptions.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldsEditView.swift; sourceTree = "<group>"; };
 		3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CryptoSwift.xcframework; sourceTree = "<group>"; };
@@ -244,6 +250,7 @@
 		3B2C42092A11CC1600720E43 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -340,6 +347,7 @@
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 				3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */,
 				3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */,
+				3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */,
 				3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */,
 			);
 			path = Components;
@@ -374,6 +382,14 @@
 				3B0A8E03296209830055DA2D /* Encryption.swift */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		3BBF419C2A54C698004C5C69 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				3BBF419D2A54C6AA004C5C69 /* PasswordType.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		3BC7578F2A031BE20065CCF0 /* Models */ = {
@@ -413,6 +429,7 @@
 		3BF9B58D296CC3FC0095B557 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				3BBF419C2A54C698004C5C69 /* Enums */,
 				3BDEA75B2A0480240007DFB4 /* JSON */,
 				3B112FB72982F9940018F53B /* SwCrypt.swift */,
 				3BF9B58E296CC40B0095B557 /* Query.swift */,
@@ -563,6 +580,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3BBF419E2A54C6AA004C5C69 /* PasswordType.swift in Sources */,
 				3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */,
 				3BC757AF2A031CDF0065CCF0 /* SecureNote.swift in Sources */,
 				3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */,
@@ -609,11 +627,13 @@
 				3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */,
 				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
 				3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */,
+				3BDBDF292A5509C2000E61F5 /* ItemView+ToolBarComponents.swift in Sources */,
 				3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */,
 				3B0A8E04296209830055DA2D /* Encryption.swift in Sources */,
 				3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */,
 				3B2CF2682A13DE4D00E3D16F /* Icon.swift in Sources */,
 				3BC757A92A031BFA0065CCF0 /* Profile.swift in Sources */,
+				3BDBDF2B2A5741FA000E61F5 /* CipherOptions.swift in Sources */,
 				3BC8C2912A3B944A004B2B14 /* User.swift in Sources */,
 				3B2EC3C7296F30FC003A04A1 /* LoginView.swift in Sources */,
 				3B2EC3C4296F27F6003A04A1 /* CardView.swift in Sources */,
@@ -789,6 +809,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"Swiftwarden/Preview Content\"";
 				DEVELOPMENT_TEAM = 223W8R2MTJ;
 				ENABLE_PREVIEWS = YES;
