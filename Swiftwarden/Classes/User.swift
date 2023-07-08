@@ -83,59 +83,114 @@ class User: ObservableObject {
             key = self.keys[id]
         }
         dec.name = String(bytes: try Encryption.decrypt(decKey: key, str: data.name ?? ""), encoding: .utf8)
-         if data.object! == "cipherDetails"{
-             if let pass = dec.login?.password {
-                 dec.login?.password = String(bytes: try Encryption.decrypt(decKey: key, str: pass), encoding: .utf8)
-             }
-             if let user = dec.login?.username {
-                 dec.login?.username = String(bytes: try Encryption.decrypt(decKey: key, str: user), encoding: .utf8)
-             }
-
-             if let uri = dec.login?.uri {
-                 let decUri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
-                 dec.login?.uri = decUri
-                 dec.login?.domain = extractHostURI(uri: decUri)
-             }
-
-             if let uris = dec.login?.uris {
-                 for (i, uri) in uris.enumerated() {
-                     if let uri = uri.uri, let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
-                         dec.login?.uris?[i].uri = decrypt
-                     }
-                 }
-             }
-             if let fields = dec.fields {
-                    for (i, field) in fields.enumerated() {
-                        if let name = field.name {
-                            dec.fields?[i].name = String(bytes: try Encryption.decrypt(decKey: key, str: name), encoding: .utf8)
-                        }
-                        if let value = field.value {
-                            dec.fields?[i].value = String(bytes: try Encryption.decrypt(decKey: key, str: value), encoding: .utf8)
-                        }
+        if data.object! == "cipherDetails"{
+            if let pass = dec.login?.password {
+                dec.login?.password = String(bytes: try Encryption.decrypt(decKey: key, str: pass), encoding: .utf8)
+            }
+            if let user = dec.login?.username {
+                dec.login?.username = String(bytes: try Encryption.decrypt(decKey: key, str: user), encoding: .utf8)
+            }
+            
+            if let uri = dec.login?.uri {
+                let decUri = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8)
+                dec.login?.uri = decUri
+                dec.login?.domain = extractHostURI(uri: decUri)
+            }
+            
+            if let uris = dec.login?.uris {
+                for (i, uri) in uris.enumerated() {
+                    if let uri = uri.uri, let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
+                        dec.login?.uris?[i].uri = decrypt
                     }
-             }
-             
-             if let notes = dec.notes {
-                 dec.notes = String(bytes: try Encryption.decrypt(decKey: key, str: notes), encoding: .utf8)
-             }
-             
-             if let card = dec.card {
-                 dec.card?.brand = String(bytes: try Encryption.decrypt(str: card.brand ??  ""), encoding: .utf8) ?? card.brand
-                 dec.card?.cardHolderName = String(bytes: try Encryption.decrypt(str: card.cardHolderName ??  ""), encoding: .utf8) ?? card.cardHolderName
-                 dec.card?.code = String(bytes: try Encryption.decrypt(str: card.code ??  ""), encoding: .utf8) ?? card.code
-                 dec.card?.expMonth = String(bytes: try Encryption.decrypt(str: card.expMonth ??  ""), encoding: .utf8) ?? card.expMonth
-                 dec.card?.expYear = String(bytes: try Encryption.decrypt(str: card.expYear ?? ""), encoding: .utf8) ?? card.expYear
-                 dec.card?.number = String(bytes: try Encryption.decrypt(str: card.number ?? ""), encoding: .utf8) ?? card.number
-             }
-         }
-
+                }
+            }
+            
+            if let fields = dec.fields {
+                for (i, field) in fields.enumerated() {
+                    if let name = field.name {
+                        dec.fields?[i].name = String(bytes: try Encryption.decrypt(decKey: key, str: name), encoding: .utf8)
+                    }
+                    if let value = field.value {
+                        dec.fields?[i].value = String(bytes: try Encryption.decrypt(decKey: key, str: value), encoding: .utf8)
+                    }
+                }
+            }
+            
+            if let notes = dec.notes {
+                dec.notes = String(bytes: try Encryption.decrypt(decKey: key, str: notes), encoding: .utf8)
+            }
+            
+            if let card = dec.card {
+                if let brand = card.brand {
+                    dec.card?.brand = String(bytes: try Encryption.decrypt(decKey: key, str: brand), encoding: .utf8)
+                }
+                if let code = card.code {
+                    dec.card?.code = String(bytes: try Encryption.decrypt(decKey: key, str: code), encoding: .utf8)
+                }
+                if let expMonth = card.expMonth {
+                    dec.card?.expMonth = String(bytes: try Encryption.decrypt(decKey: key, str: expMonth), encoding: .utf8)
+                }
+                if let expYear = card.expYear {
+                    dec.card?.expYear = String(bytes: try Encryption.decrypt(decKey: key, str: expYear), encoding: .utf8)
+                }
+                if let number = card.number {
+                    dec.card?.number = String(bytes: try Encryption.decrypt(decKey: key, str: number), encoding: .utf8)
+                }
+                if let cardHolderName = card.cardHolderName {
+                    dec.card?.cardHolderName = String(bytes: try Encryption.decrypt(decKey: key, str: cardHolderName), encoding: .utf8)
+                }
+            }
+            
+            if let identity = dec.identity {
+                if let title = identity.title {
+                    dec.identity?.title = String(bytes: try Encryption.decrypt(decKey: key, str: title), encoding: .utf8)
+                }
+                if let firstName = identity.firstName {
+                    dec.identity?.firstName = String(bytes: try Encryption.decrypt(decKey: key, str: firstName), encoding: .utf8)
+                }
+                if let middleName = identity.middleName {
+                    dec.identity?.middleName = String(bytes: try Encryption.decrypt(decKey: key, str: middleName), encoding: .utf8)
+                }
+                if let lastName = identity.lastName {
+                    dec.identity?.lastName = String(bytes: try Encryption.decrypt(decKey: key, str: lastName), encoding: .utf8)
+                }
+                if let address1 = identity.address1 {
+                    dec.identity?.address1 = String(bytes: try Encryption.decrypt(decKey: key, str: address1), encoding: .utf8)
+                }
+                if let address2 = identity.address2 {
+                    dec.identity?.address2 = String(bytes: try Encryption.decrypt(decKey: key, str: address2), encoding: .utf8)
+                }
+                if let address3 = identity.address3 {
+                    dec.identity?.address3 = String(bytes: try Encryption.decrypt(decKey: key, str: address3), encoding: .utf8)
+                }
+                if let city = identity.city {
+                    dec.identity?.city = String(bytes: try Encryption.decrypt(decKey: key, str: city), encoding: .utf8)
+                }
+                if let state = identity.state {
+                    dec.identity?.state = String(bytes: try Encryption.decrypt(decKey: key, str: state), encoding: .utf8)
+                }
+                if let postalCode = identity.postalCode {
+                    dec.identity?.postalCode = String(bytes: try Encryption.decrypt(decKey: key, str: postalCode), encoding: .utf8)
+                }
+                if let country = identity.country {
+                    dec.identity?.country = String(bytes: try Encryption.decrypt(decKey: key, str: country), encoding: .utf8)
+                }
+                if let company = identity.company {
+                    dec.identity?.company = String(bytes: try Encryption.decrypt(decKey: key, str: company), encoding: .utf8)
+                }
+                if let ssn = identity.ssn {
+                    dec.identity?.ssn = String(bytes: try Encryption.decrypt(decKey: key, str: ssn), encoding: .utf8)
+                }
+            }
+        }
+        
         return dec
     }
     
     func getEmail () -> String {
         return self.email
     }
-
+    
     func getCiphers(deleted: Bool = false) -> [Cipher] {
         if deleted {
             return self.data.passwords

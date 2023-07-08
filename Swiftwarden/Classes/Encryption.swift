@@ -191,6 +191,7 @@ class Encryption {
                 }
             }
         }
+        
         if let notes = enc.notes {
             enc.notes = try encrypt(str: notes)
         }
@@ -214,6 +215,64 @@ class Encryption {
             if let number = card.number {
                 enc.card?.number = try encrypt(str: number)
             }
+        }
+        
+        if let identity = enc.identity {
+            if let title = identity.title {
+                enc.identity?.title = try encrypt(str: title)
+            }
+            if let firstName = identity.firstName {
+                enc.identity?.firstName = try encrypt(str: firstName)
+            }
+            if let middleName = identity.middleName {
+                enc.identity?.middleName = try encrypt(str: middleName)
+            }
+            if let lastName = identity.lastName {
+                enc.identity?.lastName = try encrypt(str: lastName)
+            }
+            if let address1 = identity.address1 {
+                enc.identity?.address1 = try encrypt(str: address1)
+            }
+            if let address2 = identity.address2 {
+                enc.identity?.address2 = try encrypt(str: address2)
+            }
+            if let address3 = identity.address3 {
+                enc.identity?.address3 = try encrypt(str: address3)
+            }
+            if let city = identity.city {
+                enc.identity?.city = try encrypt(str: city)
+            }
+            if let state = identity.state {
+                enc.identity?.state = try encrypt(str: state)
+            }
+            if let postalCode = identity.postalCode {
+                enc.identity?.postalCode = try encrypt(str: postalCode)
+            }
+            if let country = identity.country {
+                enc.identity?.country = try encrypt(str: country)
+            }
+            if let company = identity.company {
+                enc.identity?.company = try encrypt(str: company)
+            }
+            if let ssn = identity.ssn {
+                enc.identity?.ssn = try encrypt(str: ssn)
+            }
+            if let phone = identity.phone {
+                enc.identity?.phone = try encrypt(str: phone)
+            }
+            if let email = identity.email {
+                enc.identity?.email = try encrypt(str: email)
+            }
+            if let username = identity.username {
+                enc.identity?.username = try encrypt(str: username)
+            }
+            if let passportNumber = identity.passportNumber {
+                enc.identity?.passportNumber = try encrypt(str: passportNumber)
+            }
+            if let licenseNumber = identity.licenseNumber {
+                enc.identity?.licenseNumber = try encrypt(str: licenseNumber)
+            }
+        
         }
         
         return enc
