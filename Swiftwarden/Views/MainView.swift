@@ -18,7 +18,6 @@ class SearchObserver : ObservableObject {
 struct MainView: View {
     @StateObject private var searchObserver = SearchObserver()
     @EnvironmentObject var account: Account
-    @State var searchText: String = ""
     @State private var showEdit: Bool = false
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
@@ -26,19 +25,18 @@ struct MainView: View {
     
     var body: some View {
         NavigationView {
-            SideBar(searchResults: $searchText).environmentObject(account)
+            SideBar(searchResults: $searchObserver.debouncedText).environmentObject(account)
             PasswordsList(searchText: $searchObserver.debouncedText, display: .normal)
                 .environmentObject(account)
                 .frame(minWidth: 400)
             ItemView(cipher: nil)
+            
         }
         .sheet(isPresented: $showEdit, content: {
             let selected = account.selectedCipher
             PopupEdit(name: account.selectedCipher.name ?? "", username: (selected.login?.username) ?? "", password: (account.selectedCipher.login?.password) ?? "", show: $showEdit).environmentObject(account)
         })
-        .searchable(text: $searchObserver.searchText).onChange(of: searchText) {_ in do {
-        }
-        }
+        .searchable(text: $searchObserver.searchText)
     }
 }
 
