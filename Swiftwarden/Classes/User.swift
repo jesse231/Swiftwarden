@@ -17,8 +17,8 @@ class User: ObservableObject {
     private var keys: [String: [UInt8]]
     private var api: Api
     private var email: String
-    @Published private var data: AccountData
-
+    @Published private(set) var data: AccountData
+    
     init(sync: Response, api: Api, email: String) {
         self.api = api
         var symKeys: [String: [UInt8]] = [:]
@@ -27,34 +27,34 @@ class User: ObservableObject {
                 do {
                     symKeys[org.id!] = try Encryption.decOrg(org: org)
                 } catch {
-
+                    
                 }
             }
         }
-
+        
         self.keys = symKeys
         self.data = AccountData()
         self.email = email
-
+        
         if let ciphers = sync.ciphers {
             let decCiphers = decryptPasswords(dataList: ciphers)
             self.data.passwords = decCiphers
         }
-
+        
         if let folders = sync.folders {
             var decFolders = Encryption.decryptFolders(dataList: folders)
             decFolders.insert(Folder(object: "Folder", name: "No Folder"), at: 0)
             self.data.folders = decFolders
         }
-        }
-
+    }
+    
     init (data: AccountData) {
         self.data = data
         self.keys = [:]
         self.api = Api()
         self.email = ""
     }
-
+    
     // For testing
     init () {
         self.data = AccountData()
@@ -63,7 +63,7 @@ class User: ObservableObject {
         self.email = ""
         self.data.folders = [Folder(object: "Folder", name: "No Folder")]
     }
-
+    
     private func decryptPasswords(dataList: [Cipher]) -> [Cipher] {
         var decDataList = dataList
         for (i, data) in dataList.enumerated() {
@@ -75,7 +75,7 @@ class User: ObservableObject {
         }
         return decDataList
     }
-
+    
     private func decryptCipher(data: Cipher) throws -> Cipher {
         var dec = data
         var key: [UInt8]?
@@ -198,27 +198,38 @@ class User: ObservableObject {
             return self.data.passwords.filter({$0.deletedDate == nil})
         }
     }
-
     func getCiphersInFolder(folderID: String?) -> [Cipher] {
         return self.data.passwords.filter({$0.deletedDate == nil && $0.folderID == folderID})
     }
-
+    
+    func getLogins() -> [Cipher] {
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.login != nil})
+    }
+    
     func getCards() -> [Cipher] {
         return self.data.passwords.filter({$0.deletedDate == nil && $0.card != nil})
     }
-
+    
+    func getIdentities() -> [Cipher] {
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.identity != nil})
+    }
+    
+    func getSecureNotes() -> [Cipher] {
+        return self.data.passwords.filter({$0.deletedDate == nil && $0.secureNote != nil})
+    }
+    
     func getTrash() -> [Cipher] {
         return self.data.passwords.filter({$0.deletedDate != nil})
     }
-
+    
     func getFavorites() -> [Cipher] {
         return self.data.passwords.filter({$0.deletedDate == nil && $0.favorite != false})
     }
-
+    
     func getFolders() -> [Folder] {
         return self.data.folders
     }
-
+    
     func deleteCipher(cipher: Cipher) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
@@ -229,7 +240,7 @@ class User: ObservableObject {
             }
         }
     }
-
+    
     func deleteCipherPermanently(cipher: Cipher) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
@@ -247,18 +258,19 @@ class User: ObservableObject {
             }
         }
     }
-
+    
     func addCipher(cipher: Cipher) async throws -> Cipher {
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
-        self.objectWillChange.send()
         self.data.passwords.append(modCipher)
         return modCipher
     }
-
-    func updateCipher(cipher: Cipher, index: Array<Cipher>.Index? = nil) async throws {
+    
+    func updateCipher(cipher: Cipher, index: Array<Cipher>.Index? = nil) {
+        Task {
             try await api.updatePassword(cipher: cipher)
+        }
         if let index {
             data.passwords[index] = cipher
         }

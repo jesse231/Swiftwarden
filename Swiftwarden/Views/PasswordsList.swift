@@ -3,55 +3,80 @@ import NukeUI
 import SwiftUI
 import CoreImage
 
-struct PasswordsList: View, Equatable {
-    static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
-            return lhs.searchText == rhs.searchText &&
-                   lhs.deleteDialog == rhs.deleteDialog &&
-                   lhs.itemType == rhs.itemType &&
-                   lhs.folderID == rhs.folderID &&
-                   lhs.display == rhs.display
-        }
-    
-    @Binding var searchText: String
+struct PasswordsList: View & Equatable {
     @EnvironmentObject var account: Account
+    @Binding var searchText: String
     @State private var deleteDialog = false
     @State private var itemType: ItemType?
-    @State var selection: Cipher?
+    @State var selection: String?
+    @State private var filtered: [Cipher] = []
+    @State private var isLoading = false
     var folderID: String?
+    
+    static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
+        return true
+    }
+    
+    
 
     var display: PasswordListType
     func passwordsToDisplay() -> [Cipher] {
-
+        var ciphers: [Cipher]
         switch display {
         case .normal:
-            return account.user.getCiphers()
+            ciphers = account.user.getCiphers()
         case .trash:
-            return account.user.getTrash()
+            ciphers = account.user.getTrash()
         case .favorite:
-            return account.user.getFavorites()
+            ciphers = account.user.getFavorites()
+        case .login:
+            ciphers = account.user.getLogins()
         case .card:
-            return account.user.getCards()
+            ciphers = account.user.getCards()
         case .folder:
-            return account.user.getCiphersInFolder(folderID: folderID)
+            ciphers = account.user.getCiphersInFolder(folderID: folderID)
+        case .identity:
+            ciphers = account.user.getIdentities()
+        case .secureNote:
+            ciphers = account.user.getSecureNotes()
         }
+        let filtered = ciphers.filter { cipher in
+            return cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
+        }
+        return filtered
+    }
+    
+    private func loadData() {
+            guard !isLoading else { return }
+
+            isLoading = true
+            DispatchQueue.global().async {
+                let loadedCiphers = passwordsToDisplay()
+
+                DispatchQueue.main.async {
+                    filtered = loadedCiphers
+                    isLoading = false
+                }
+            }
+        }
+    
+    init(searchText: Binding<String>, display: PasswordListType, folderID: String? = nil) {
+        self._searchText = searchText
+        self.display = display
+        self.folderID = folderID
     }
 
+
+
     var body: some View {
-        let filtered = passwordsToDisplay().filter { cipher in
-            cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
-        }
 
         List(filtered, id: \.self.id) { cipher in
+
                 NavigationLink(
                     destination:
-                            ItemView(cipher: cipher
-                            )
-//                            .onAppear(perform: {
-//                                account.selectedCipher = cipher
-//                            })
-                .environmentObject(account)
-                    ,
-                    tag: cipher,
+                            ItemView(cipher: cipher)
+                                .environmentObject(account),
+                    tag: cipher.id!,
                     selection: $selection,
                     label: {
                         Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, account: account)
@@ -62,19 +87,45 @@ struct PasswordsList: View, Equatable {
                                     .font(.system(size: 15)).fontWeight(.semibold)
                                     .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
-
+                            Spacer().frame(height: 5)
                             if let username = cipher.login?.username {
-                                if username != ""{
-                                    Spacer().frame(height: 5)
                                     Text(verbatim: username)
                                         .font(.system(size: 10))
                                         .frame(maxWidth: .infinity, alignment: .topLeading)
                                 }
+                            if let number = cipher.card?.number {
+                                let lastFour = number.count != 0 ? "*" + String(number.suffix(4)) : ""
+                                    Text(verbatim: lastFour)
+                                            .font(.system(size: 10))
+                                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            }
+                            if let identity = cipher.identity {
+                                    let firstName = identity.firstName != nil ? identity.firstName! + " " : ""
+                                    Text(verbatim: firstName + (identity.lastName ?? ""))
+                                            .font(.system(size: 10))
+                                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                            }
+                            if cipher.secureNote != nil, let notes = cipher.notes {
+                                let previewLength = 30
+                                let previewNotes = notes.count > previewLength ? String(notes.prefix(previewLength)) + "..." : String(notes.prefix(previewLength))
+                                Text(verbatim: previewNotes)
+                                    .font(.system(size: 10))
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
                             }
                         }
                     }
                 )
                 .padding(5)
+        }
+        .onAppear {
+            loadData()
+        }
+        .onChange(of: searchText) { _ in
+            loadData()
+            
+        }
+        .onReceive(account.user.$data) { data in
+            loadData()
         }
         .animation(.default, value: filtered)
         .toolbar {
@@ -117,9 +168,13 @@ struct PasswordsList: View, Equatable {
             
             AddNewItemPopup(itemType: binding)
                 .environmentObject(account)
-                .onDisappear {
-                    account.user.objectWillChange.send()
-                }
         }
     }
 }
+
+//struct PasswordsList_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PasswordsList(searchText: .constant(""), display: .normal)
+//    }
+//}
+
