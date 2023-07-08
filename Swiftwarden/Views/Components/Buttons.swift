@@ -8,16 +8,15 @@ struct FavoriteButton: View {
     var body: some View {
         if let favorite = cipher?.favorite {
             Button {
+                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
                 cipher?.favorite?.toggle()
-                let index = account.user.getCiphers(deleted: true).firstIndex(of: account.selectedCipher)
-                account.selectedCipher.favorite = cipher?.favorite
-                Task {
-                    do {
-                        try await account.user.updateCipher(cipher: account.selectedCipher, index: index)
-                    } catch {
-                        print(error)
+                    Task {
+                        do {
+                            try await account.user.updateCipher(cipher: cipher!, index: index)
+                        } catch {
+                            print(error)
+                        }
                     }
-                }
             } label: {
                 HoverSquare {
                     Image(systemName: favorite ? "star.fill" : "star")
@@ -30,6 +29,26 @@ struct FavoriteButton: View {
         }
     }
 }
+
+struct FavoriteEditingButton: View {
+    @Binding var favorite: Bool
+    
+    var body: some View {
+            Button {
+                favorite.toggle()
+            } label: {
+                HoverSquare {
+                    Image(systemName: favorite ? "star.fill" : "star")
+                        .resizable()
+                        .foregroundColor(favorite ? .yellow : .primary)
+                        .frame(width: 20, height: 20)
+                }
+            }
+            .buttonStyle(.borderless)
+        }
+    }
+
+
 
 struct HoverSquare <Content: View>: View{
     @ViewBuilder var element: Content
