@@ -53,7 +53,7 @@ extension ItemView {
                 
                 modCipher.login?.username = username != "" ? username : nil
                 modCipher.login?.password = password != "" ? password : nil
-                if let url = uris.first?.uri {
+                if let url = uris.first?.uri, url != "" {
                     modCipher.login?.uris = uris
                     modCipher.login?.uri = url
                 } else {

@@ -82,6 +82,7 @@ class User: ObservableObject {
         if let id = dec.organizationID {
             key = self.keys[id]
         }
+        
         dec.name = String(bytes: try Encryption.decrypt(decKey: key, str: data.name ?? ""), encoding: .utf8)
         if data.object! == "cipherDetails"{
             if let pass = dec.login?.password {
@@ -267,9 +268,114 @@ class User: ObservableObject {
         return modCipher
     }
     
+    func encryptCipher(cipher: Cipher) throws -> Cipher {
+        var encCipher = cipher
+        var encKey: [UInt8]?
+        if let id = cipher.organizationID {
+            encKey = self.keys[id]
+        }
+        if let name = cipher.name {
+            encCipher.name = try Encryption.encrypt(encKey: encKey, str: name)
+        }
+        
+        if let login = cipher.login {
+            if let username = login.username {
+                encCipher.login?.username = try Encryption.encrypt(encKey: encKey, str: username)
+            }
+            if let password = login.password {
+                encCipher.login?.password = try Encryption.encrypt(encKey: encKey, str: password)
+            }
+            if let uri = login.uri {
+                encCipher.login?.uri = try Encryption.encrypt(encKey: encKey, str: uri)
+            }
+            
+            if let uris = login.uris {
+                for (i, uri) in uris.enumerated() {
+                    if let uri = uri.uri {
+                        encCipher.login?.uris?[i].uri = try Encryption.encrypt(encKey: encKey, str: uri)
+                    }
+                }
+            }
+            
+//            if let uris = dec.login?.uris {
+//                for (i, uri) in uris.enumerated() {
+//                    if let uri = uri.uri, let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
+//                        dec.login?.uris?[i].uri = decrypt
+//                    }
+//                }
+//            }
+        }
+        
+        if let card = cipher.card {
+            if let number = card.number {
+                encCipher.card?.number = try Encryption.encrypt(encKey: encKey, str: number)
+            }
+            if let cardHolderName = card.cardHolderName {
+                encCipher.card?.cardHolderName = try Encryption.encrypt(encKey: encKey, str: cardHolderName)
+            }
+            if let brand = card.brand {
+                encCipher.card?.brand = try Encryption.encrypt(encKey: encKey, str: brand)
+            }
+            if let expMonth = card.expMonth {
+                encCipher.card?.expMonth = try Encryption.encrypt(encKey: encKey, str: expMonth)
+            }
+            if let expYear = card.expYear {
+                encCipher.card?.expYear = try Encryption.encrypt(encKey: encKey, str: expYear)
+            }
+            if let code = card.code {
+                encCipher.card?.code = try Encryption.encrypt(encKey: encKey, str: code)
+            }
+        }
+        
+        if let identity = cipher.identity {
+            if let title = identity.title {
+                encCipher.identity?.title = try Encryption.encrypt(encKey: encKey, str: title)
+            }
+            if let firstName = identity.firstName {
+                encCipher.identity?.firstName = try Encryption.encrypt(encKey: encKey, str: firstName)
+            }
+            if let middleName = identity.middleName {
+                encCipher.identity?.middleName = try Encryption.encrypt(encKey: encKey, str: middleName)
+            }
+            if let lastName = identity.lastName {
+                encCipher.identity?.lastName = try Encryption.encrypt(encKey: encKey, str: lastName)
+            }
+            if let address1 = identity.address1 {
+                encCipher.identity?.address1 = try Encryption.encrypt(encKey: encKey, str: address1)
+            }
+            if let address2 = identity.address2 {
+                encCipher.identity?.address2 = try Encryption.encrypt(encKey: encKey, str: address2)
+            }
+            if let address3 = identity.address3 {
+                encCipher.identity?.address3 = try Encryption.encrypt(encKey: encKey, str: address3)
+            }
+            if let city = identity.city {
+                encCipher.identity?.city = try Encryption.encrypt(encKey: encKey, str: city)
+            }
+            if let state = identity.state {
+                encCipher.identity?.state = try Encryption.encrypt(encKey: encKey, str: state)
+            }
+            if let postalCode = identity.postalCode {
+                encCipher.identity?.postalCode = try Encryption.encrypt(encKey: encKey, str: postalCode)
+            }
+            if let country = identity.country {
+                encCipher.identity?.country = try Encryption.encrypt(encKey: encKey, str: country)
+            }
+            if let company = identity.company {
+                encCipher.identity?.company = try Encryption.encrypt(encKey: encKey, str: company)
+            }
+            if let ssn = identity.ssn {
+                encCipher.identity?.ssn = try Encryption.encrypt(encKey: encKey, str: ssn)
+            }
+        }
+        
+        return encCipher
+    }
+    
     func updateCipher(cipher: Cipher, index: Array<Cipher>.Index? = nil) {
         Task {
-            try await api.updatePassword(cipher: cipher)
+            let encCipher = try self.encryptCipher(cipher: cipher)
+            try await api.updatePassword(encCipher: encCipher)
         }
         if let index {
             data.passwords[index] = cipher

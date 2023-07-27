@@ -112,15 +112,14 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 //        return (token.access_token, token.Key)
 //    }
 //
-    func updatePassword(cipher: Cipher) async throws {
-        let url = self.apiPath.appendingPathComponent("ciphers/" + cipher.id!)
+    func updatePassword(encCipher: Cipher) async throws {
+        let url = self.apiPath.appendingPathComponent("ciphers/" + encCipher.id!)
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
         request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
 
-        let encCipher = try Encryption.encryptCipher(cipher: cipher)
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
         print(response)
