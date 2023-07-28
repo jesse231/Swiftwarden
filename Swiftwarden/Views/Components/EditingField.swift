@@ -25,6 +25,7 @@ struct EditingField<Content: View>: View {
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .foregroundColor(.gray)
+                    .padding(.bottom, 3)
                 GroupBox{
                     HStack {
                         if !secure || showPassword {
@@ -32,11 +33,13 @@ struct EditingField<Content: View>: View {
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .font(.system(size: 15))
+                                .frame(height: 30)
                         } else {
                             SecureField(title, text: $text)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .font(.system(size: 15))
+                                .frame(height: 30)
                         }
                         HStack {
                             if secure {
@@ -60,11 +63,18 @@ struct EditingField_Previews: PreviewProvider {
     @State static var content: String = "Initial Value"
 
     static var previews: some View {
-        EditingField(title: "Title", text: $content, buttons: {
-            GeneratePasswordButton(password: $content)
-
-        })
+        VStack {
+            EditingField(title: "Title", text: $content, buttons: {
+                GeneratePasswordButton(password: $content)
+                
+            })
             .padding()
             .previewLayout(.sizeThatFits)
+            
+            EditingField(title: "Username", text: .constant("User"), buttons: {
+            })
+            .padding()
+            .previewLayout(.sizeThatFits)
+        }
     }
 }
