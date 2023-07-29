@@ -1,4 +1,5 @@
 import SwiftUI
+import LocalAuthentication
 
 struct LoginView: View {
     @Binding var loginSuccess: Bool
@@ -12,15 +13,16 @@ struct LoginView: View {
     @State var attempt = false
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
     @State var isLoading = false
+    let context = LAContext()
+
     @EnvironmentObject var account: Account
     
     func unlock() {
         Task {
             do {
                 try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
-                //                                print("test")
+                context.invalidate()
             } catch let error as AuthError {
-                //                                print(error)
                 attempt = true
                 errorMessage = error.message
                 isLoading = false
@@ -76,7 +78,7 @@ struct LoginView: View {
         let pass = storedPassword ?? password
         var serv = storedServer ?? server
 
-        var base = URL(string: serv)
+        let base = URL(string: serv)
         if let base, base.host == nil {
             serv = "https://" + serv
         }
@@ -97,7 +99,6 @@ struct LoginView: View {
 
         if storedPassword == nil {
             KeyChain.saveUser(account: email, password: password)
-            print(KeyChain.getUser(account: email))
         }
 
         if storedEmail == nil {
@@ -128,7 +129,7 @@ struct LoginView: View {
                     .accessibilityIdentifier("Master Password")
                     .padding()
                     Button {
-                        authenticate { _ in
+                        authenticate(context: context) { _ in
                             Task {
                                 do {
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)

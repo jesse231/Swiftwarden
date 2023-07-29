@@ -1,13 +1,13 @@
 import Foundation
 import LocalAuthentication
 
-func authenticate(completion: @escaping (Bool) -> Void) {
-    let context = LAContext()
+func authenticate(context: LAContext, completion: @escaping (Bool) -> Void) {
+//    let context = LAContext()
     context.localizedFallbackTitle = ""
 
     var error: NSError?
     let reason = "authenticate to view you're passwords"
-
+    
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
         context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, _ in
             if success {
@@ -17,7 +17,6 @@ func authenticate(completion: @escaping (Bool) -> Void) {
                 }
             } else {
                 print("Failure")
-//                completion(false)
             }
         }
     } else {
