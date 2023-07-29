@@ -71,7 +71,6 @@ struct PasswordsList: View & Equatable {
     var body: some View {
 
         List(filtered, id: \.self.id) { cipher in
-
                 NavigationLink(
                     destination:
                             ItemView(cipher: cipher)
@@ -81,36 +80,43 @@ struct PasswordsList: View & Equatable {
                     label: {
                         Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, account: account)
                         Spacer().frame(width: 20)
-                        VStack {
-                            if let name = cipher.name {
-                                Text(name)
-                                    .font(.system(size: 15)).fontWeight(.semibold)
-                                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                            }
-                            Spacer().frame(height: 5)
-                            if let username = cipher.login?.username {
+                        HStack {
+                            VStack {
+                                if let name = cipher.name {
+                                    Text(name)
+                                        .font(.system(size: 15)).fontWeight(.semibold)
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                }
+                                Spacer().frame(height: 5)
+                                if let username = cipher.login?.username {
                                     Text(verbatim: username)
                                         .font(.system(size: 10))
                                         .frame(maxWidth: .infinity, alignment: .topLeading)
                                 }
-                            if let number = cipher.card?.number {
-                                let lastFour = number.count != 0 ? "*" + String(number.suffix(4)) : ""
+                                if let number = cipher.card?.number {
+                                    let lastFour = number.count != 0 ? "*" + String(number.suffix(4)) : ""
                                     Text(verbatim: lastFour)
-                                            .font(.system(size: 10))
-                                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                            }
-                            if let identity = cipher.identity {
+                                        .font(.system(size: 10))
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                }
+                                if let identity = cipher.identity {
                                     let firstName = identity.firstName != nil ? identity.firstName! + " " : ""
                                     Text(verbatim: firstName + (identity.lastName ?? ""))
-                                            .font(.system(size: 10))
-                                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                                        .font(.system(size: 10))
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                }
+                                if cipher.secureNote != nil, let notes = cipher.notes {
+                                    let previewLength = 30
+                                    let previewNotes = notes.count > previewLength ? String(notes.prefix(previewLength)) + "..." : String(notes.prefix(previewLength))
+                                    Text(verbatim: previewNotes)
+                                        .font(.system(size: 10))
+                                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                                }
                             }
-                            if cipher.secureNote != nil, let notes = cipher.notes {
-                                let previewLength = 30
-                                let previewNotes = notes.count > previewLength ? String(notes.prefix(previewLength)) + "..." : String(notes.prefix(previewLength))
-                                Text(verbatim: previewNotes)
-                                    .font(.system(size: 10))
-                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                            if cipher.favorite ?? false {
+                                Spacer()
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(Color.yellow)
                             }
                         }
                     }
