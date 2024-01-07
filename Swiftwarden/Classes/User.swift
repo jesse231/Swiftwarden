@@ -199,6 +199,10 @@ class User: ObservableObject {
             return self.data.passwords.filter({$0.deletedDate == nil})
         }
     }
+    func getIndex(of cipher: Cipher) -> Array<Cipher>.Index? {
+        return self.data.passwords.firstIndex(where: {$0.id == cipher.id})
+    }
+    
     func getCiphersInFolder(folderID: String?) -> [Cipher] {
         return self.data.passwords.filter({$0.deletedDate == nil && $0.folderID == folderID})
     }
@@ -292,18 +296,13 @@ class User: ObservableObject {
             if let uris = login.uris {
                 for (i, uri) in uris.enumerated() {
                     if let uri = uri.uri {
+                        if i == 0 {
+                            encCipher.login?.uri = try Encryption.encrypt(encKey: encKey, str: uri)
+                        }
                         encCipher.login?.uris?[i].uri = try Encryption.encrypt(encKey: encKey, str: uri)
                     }
                 }
             }
-            
-//            if let uris = dec.login?.uris {
-//                for (i, uri) in uris.enumerated() {
-//                    if let uri = uri.uri, let decrypt = String(bytes: try Encryption.decrypt(decKey: key, str: uri), encoding: .utf8) {
-//                        dec.login?.uris?[i].uri = decrypt
-//                    }
-//                }
-//            }
         }
         
         if let card = cipher.card {
@@ -369,6 +368,21 @@ class User: ObservableObject {
             }
         }
         
+        if let fields = cipher.fields {
+            for (i, field) in fields.enumerated() {
+                if let name = field.name {
+                    encCipher.fields?[i].name = try Encryption.encrypt(encKey: encKey, str: name)
+                }
+                if let value = field.value {
+                    encCipher.fields?[i].value = try Encryption.encrypt(encKey: encKey, str: value)
+                }
+            }
+        }
+        
+        if let secureNote = cipher.notes {
+            encCipher.notes = try Encryption.encrypt(encKey: encKey, str: secureNote)
+        }
+        
         return encCipher
     }
     
@@ -377,7 +391,7 @@ class User: ObservableObject {
             let encCipher = try self.encryptCipher(cipher: cipher)
             try await api.updatePassword(encCipher: encCipher)
         }
-        if let index {
+        if let index = getIndex(of: cipher) {
             data.passwords[index] = cipher
         }
     }
