@@ -39,6 +39,7 @@
 		3B5865162A05A87400A39868 /* SaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B5865152A05A87400A39868 /* SaveData.swift */; };
 		3B59FE242A17FEF8005288F0 /* GeneratePasswordButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */; };
 		3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B112FB72982F9940018F53B /* SwCrypt.swift */; };
+		3B7CBD062A77FA7900FFAC25 /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B7CBD052A77FA7900FFAC25 /* CustomScrollView.swift */; };
 		3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */; };
 		3B98714D2A41EF3000CABFDC /* ItemView+SecureNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714C2A41EF3000CABFDC /* ItemView+SecureNoteView.swift */; };
 		3B98714F2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */; };
@@ -156,6 +157,7 @@
 		3B521F332A1AB1680086E507 /* ItemType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemType.swift; sourceTree = "<group>"; };
 		3B5865152A05A87400A39868 /* SaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveData.swift; sourceTree = "<group>"; };
 		3B59FE232A17FEF8005288F0 /* GeneratePasswordButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordButton.swift; sourceTree = "<group>"; };
+		3B7CBD052A77FA7900FFAC25 /* CustomScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		3B98714A2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+SecureNote.swift"; sourceTree = "<group>"; };
 		3B98714C2A41EF3000CABFDC /* ItemView+SecureNoteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+SecureNoteView.swift"; sourceTree = "<group>"; };
 		3B98714E2A41F15A00CABFDC /* ItemView+SecureNoteEditing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ItemView+SecureNoteEditing.swift"; sourceTree = "<group>"; };
@@ -250,6 +252,7 @@
 		3B2C42092A11CC1600720E43 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */,
 				3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */,
 			);
 			path = Components;
@@ -347,8 +350,8 @@
 				3BB8CE512A155C3F00644F5D /* AddUrlList.swift */,
 				3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */,
 				3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */,
-				3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */,
 				3BC8C2942A3CDDF3004B2B14 /* NotesEditView.swift */,
+				3B7CBD052A77FA7900FFAC25 /* CustomScrollView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -584,6 +587,7 @@
 				3B745AAB29848DFB006B17C7 /* SwCrypt.swift in Sources */,
 				3BC757AF2A031CDF0065CCF0 /* SecureNote.swift in Sources */,
 				3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */,
+				3B7CBD062A77FA7900FFAC25 /* CustomScrollView.swift in Sources */,
 				3BC757A32A031BFA0065CCF0 /* Domains.swift in Sources */,
 				3BC8C2952A3CDDF3004B2B14 /* NotesEditView.swift in Sources */,
 				3BC757A52A031BFA0065CCF0 /* Cipher.swift in Sources */,
