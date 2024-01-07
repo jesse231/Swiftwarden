@@ -3,7 +3,7 @@ import SwiftUI
 
 struct FavoriteButton: View {
     @Binding var cipher: Cipher?
-    @ObservedObject var account: Account
+    @EnvironmentObject var account: Account
     
     var body: some View {
         if let favorite = cipher?.favorite {

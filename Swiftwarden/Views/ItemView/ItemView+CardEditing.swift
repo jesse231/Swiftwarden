@@ -53,7 +53,7 @@ extension ItemView {
         
         
         func save() async throws {
-                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+                let index = account.user.getIndex(of: cipher!)
                 
                 var modCipher = cipher!
                 modCipher.name = name
@@ -83,7 +83,7 @@ extension ItemView {
             Group {
                 VStack {
                     HStack {
-                        Icon(itemType: .card, account: account)
+                        Icon(itemType: .card)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -97,6 +97,7 @@ extension ItemView {
                         }
                         FavoriteEditingButton(favorite: $favorite)
                     }
+                    .padding([.leading,.trailing], 5)
                     Divider()
                     ScrollView {
                         VStack {
@@ -150,6 +151,7 @@ extension ItemView {
                             }
                             .formStyle(.grouped)
                             .padding([.leading, .trailing], -25)
+                            .scrollContentBackground(.hidden)
 
                                 EditingField(title: "Security Code", text: $securityCode, buttons: {})
                             Divider()
@@ -174,6 +176,7 @@ extension ItemView {
                             Divider()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
+                                .padding(.bottom, 24)
                         }
                         .padding(.trailing)
                         .padding(.leading)

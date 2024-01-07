@@ -15,9 +15,35 @@ class SearchObserver : ObservableObject {
             .store(in: &subscriptions)
     }
 }
+
+class RouteManager: ObservableObject {
+    @Published var lastSelected: Cipher?
+}
+
+private struct RouterKey: EnvironmentKey {
+    static let defaultValue: RouteManager = .init()
+}
+
+private struct ApiManagerKey: EnvironmentKey {
+    static let defaultValue: Api = .init()
+}
+
+extension EnvironmentValues {
+    
+    var route: RouteManager {
+        get { self[RouterKey.self] }
+        set { self[RouterKey.self] = newValue }
+    }
+    
+    var api: Api {
+        get { self[ApiManagerKey.self] }
+        set { self[ApiManagerKey.self] = newValue }
+    }
+}
+
 struct MainView: View {
     @StateObject private var searchObserver = SearchObserver()
-    @EnvironmentObject var account: Account
+    private var routeManager = RouteManager()
     @State private var showEdit: Bool = false
     @State var passwords: [Cipher]?
     @State var deleteDialog: Bool = false
@@ -25,23 +51,18 @@ struct MainView: View {
     
     var body: some View {
         NavigationView {
-            SideBar(searchResults: $searchObserver.debouncedText).environmentObject(account)
+            SideBar(searchResults: $searchObserver.debouncedText)
             PasswordsList(searchText: $searchObserver.debouncedText, display: .normal)
-                .environmentObject(account)
-                .frame(minWidth: 400)
-            ItemView(cipher: nil)
-            
+            ItemView()
         }
-        .sheet(isPresented: $showEdit, content: {
-            let selected = account.selectedCipher
-            PopupEdit(name: account.selectedCipher.name ?? "", username: (selected.login?.username) ?? "", password: (account.selectedCipher.login?.password) ?? "", show: $showEdit).environmentObject(account)
-        })
+        .environmentObject(routeManager)
+        .environment(\.route, routeManager)
         .searchable(text: $searchObserver.searchText)
     }
 }
 
-struct MainViewPreviews: PreviewProvider {
-    static var previews: some View {
-        MainView().environmentObject(Account())
-    }
-}
+//struct MainViewPreviews: PreviewProvider {
+//    static var previews: some View {
+//        MainView().environmentObject(Account())
+//    }
+//}

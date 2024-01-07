@@ -10,7 +10,12 @@ import NukeUI
 
 extension ItemView {
     struct PasswordEditing: View {
-        @Binding var cipher: Cipher?
+        @Binding var cipher: Cipher? {
+            didSet {
+                name = cipher?.name ?? ""
+                // Update other properties as needed
+            }
+        }
         @Binding var editing: Bool
         @StateObject var account: Account
         
@@ -47,7 +52,7 @@ extension ItemView {
         }
         
         func save() {
-                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+            let index = account.user.getIndex(of: cipher!)
                 var modCipher = cipher!
                 modCipher.name = name
                 
@@ -55,6 +60,7 @@ extension ItemView {
                 modCipher.login?.password = password != "" ? password : nil
                 if let url = uris.first?.uri, url != "" {
                     modCipher.login?.uris = uris
+                    modCipher.login?.domain = extractHostURI(uri: url)
                     modCipher.login?.uri = url
                 } else {
                     modCipher.login?.uris = nil
@@ -64,19 +70,17 @@ extension ItemView {
                 modCipher.favorite = favorite
                 modCipher.reprompt = reprompt.toInt()
                 account.user.updateCipher(cipher: modCipher, index: index)
-                cipher = modCipher
         }
         
         
         
         var body: some View {
-            Group {
                 VStack {
                     HStack {
                         if let url = uris.first?.uri {
-                            Icon(itemType: .password, hostname: extractHostURI(uri: url), account: account)
+                            Icon(itemType: .password, hostname: extractHostURI(uri: url))
                         } else {
-                            Icon(itemType: .password, account: account)
+                            Icon(itemType: .password)
                         }
                         VStack {
                             TextField("No Name", text: $name)
@@ -84,6 +88,7 @@ extension ItemView {
                                 .fontWeight(.semibold)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
+                                
                                 .padding(.bottom, -5)
                             Text(verbatim: "Login")
                                 .font(.system(size: 10))
@@ -91,26 +96,28 @@ extension ItemView {
                         }
                         FavoriteEditingButton(favorite: $favorite)
                     }
+                    .padding([.leading,.trailing], 5)
                     Divider()
                     ScrollView {
                         VStack {
                             EditingField(title: "Username", text: $username) {
                             }
-                            .padding()
+//                            .padding()
                             if showPassword {
                                 EditingField(title: "Password", text: $password) {
                                     TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
                                     GeneratePasswordButton(password: $password)
                                 }
-                                .padding()
+                                .padding(.top)
                             } else {
                                 EditingField(title: "Password", text: $password, secure: true) {
                                     GeneratePasswordButton(password: $password)
-                                }.padding()
+                                }
+                                .padding(.top)
                             }
                             Divider()
                             AddUrlList(urls: $uris)
-                                .padding()
+                                .padding(.top)
                             Divider()
                             CustomFieldsEdit(fields: Binding<[CustomField]>(
                                 get: {
@@ -131,12 +138,12 @@ extension ItemView {
                             Divider()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
+                                .padding(.bottom, 24)
                         }
                         .padding(.trailing)
                         .padding(.leading)
                     }
                     .frame(maxWidth: .infinity)
-                }
             }
             .toolbar {
                 EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
@@ -145,13 +152,17 @@ extension ItemView {
     }
 }
 
-struct PasswordEditingPreview: PreviewProvider {
-    static var previews: some View {
-        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
-        let account = Account()
-        
-//        ItemView.PasswordEditing(cipher: .constant(cipher), editing: .constant(true), account: account, save: .constant({}))
-//            .padding()
-//            .frame(height: 1000)
-    }
-}
+//struct PasswordEditingPreview: PreviewProvider {
+//    static var previews: some View {
+//        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+//        let account = Account()
+//        HStack{
+//            ItemView.PasswordEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
+//                .padding()
+//                .frame(height: 1000)
+//            ItemView.PasswordView(cipher: .constant(cipher), editing: .constant(false), reprompt: .constant(.none), account: account)
+//                .environmentObject(account)
+//                .padding()
+//        }
+//    }
+//}

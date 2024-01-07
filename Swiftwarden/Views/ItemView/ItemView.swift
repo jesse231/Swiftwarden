@@ -30,83 +30,79 @@ enum RepromptState {
 }
 
 
-
 struct ItemView: View {
-    
-    
-    @State var cipher: Cipher?
     @EnvironmentObject var account: Account
-    
-    @State var favorite: Bool
+    @EnvironmentObject var routeManager: RouteManager
+    @State var favorite: Bool = false
     
     @State var showPassword = false
     
     @State var editing: Bool = false
     @State var reprompt: RepromptState = .none
     
-    
-    init (cipher: Cipher?){
-        _cipher = State(initialValue: cipher)
-        if let repromptInt = cipher?.reprompt {
-            reprompt = RepromptState.fromInt(repromptInt)
-        }
-        _favorite = State(initialValue:cipher?.favorite ?? false)
-        
-        editing = false
-        showPassword = false
-    }
     var body: some View {
-        VStack {
-            let cipherCopy = cipher
-            if let cipher {
-                if cipher.type == 1 {
+        CustomScrollView {
+            if routeManager.lastSelected != nil {
+                if routeManager.lastSelected?.type == 1 {
                     if !editing {
-                        PasswordView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        PasswordView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt)
                             .padding(20)
                             .frame(maxWidth: 800)
                     } else {
-                        PasswordEditing(cipher: $cipher, editing: $editing, account: account)
+                        PasswordEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     }
-                } else if cipher.type == 2{
+                } else if routeManager.lastSelected?.type == 2{
                     if !editing {
-                        SecureNoteView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        SecureNoteView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     } else {
-                        SecureNoteEditing(cipher: $cipher, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
-                        EmptyView()
-                    }
-                    
-                } else if cipher.type == 3 {
-                    if !editing {
-                        CardView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
-                    } else {
-                        CardEditing(cipher: $cipher, editing: $editing, account: account)
+                        SecureNoteEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     }
-                } else if cipher.type == 4 {
+
+                } else if routeManager.lastSelected?.type == 3 {
                     if !editing {
-                        IdentityView(cipher: self.$cipher, editing: $editing, reprompt: $reprompt, account: account)
+                        CardView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     } else {
-                        IdentityEditing(cipher: $cipher, editing: $editing, account: account)
+                        CardEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    }
+                } else if routeManager.lastSelected?.type == 4 {
+                    if !editing {
+                        IdentityView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
+                            .padding(20)
+                            .frame(maxWidth: 800)
+                    } else {
+                        IdentityEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
                             .padding(20)
                             .frame(maxWidth: 800)
                     }
                 }
+            } else {
+                Text("No Password Selected")
+                    .font(.title)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .onAppear {
+            if let repromptInt = routeManager.lastSelected?.reprompt {
+                reprompt = RepromptState.fromInt(repromptInt)
+            }
+            favorite = routeManager.lastSelected?.favorite ?? false
+        }
+        .onChange(of: routeManager.lastSelected) { _ in
+                editing = false
+        }
+        .ignoresSafeArea()
+        .frame(minWidth: 400, idealWidth: 600, alignment: .topLeading)
         .toolbar {
-            if cipher == nil {
+            if routeManager.lastSelected == nil {
                 ToolbarItem {
                     Spacer()
                 }
@@ -120,7 +116,7 @@ struct Preview: PreviewProvider {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
         let account = Account()
         Group {
-            ItemView(cipher: cipher)
+            ItemView()
                 .environmentObject(account)
                 .padding()
         }

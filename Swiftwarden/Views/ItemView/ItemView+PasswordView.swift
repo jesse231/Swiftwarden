@@ -3,20 +3,23 @@ import NukeUI
 import SwiftUI
 
 extension ItemView {
-    struct PasswordView: View {
+    struct PasswordView: View, Equatable {
+        static func == (lhs: ItemView.PasswordView, rhs: ItemView.PasswordView) -> Bool {
+            lhs.cipher == rhs.cipher
+        }
+        
         @Binding var cipher: Cipher?
         @Binding var editing: Bool
         @Binding var reprompt: RepromptState
         @State var showReprompt: Bool = false
         @State var showPassword: Bool = false
         
-        @StateObject var account: Account
+        @Environment(\.api) var api: Api
         
         func delete() async throws {
             if let cipher {
                 do {
-                    try await account.user.deleteCipher(cipher: cipher)
-//                    account.selectedCipher = Cipher()
+//                    try await account.user.deleteCipher(cipher: cipher)
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -26,8 +29,7 @@ extension ItemView {
         func deletePermanently() async throws {
             if let cipher {
                 do {
-                    try await account.user.deleteCipherPermanently(cipher: cipher)
-//                    account.selectedCipher = Cipher()
+//                    try await account.user.deleteCipherPermanently(cipher: cipher)
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -37,8 +39,7 @@ extension ItemView {
         func restore() async throws {
             if let cipher {
                 do {
-                    try await account.user.restoreCipher(cipher: cipher)
-//                    account.selectedCipher = Cipher()
+//                    try await account.user.restoreCipher(cipher: cipher)
                     self.cipher = nil
                 } catch {
                     print(error)
@@ -47,9 +48,10 @@ extension ItemView {
         }
         
         var body: some View {
+
             VStack {
                 HStack {
-                    Icon(itemType: .password, hostname: cipher?.login?.domain, account: account)
+                    Icon(itemType: .password, hostname: cipher?.login?.domain, priority: ImageRequest.Priority.veryLow, api: api)
                     VStack {
                         Text(cipher?.name ?? "")
                             .font(.system(size: 15))
@@ -58,12 +60,11 @@ extension ItemView {
                         Text(verbatim: "Login")
                             .font(.system(size: 10))
                             .frame(maxWidth: .infinity, alignment: .topLeading)
-                        
                     }
-                    FavoriteButton(cipher: $cipher, account: account)
-                    
+                    FavoriteButton(cipher: $cipher)
                 }
                 .padding([.leading,.trailing], 5)
+                let _ = print("rendered")
                 Divider()
                     .padding([.leading,.trailing], 5)
                 ScrollView {
@@ -83,7 +84,7 @@ extension ItemView {
                                 secure: true,
                                 reprompt: $reprompt,
                                 showReprompt: $showReprompt,
-                                email: account.user.getEmail(),
+//                                email: account.user.getEmail(),
                                 buttons: {
                                     Copy(content: password)
                                 })
@@ -94,7 +95,7 @@ extension ItemView {
                                     if url != "" {
                                         Field(
                                             title: "Website",
-                                            content: cipher?.login?.domain ?? url,
+                                            content: extractHostURI(uri: url),
                                             buttons: {
                                                 if hasScheme(url) {
                                                     Open(link: url)
@@ -110,7 +111,7 @@ extension ItemView {
                         if let fields = cipher?.fields {
                             CustomFieldsView(fields)
                         }
-                        
+
                         if let notes = cipher?.notes {
                             Field(title: "Note", content: notes, buttons: {})
                         }
@@ -121,7 +122,7 @@ extension ItemView {
             }
             .frame(maxWidth: .infinity)
             .toolbar {
-                RegularCipherOptions(cipher: $cipher, editing: $editing, account: account)
+                RegularCipherOptions(cipher: $cipher, editing: $editing)
         }
             
         }
@@ -129,22 +130,23 @@ extension ItemView {
     
     
 }
-struct ItemViewRegularPreview: PreviewProvider {
-    static var previews: some View {
-        let cipher = Cipher(fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
-        
-        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
-        
-        let account = Account()
-        
-        Group {
-            ItemView.PasswordView(cipher: .constant(cipher), editing: .constant(false), reprompt: .constant(.none), account: account)
-                .environmentObject(account)
-                .padding()
-            ItemView.PasswordView(cipher: .constant(cipherDeleted), editing: .constant(false), reprompt: .constant(.none), account: account)
-                .environmentObject(account)
-                .padding()
-        }
-    }
-}
+//struct ItemViewRegularPreview: PreviewProvider {
+////    @ObservedObject let account = Account()
+//
+//    static var previews: some View {
+//        let cipher = Cipher(fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
+//        
+//        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
+//        
+//        
+//        Group {
+//            ItemView.PasswordView(cipher: .constant(cipher), editing: .constant(false), reprompt: .constant(.none))
+//                .environmentObject(account)
+//                
+//            ItemView.PasswordView(cipher: .constant(cipherDeleted), editing: .constant(false), reprompt: .constant(.none), account: account)
+//                .environmentObject(account)
+//                .padding()
+//        }
+//    }
+//}
 

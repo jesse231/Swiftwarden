@@ -6,29 +6,67 @@
 //
 
 import SwiftUI
+import Nuke
 import NukeUI
 
 struct Icon: View {
     let hostname: String?
     let itemType: ItemType
-    let account: Account
-    init(itemType: ItemType, hostname: String? = nil, account: Account) {
+    
+    var api: Api?
+    let priority: ImageRequest.Priority
+    init(itemType: ItemType, hostname: String? = nil, priority: ImageRequest.Priority = .high, api: Api? = nil) {
         self.itemType = itemType
         self.hostname = hostname
-        self.account = account
+        self.priority = priority
+        self.api = api
+        ImagePipeline.Configuration.isSignpostLoggingEnabled = true
+        
     }
+    
+//    let pipeline =
+//    ImagePipeline {
+//        $0.dataLoader = DataLoader(configuration: {
+//            // Disable disk caching built into URLSession
+//            let conf = DataLoader.defaultConfiguration
+//            conf.urlCache = nil
+//            return conf
+//        }())
+//
+//        $0.imageCache = ImageCache()
+//        $0.dataCache = try! DataCache(name: "com.github.kean.Nuke.DataCache")
+//    }
+//    ImagePipeline {
+//        $0.dataCache = try? DataCache(name: "com.swiftwarden.datacache")
+//        $0.dataCachePolicy = .storeAll
+//    }
+
+//    private let pipeline = ImagePipeline {
+//        $0.dataLoader = {
+//            let config = URLSessionConfiguration.default
+//            config.urlCache = nil
+//            return DataLoader(configuration: config)
+//        }()
+//
+////        $0.imageCache = ImageCache()
+//    }
+        
     var body: some View {
+        let _ = print(itemType)
         if itemType == .password {
-            if let hostname, hostname != "" {
-                LazyImage(url: account.api.getIcons(host: hostname)) { state in
+            if let hostname, let api, hostname != "" {
+                LazyImage(url: api.getIcons(host: hostname)) { state in
                     if let image = state.image {
-                        image.resizable()
+                        image
+                            .resizable()
+                            .background(.white)
+                            .clipShape(Rectangle())
+                            .cornerRadius(5)
+                            .frame(width: 35, height: 35)
                     }
                 }
-                .background(.white)
-                .clipShape(Rectangle())
-                .cornerRadius(5)
-                .frame(width: 35, height: 35)
+//                .priority(priority)
+//                .pipeline(pipeline)
             } else {
                 Circle()
                     .foregroundColor(.black)
@@ -84,11 +122,11 @@ struct Icon_Previews: PreviewProvider {
     static var previews: some View {
         let account = Account()
         VStack {
-            Icon(itemType: ItemType.password, hostname: "", account: account)
-            Icon(itemType: ItemType.password, hostname: "test.com", account: account)
-            Icon(itemType: ItemType.card, account: account)
-            Icon(itemType: ItemType.identity, account: account)
-            Icon(itemType: ItemType.secureNote, account: account)
+            Icon(itemType: ItemType.password, hostname: "")
+            Icon(itemType: ItemType.password, hostname: "test.com")
+            Icon(itemType: ItemType.card)
+            Icon(itemType: ItemType.identity)
+            Icon(itemType: ItemType.secureNote)
             
         }
         // All Previews

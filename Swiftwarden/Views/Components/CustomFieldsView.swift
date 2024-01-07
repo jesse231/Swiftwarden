@@ -10,9 +10,10 @@ import SwiftUI
 struct BooleanField: View {
     var title: String
     var bool: Bool
+    @State var hover = false
     var body: some View {
         VStack {
-                Text(title)
+            Text(title != "" ? title : "No Name")
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .foregroundColor(.gray)
@@ -22,6 +23,13 @@ struct BooleanField: View {
                     .padding(.leading, -7)
             }
         .padding()
+        .background(hover ? Color.gray.opacity(0.2) : Color.clear)
+        .cornerRadius(5)
+        .onHover { hover in
+            withAnimation {
+                self.hover = hover
+            }
+        }
 
     }
 }
@@ -29,9 +37,10 @@ struct BooleanField: View {
 struct LinkedField: View {
     var title: String
     var linkedID: Int
+    @State var hover = false
     var body: some View {
         VStack {
-                Text(title)
+            Text(title != "" ? title : "No Name")
                     .font(.system(size: 10))
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                     .foregroundColor(.gray)
@@ -39,8 +48,14 @@ struct LinkedField: View {
                     .toggleStyle(.switch)
                     .frame(maxWidth: .infinity, alignment: .topLeading)
             }
-        .padding()
-
+            .padding()
+            .background(hover ? Color.gray.opacity(0.2) : Color.clear)
+            .cornerRadius(5)
+            .onHover { hover in
+                withAnimation {
+                    self.hover = hover
+                }
+            }
     }
 }
 
@@ -50,13 +65,6 @@ struct CustomFieldsView: View {
         self.customFields = customFields
     }
     var body: some View {
-//        VStack {
-//        Text("Custom Fields")
-//                .font(.headline)
-//                .frame(maxWidth: .infinity, alignment: .topLeading)
-//                .padding([.leading])
-                //.animation(.default)
-                //'.transition(.scale)
             VStack {
                 ForEach(customFields, id: \.self) { field in
                     if field.type == 0 {
@@ -71,7 +79,7 @@ struct CustomFieldsView: View {
                         LinkedField(title: field.name ?? "", linkedID: field.linkedID ?? 100)
                     }
                 }
-            }        
+            }
 //        }
     }
 }

@@ -14,7 +14,7 @@ extension ItemView {
         var body: some View {
                 VStack {                    
                     HStack {
-                        Icon(itemType: .secureNote, account: account)
+                        Icon(itemType: .secureNote)
                         VStack {
                             Text(cipher?.name ?? "")
                                 .font(.system(size: 15))
@@ -24,7 +24,7 @@ extension ItemView {
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                         }
-                        FavoriteButton(cipher: $cipher, account: account)
+                        FavoriteButton(cipher: $cipher)
                     }
                     .padding([.leading,.trailing], 5)
                     Divider()
@@ -45,7 +45,7 @@ extension ItemView {
                     }
                 .frame(maxWidth: .infinity)
                 .toolbar {
-                    RegularCipherOptions(cipher: $cipher, editing: $editing, account: account)
+                    RegularCipherOptions(cipher: $cipher, editing: $editing)
             }
                 
             }

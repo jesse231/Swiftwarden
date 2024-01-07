@@ -12,7 +12,7 @@ extension ItemView {
     struct RegularCipherOptions: ToolbarContent {
         @Binding var cipher: Cipher?
         @Binding var editing: Bool
-        let account: Account
+        @EnvironmentObject var account: Account
         
         func restore() async throws {
             if let cipher {

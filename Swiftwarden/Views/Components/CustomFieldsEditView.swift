@@ -61,6 +61,9 @@ struct ToggleItem: View {
             Toggle("", isOn: $isOn)
                 .padding(.trailing)
         }
+        .onDisappear {
+            print(isOn)
+        }
     }
 }
 
@@ -113,8 +116,8 @@ struct CustomFieldsEdit: View {
                             } else if type == 2 {
                                 let isOn = Binding<Bool>(
                                     get:
-                                        {return fields[index].value == "True"},
-                                    set:{ fields[index].value = $0 ? "True" : "False"})
+                                        {return fields[index].value == "true"},
+                                    set:{ fields[index].value = $0 ? "true" : "false"})
                                 ToggleItem(isOn: isOn, name: name)
                             } else if type == 3 {
                                 let linked = Binding(

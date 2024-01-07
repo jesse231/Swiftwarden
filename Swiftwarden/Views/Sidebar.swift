@@ -13,11 +13,11 @@ struct SideBar: View {
     @State private var folderID: String?
     @FocusState private var isNewFolder: Bool
     
-    struct MenuItem: View {
+    struct MenuItem<Content: View>: View {
             let label: String
             let icon: String
             let color: Color
-            let destination: AnyView
+            @ViewBuilder let destination: Content
             let tag: Int
             let selection: Binding<Int?>
         
@@ -44,7 +44,7 @@ struct SideBar: View {
                     label: "All Items",
                     icon: "shield.lefthalf.fill",
                     color: .blue,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .normal).environmentObject(account)),
+                    destination: {PasswordsList(searchText: $searchResults, display: .normal)},
                     tag: 0,
                     selection: $selection
                 )
@@ -52,7 +52,7 @@ struct SideBar: View {
                     label: "Favorites",
                     icon: "star.fill",
                     color: .yellow,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .favorite).environmentObject(account)),
+                    destination: {PasswordsList(searchText: $searchResults, display: .favorite)},
                     tag: 1,
                     selection: $selection
                 )
@@ -60,7 +60,7 @@ struct SideBar: View {
                     label: "Trash",
                     icon: "trash.fill",
                     color: .red,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .trash).environmentObject(account)),
+                    destination: {PasswordsList(searchText: $searchResults, display: .trash)},
                     tag: 2,
                     selection: $selection
                 )
@@ -71,7 +71,7 @@ struct SideBar: View {
                     label: "Login",
                     icon: "arrow.right.square.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .login).environmentObject(account)),
+                    destination: {PasswordsList(searchText: $searchResults, display: .login)},
                     tag: 3,
                     selection: $selection
                 )
@@ -79,7 +79,7 @@ struct SideBar: View {
                     label: "Card",
                     icon: "creditcard.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .card).environmentObject(account)),
+                    destination:{ AnyView(PasswordsList(searchText: $searchResults, display: .card))},
                     tag: 4,
                     selection: $selection
                 )
@@ -87,7 +87,7 @@ struct SideBar: View {
                     label: "Identity",
                     icon: "person.fill",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .identity).environmentObject(account)),
+                    destination: {AnyView(PasswordsList(searchText: $searchResults, display: .identity))},
                     tag: 5,
                     selection: $selection
                 )
@@ -95,7 +95,7 @@ struct SideBar: View {
                     label: "Secure Note",
                     icon: "note.text",
                     color: .gray,
-                    destination: AnyView(PasswordsList(searchText: $searchResults, display: .secureNote).environmentObject(account)),
+                    destination:{ AnyView(PasswordsList(searchText: $searchResults, display: .secureNote))},
                     tag: 6,
                     selection: $selection
                 )
@@ -106,7 +106,7 @@ struct SideBar: View {
                         label: folder.name,
                         icon: "folder.fill",
                         color: .gray,
-                        destination: AnyView(PasswordsList(searchText: $searchResults, display: .folder, folderID: folder.id)),
+                        destination: {AnyView(PasswordsList(searchText: $searchResults, display: .folder, folderID: folder.id))},
                         tag: folder.hashValue,
                         selection: $selection
                     )
@@ -186,7 +186,6 @@ struct SideBar: View {
                 }
             }
         }
-        .frame(minWidth: 150)
     }
 }
 

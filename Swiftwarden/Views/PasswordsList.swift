@@ -2,19 +2,21 @@ import Foundation
 import NukeUI
 import SwiftUI
 import CoreImage
+import Nuke
 
-struct PasswordsList: View & Equatable {
+struct PasswordsList: View, Equatable {
     @EnvironmentObject var account: Account
+    @Environment(\.route) var routeManager: RouteManager
     @Binding var searchText: String
     @State private var deleteDialog = false
     @State private var itemType: ItemType?
-    @State var selection: String?
     @State private var filtered: [Cipher] = []
     @State private var isLoading = false
     var folderID: String?
+    let prefetcher = ImagePrefetcher()
     
     static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
-        return true
+        lhs.searchText == rhs.searchText && lhs.display == rhs.display && lhs.selection == rhs.selection
     }
     
     
@@ -43,12 +45,22 @@ struct PasswordsList: View & Equatable {
         let filtered = ciphers.filter { cipher in
             return cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
         }
+//        Task {
+//            var urls: [URL] = []
+//            for cipher in filtered {
+//                if let url = URL(string: cipher.login?.domain ?? "") {
+//                    urls.append(url)
+//                }
+//            }
+//            prefetcher.startPrefetching(with: urls)
+//        }
+        
         return filtered
     }
     
     private func loadData() {
             guard !isLoading else { return }
-
+            let _ = print("loadData")
             isLoading = true
             DispatchQueue.global().async {
                 let loadedCiphers = passwordsToDisplay()
@@ -65,25 +77,20 @@ struct PasswordsList: View & Equatable {
         self.display = display
         self.folderID = folderID
     }
+    
 
-
-
+    @State var selection: Set<Int> = []
     var body: some View {
-
-        List(filtered, id: \.self.id) { cipher in
-                NavigationLink(
-                    destination:
-                            ItemView(cipher: cipher)
-                                .environmentObject(account),
-                    tag: cipher.id!,
-                    selection: $selection,
-                    label: {
-                        Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, account: account)
+        let _ = print("list")
+        List(filtered.indices, id: \.self, selection: $selection) { index in
+                    let cipher = filtered[index]
+                    HStack {
+                        Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain, api: account.api)
                         Spacer().frame(width: 20)
-                        HStack {
                             VStack {
                                 if let name = cipher.name {
                                     Text(name)
+                                        .id(UUID())
                                         .font(.system(size: 15)).fontWeight(.semibold)
                                         .frame(maxWidth: .infinity, alignment: .topLeading)
                                 }
@@ -116,22 +123,35 @@ struct PasswordsList: View & Equatable {
                             if cipher.favorite ?? false {
                                 Spacer()
                                 Image(systemName: "star.fill")
+                                    .animation(.default, value: cipher.favorite)
                                     .foregroundColor(Color.yellow)
                             }
-                        }
                     }
-                )
-                .padding(5)
+                    .tag(index)
+//                    .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
+//                        return 0
+//                    }
+                    .padding(5)
+//                    .listRowSeparator(.visible)
+        }
+        .onChange(of: selection) { selected in
+//            account.lastSelected = selected.first
+            if let max = selected.max(){
+            routeManager.lastSelected = filtered[max]
+//            let _ = print(account.lastSelected)
+            }
+//            account.selectedCiphers = selected.map { filtered[$0] }
         }
         .onAppear {
             loadData()
+            print("appeared")
         }
         .onChange(of: searchText) { _ in
             loadData()
-            
         }
         .onReceive(account.user.$data) { data in
             loadData()
+            print("recieved")
         }
         .animation(.default, value: filtered)
         .toolbar {
@@ -143,6 +163,7 @@ struct PasswordsList: View & Equatable {
                         }
                     } label: {
                         Label("Add Password", systemImage: "key")
+                            .foregroundColor(.primary)
                             .labelStyle(.titleAndIcon)
                     }
                     Button {
@@ -151,24 +172,30 @@ struct PasswordsList: View & Equatable {
                         }
                     } label: {
                         Label("Add Card", systemImage: "creditcard")
+                            .foregroundColor(.primary)
                             .labelStyle(.titleAndIcon)
                     }
                     Button {
                         itemType = .identity
                     } label: {
                         Label("Add Identity", systemImage: "person")
+                            .foregroundColor(.primary)
                             .labelStyle(.titleAndIcon)
                     }
                     Button {
                         itemType = .secureNote
                     } label: {
                         Label("Add Secure Note", systemImage: "doc.text")
+                            .foregroundColor(.primary)
                             .labelStyle(.titleAndIcon)
                     }
-                } label: {Image(systemName: "plus")}
+                } label: {
+                    Image(systemName: "plus")
+                }
             }
-            
+
         }
+        .frame(minWidth: 350, idealWidth: 500)
         .sheet(item: $itemType) { itemType in
             let binding = Binding<ItemType?>(get: { itemType }, set: { self.itemType = $0 })
             

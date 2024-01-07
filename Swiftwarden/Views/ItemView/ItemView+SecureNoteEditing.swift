@@ -40,26 +40,21 @@ extension ItemView {
         
         
         func save() async throws {
-                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
+                let index = account.user.getIndex(of: cipher!)
                 
                 var modCipher = cipher!
                 modCipher.name = name
                 
                 modCipher.notes = notes
-                print(notes)
                 modCipher.fields = fields
+                
                 
                 modCipher.favorite = favorite
                 modCipher.reprompt = reprompt.toInt()
                 modCipher.folderID = folder
                 
                 try await account.user.updateCipher(cipher: modCipher, index: index)
-                
-                let updatedCipher = modCipher
-                DispatchQueue.main.async {
-                    account.selectedCipher = updatedCipher
-                }
-            
+                            
                 cipher = modCipher
         }
         
@@ -67,7 +62,7 @@ extension ItemView {
             Group {
                 VStack {
                     HStack {
-                        Icon(itemType: .secureNote, account: account)
+                        Icon(itemType: .secureNote)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -81,6 +76,7 @@ extension ItemView {
                         }
                         FavoriteEditingButton(favorite: $favorite)
                     }
+                        .padding([.leading,.trailing], 5)
                     Divider()
                     ScrollView {
                         VStack {
@@ -93,18 +89,12 @@ extension ItemView {
                                         notes = newValue
                                     }
                                 ))
-                                CustomFieldsEdit(fields: Binding<[CustomField]>(
-                                    get: {
-                                        return cipher?.fields ?? []
-                                    },
-                                    set: { newValue in
-                                        cipher?.fields = newValue
-                                    }
-                                ))
+                                CustomFieldsEdit(fields: $fields)
                             }
                             Divider()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
+                                .padding(.bottom, 24)
                         }
                         .padding(.trailing)
                         .padding(.leading)
@@ -118,9 +108,3 @@ extension ItemView {
         }
     }
 }
-
-//struct SecureNoteEditing_Preview: PreviewProvider {
-//    static var previews: some View {
-//
-//    }
-//}
