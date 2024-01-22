@@ -68,14 +68,20 @@ struct Icon: View {
 //                .priority(priority)
 //                .pipeline(pipeline)
             } else {
-                Circle()
-                    .foregroundColor(.black)
+                Rectangle()
+                    .foregroundColor(.white)
                     .frame(width: 35, height: 35)
+                    .cornerRadius(5)
                     .overlay(
-                        Image(systemName: "lock.square.fill")
-                            .resizable()
-                            .foregroundColor(.white)
-                            .frame(width: 35, height: 35)
+                        Circle()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.black)
+                            .overlay(
+                                Image(systemName: "lock.square.fill")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .frame(width: 35, height: 35)
+                            )
                     )
             }
             } else if itemType == .card  {
@@ -120,15 +126,42 @@ struct Icon: View {
 
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
-        let account = Account()
         VStack {
-            Icon(itemType: ItemType.password, hostname: "")
-            Icon(itemType: ItemType.password, hostname: "test.com")
+            HStack{
+                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
+                Spacer().frame(width: 20)
+                VStack {
+                    Text("name")
+                        .id(UUID())
+                        .font(.system(size: 15)).fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                    Spacer().frame(height: 5)
+                    Text(verbatim: "username")
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
+            }
+            .padding(.leading)
+            HStack{
+                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
+                Spacer().frame(width: 20)
+                VStack {
+                    Text("name")
+                        .id(UUID())
+                        .font(.system(size: 15)).fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                    Spacer().frame(height: 5)
+                    Text(verbatim: "username")
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
+            }.padding(.leading)
             Icon(itemType: ItemType.card)
             Icon(itemType: ItemType.identity)
             Icon(itemType: ItemType.secureNote)
             
         }
-        // All Previews
+        .frame(width: .infinity, height: .infinity)
+
     }
 }
