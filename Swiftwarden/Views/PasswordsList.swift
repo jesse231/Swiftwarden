@@ -132,7 +132,7 @@ struct PasswordsList: View, Equatable {
 //                        return 0
 //                    }
                     .padding(5)
-//                    .listRowSeparator(.visible)
+                    .listRowSeparator(.hidden)
         }
         .onChange(of: selection) { selected in
 //            account.lastSelected = selected.first
