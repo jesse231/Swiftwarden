@@ -108,3 +108,8 @@ extension ItemView {
         }
     }
 }
+struct ItemView_SecureNoteEditing_Previews: PreviewProvider {
+    static var previews: some View {
+        ItemView.SecureNoteEditing(cipher: .constant(nil), editing: .constant(true), account: .init())
+    }
+}

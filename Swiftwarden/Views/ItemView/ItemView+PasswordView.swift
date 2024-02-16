@@ -150,3 +150,10 @@ extension ItemView {
 //    }
 //}
 
+
+struct ItemView_PasswordView_Previews: PreviewProvider {
+    static var previews: some View {
+        @State var cipher: Cipher? = Cipher(favorite: false, id: "1", login: Login(password: "test", uris: [Uris(uri: "https://google.com")], username: "test"), name: "Test", type: 1)
+        ItemView.PasswordView(cipher: $cipher, editing: .constant(false), reprompt: .constant(.none))
+    }
+}
