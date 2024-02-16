@@ -51,7 +51,7 @@ extension ItemView {
 
             VStack {
                 HStack {
-                    Icon(itemType: .password, hostname: cipher?.login?.domain, priority: ImageRequest.Priority.veryLow, api: api)
+                    Icon(itemType: .password, hostname: cipher?.login?.domain, api: api)
                     VStack {
                         Text(cipher?.name ?? "")
                             .font(.system(size: 15))
@@ -130,25 +130,6 @@ extension ItemView {
     
     
 }
-//struct ItemViewRegularPreview: PreviewProvider {
-////    @ObservedObject let account = Account()
-//
-//    static var previews: some View {
-//        let cipher = Cipher(fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
-//        
-//        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 1, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
-//        
-//        
-//        Group {
-//            ItemView.PasswordView(cipher: .constant(cipher), editing: .constant(false), reprompt: .constant(.none))
-//                .environmentObject(account)
-//                
-//            ItemView.PasswordView(cipher: .constant(cipherDeleted), editing: .constant(false), reprompt: .constant(.none), account: account)
-//                .environmentObject(account)
-//                .padding()
-//        }
-//    }
-//}
 
 
 struct ItemView_PasswordView_Previews: PreviewProvider {

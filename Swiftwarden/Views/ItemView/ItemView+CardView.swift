@@ -44,7 +44,7 @@ extension ItemView {
         }
         
         var body: some View {
-                VStack {                    
+                VStack {
                     HStack {
                         Icon(itemType: .card)
                         VStack {
@@ -70,6 +70,7 @@ extension ItemView {
                                     title: "Cardholder Name",
                                     content: cardholder,
                                     buttons: {
+                                        Copy(content: cardholder)
                                     })
                             }
                             if let number = cipher?.card?.number {
@@ -85,11 +86,11 @@ extension ItemView {
                                     })
                             }
                             if let brand = cipher?.card?.brand {
-                                let _ = print(brand)
                                 Field(
                                     title: "Brand",
                                     content: brand,
                                     buttons: {
+                                        Copy(content: brand)
                                     })
                             }
                             
@@ -98,6 +99,7 @@ extension ItemView {
                                     title: "Expiration Date",
                                     content: "\(cipher?.card?.expMonth ?? "_") / \(cipher?.card?.expYear ?? "_")",
                                     buttons: {
+                                        Copy(content: "\(cipher?.card?.expMonth ?? "_") / \(cipher?.card?.expYear ?? "_")")
                                     }
                                 )
                             }

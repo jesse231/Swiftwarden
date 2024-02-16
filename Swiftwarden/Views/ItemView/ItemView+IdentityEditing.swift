@@ -117,7 +117,6 @@ extension ItemView {
         }
         
         var body: some View {
-            Group {
                 VStack {
                     HStack {
                         Icon(itemType: .identity)
@@ -127,7 +126,7 @@ extension ItemView {
                                 .fontWeight(.semibold)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -5)
+                                .padding(.bottom, -3)
                             Text(verbatim: "Identity")
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -136,6 +135,7 @@ extension ItemView {
                     }
                         .padding([.leading,.trailing], 5)
                     Divider()
+                        .padding([.leading,.trailing], 5)
                     ScrollView {
                         VStack {
                             Group {
@@ -202,15 +202,14 @@ extension ItemView {
                                 .padding(.bottom, 24)
                             
                         }
-                        }
                         .padding(.trailing)
                         .padding(.leading)
-                    }
+                        }
                     .frame(maxWidth: .infinity)
+                    }
                     .toolbar {
                         EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
                     }
-                }
         }
     }
 }
@@ -220,7 +219,7 @@ struct IdentityEditing_Preview: PreviewProvider {
         let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
         let account = Account()
         
-        ItemView.CardEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
+        ItemView.IdentityEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
             .padding()
     }
 }

@@ -69,7 +69,7 @@ extension ItemView {
                                 .fontWeight(.semibold)
                                 .textFieldStyle(.plain)
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -5)
+                                .padding(.bottom, -3)
                             Text(verbatim: "Secure Note")
                                 .font(.system(size: 10))
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -78,6 +78,7 @@ extension ItemView {
                     }
                         .padding([.leading,.trailing], 5)
                     Divider()
+                        .padding([.leading,.trailing], 5)
                     ScrollView {
                         VStack {
                             Group {
