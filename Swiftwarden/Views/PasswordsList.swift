@@ -150,8 +150,9 @@ struct PasswordsList: View, Equatable {
             loadData()
         }
         .onReceive(account.user.$data) { data in
-            loadData()
-            print("recieved")
+            DispatchQueue.main.async {
+                loadData()
+            }
         }
         .animation(.default, value: filtered)
         .toolbar {
