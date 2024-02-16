@@ -21,7 +21,6 @@ struct Icon: View {
         self.priority = priority
         self.api = api
         ImagePipeline.Configuration.isSignpostLoggingEnabled = true
-        
     }
     
 //    let pipeline =
@@ -54,35 +53,31 @@ struct Icon: View {
     var body: some View {
         let _ = print(itemType)
         if itemType == .password {
-            if let hostname, let api, hostname != "" {
-                LazyImage(url: api.getIcons(host: hostname)) { state in
-                    if let image = state.image {
-                        image
-                            .resizable()
-                            .background(.white)
-                            .clipShape(Rectangle())
-                            .cornerRadius(5)
-                            .frame(width: 35, height: 35)
-                    }
+            LazyImage(url: api?.getIcons(host: hostname ?? "")) { state in
+                if let image = state.image {
+                    image
+                        .resizable()
+                        .background(.white)
+                        .clipShape(Rectangle())
+                        .cornerRadius(5)
+                        .frame(width: 35, height: 35)
+                } else {
+                    Rectangle()
+                        .foregroundColor(.white)
+                        .frame(width: 35, height: 35)
+                        .cornerRadius(5)
+                        .overlay(
+                            Circle()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.black)
+                                .overlay(
+                                    Image(systemName: "lock.square.fill")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .frame(width: 35, height: 35)
+                                )
+                        )
                 }
-//                .priority(priority)
-//                .pipeline(pipeline)
-            } else {
-                Rectangle()
-                    .foregroundColor(.white)
-                    .frame(width: 35, height: 35)
-                    .cornerRadius(5)
-                    .overlay(
-                        Circle()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.black)
-                            .overlay(
-                                Image(systemName: "lock.square.fill")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .frame(width: 35, height: 35)
-                            )
-                    )
             }
             } else if itemType == .card  {
             Rectangle()
@@ -127,38 +122,43 @@ struct Icon: View {
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            HStack{
-                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
-                Spacer().frame(width: 20)
-                VStack {
-                    Text("name")
-                        .id(UUID())
-                        .font(.system(size: 15)).fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                    Spacer().frame(height: 5)
-                    Text(verbatim: "username")
-                        .font(.system(size: 10))
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//            HStack{
+//                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
+//                Spacer().frame(width: 20)
+//                VStack {
+//                    Text("name")
+//                        .id(UUID())
+//                        .font(.system(size: 15)).fontWeight(.semibold)
+//                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//                    Spacer().frame(height: 5)
+//                    Text(verbatim: "username")
+//                        .font(.system(size: 10))
+//                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//                }
+//            }
+//            .padding(.leading)
+//            HStack{
+//                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
+//                Spacer().frame(width: 20)
+//                VStack {
+//                    Text("name")
+//                        .id(UUID())
+//                        .font(.system(size: 15)).fontWeight(.semibold)
+//                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//                    Spacer().frame(height: 5)
+//                    Text(verbatim: "username")
+//                        .font(.system(size: 10))
+//                        .frame(maxWidth: .infinity, alignment: .topLeading)
+//                }
+//            }.padding(.leading)
+//            Icon(itemType: ItemType.card)
+//            Icon(itemType: ItemType.identity)
+//            Icon(itemType: ItemType.secureNote)
+            LazyImage(url: URL(string:"")).onCompletion {
+                if case .failure(let error) = $0 {
+                    print(error)
                 }
             }
-            .padding(.leading)
-            HStack{
-                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
-                Spacer().frame(width: 20)
-                VStack {
-                    Text("name")
-                        .id(UUID())
-                        .font(.system(size: 15)).fontWeight(.semibold)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                    Spacer().frame(height: 5)
-                    Text(verbatim: "username")
-                        .font(.system(size: 10))
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
-                }
-            }.padding(.leading)
-            Icon(itemType: ItemType.card)
-            Icon(itemType: ItemType.identity)
-            Icon(itemType: ItemType.secureNote)
             
         }
         .frame(width: .infinity, height: .infinity)
