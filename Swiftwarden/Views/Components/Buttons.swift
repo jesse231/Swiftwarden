@@ -12,7 +12,7 @@ struct FavoriteButton: View {
                 cipher?.favorite?.toggle()
                     Task {
                         do {
-                            try await account.user.updateCipher(cipher: cipher!, index: index)
+                            account.user.updateCipher(cipher: cipher!, index: index)
                         } catch {
                             print(error)
                         }
