@@ -20,6 +20,7 @@ struct LoginView: View {
     func unlock() {
         Task {
             do {
+                isLoading = true
                 try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
                 context.invalidate()
             } catch let error as AuthError {
@@ -132,6 +133,7 @@ struct LoginView: View {
                         authenticate(context: context) { _ in
                             Task {
                                 do {
+                                    isLoading = true
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
                                     loginSuccess = true
                                 } catch let error as AuthError {
@@ -174,6 +176,7 @@ struct LoginView: View {
                             .background(Color.gray)
                             .foregroundColor(Color.white)
                     }
+                    .disabled(isLoading)
                     .buttonStyle(.plain)
                     .padding(22)
                     .frame(width: 122, height: 25)
@@ -183,11 +186,18 @@ struct LoginView: View {
                     Button {
                         unlock()
                     } label: {
-                        Text("Unlock")
-                            .padding(22)
-                            .frame(width: 111, height: 22)
-                            .background(Color.blue)
-                            .foregroundColor(Color.white)
+                        HStack {
+                            if (isLoading) {
+                                ProgressView()
+                                    .controlSize(.small)
+                            } else {
+                                Text("Unlock")
+                                    .background(Color.blue)
+                                    .foregroundColor(Color.white)
+                            }
+                        }
+                        .frame(width: 111, height: 22)
+                        .padding(22)
 
                     }
                     .buttonStyle(.plain)
@@ -244,7 +254,7 @@ struct LoginView: View {
                 } label: {
                     if isLoading {
                         ProgressView() // Show loading animation
-                            .frame(width: 10, height: 10)
+                            .controlSize(.small)
                     } else {
                         Text("Log In")
                             .padding(22)
