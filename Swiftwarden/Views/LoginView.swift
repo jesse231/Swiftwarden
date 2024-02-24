@@ -139,7 +139,9 @@ struct LoginView: View {
                         authenticate(context: context) { _ in
                             Task {
                                 do {
-                                    isLoading = true
+                                    withAnimation {
+                                        isLoading = true
+                                    }
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
                                     loginSuccess = true
                                 } catch let error as AuthError {
