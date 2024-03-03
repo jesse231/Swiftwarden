@@ -4,7 +4,7 @@
     An elegant MacOS client for Bitwarden written in Swift
 </p>
 
-<p align="center"><img src="Images/Dark.png" width="864"></p>
+<p align="center"><img src="Images/Light.png" width="864"></p>
 
 # Supports
 - Basic password creation, viewing and interacting
