@@ -64,7 +64,6 @@ extension ItemView {
                     FavoriteButton(cipher: $cipher)
                 }
                 .padding([.leading,.trailing], 5)
-                let _ = print("rendered")
                 Divider()
                     .padding([.leading,.trailing], 5)
                 ScrollView {

@@ -133,7 +133,7 @@ class Encryption {
 
         var mac: [UInt8]
 
-        mac = try HMAC(key: macKey, variant: .sha256).authenticate(iv + ct)
+        mac = try HMAC(key: macKey, variant: .sha2(.sha256)).authenticate(iv + ct)
 
         return cipherString(mac: mac, encType: 2, iv: iv, ct: ct)
     }
@@ -150,7 +150,7 @@ class Encryption {
             t += inf
             t += [UInt8(i+1)]
             do {
-                let hmac = try HMAC(key: prk, variant: .sha256).authenticate(t)
+                let hmac = try HMAC(key: prk, variant: .sha2(.sha256)).authenticate(t)
                 okm += hmac
                 prev = hmac
             } catch {}
@@ -352,13 +352,5 @@ class Encryption {
         return dk!.bytes
    }
 
-//    static func decryptOrganizations(orgs: [Organization]) -> [Organization]{
-//        var decOrgs = orgs
-//        for (i,data) in orgs.enumerated(){
-//            do {
-//                decOrgs[i] = try decOrg(org: data)
-//            } catch {}
-//        }
-//        return decOrgs
-//    }
+
 }

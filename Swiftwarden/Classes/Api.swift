@@ -122,8 +122,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 
         request.httpBody = try JSONEncoder().encode(encCipher)
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(response)
-        print(String(data: data, encoding: .utf8)!)
         return 
     }
 
@@ -141,7 +139,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 
         var (data, response) = try await URLSession.shared.data(for: request)
 
-//        print(String(data: data, encoding: .utf8))
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode != 200 {
                 let decoder = JSONDecoder()
@@ -162,12 +159,7 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
-//        request.setValue("7", forHTTPHeaderField: "Device-Type")
-//        request.setValue("application/json", forHTTPHeaderField: "Accept")
-//        request.setValue("Bitwarden_CLI/2023.1.0 (MACOS)", forHTTPHeaderField: "User-Agent")
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
-//        print(String(Data(email.utf8).base64EncodedString().dropLast(2)))
-//        request.setValue("utf-8", forHTTPHeaderField: "charset")
         var components = URLComponents()
         components.queryItems = [
             URLQueryItem(name: "scope", value: "api offline_access"),
@@ -180,21 +172,11 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
             URLQueryItem(name: "password", value: masterPasswordHash)
         ].percentEncoded()
         components.scheme = "https"
-//        print(components.query)
-//        print(components.url!.query?.removePercentEncoding())
-//        print(email.removePercentEncoding())
-//        print(password.percentencoding()
         let query = components.query
-//        print(query)
         request.httpBody = Data(query!.utf8)
         (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse {
             if httpResponse.statusCode != 200 {
-//                let decoder = try JSONDecoder()
-//                try decoder.keyDecodingStrategy = .convertFromSnakeCase
-//                let error = try decoder.decode(ErrorResponse.self, from: data)
-//                print(response)
-//                print(String(data: data, encoding: .utf8)!)
                 throw AuthError(message: "Invalid email or password")
             }
         }
@@ -214,10 +196,7 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")
 
         let (data, response) = try await URLSession.shared.data(for: request)
-//        print(response)
-//        print(String(data: data, encoding: .utf8)!)
         let syncData = try Response(data: data)
-//        print(syncData)
         return syncData
     }
     
@@ -260,7 +239,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
 
         let (data, response) = try await URLSession.shared.data(for: request)
-        print(String(data: data, encoding: .utf8)!)
     }
 
     func deletePasswordPermanently(id: String) async throws {
@@ -283,7 +261,6 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
         request.httpBody = try JSONEncoder().encode(try Encryption.encryptCipher(cipher: cipher))
 
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")

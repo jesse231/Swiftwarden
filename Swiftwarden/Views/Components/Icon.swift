@@ -51,7 +51,6 @@ struct Icon: View {
 //    }
         
     var body: some View {
-        let _ = print(itemType)
         if itemType == .password {
             LazyImage(url: api?.getIcons(host: hostname ?? "")) { state in
                 if let image = state.image {

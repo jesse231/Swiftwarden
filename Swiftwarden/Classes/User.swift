@@ -250,7 +250,10 @@ class User: ObservableObject {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
                 try await api.deletePasswordPermanently(id: id)
-                self.data.passwords.remove(at: index)
+                //fix Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
+                DispatchQueue.main.async {
+                    self.data.passwords.remove(at: index)
+                }
             }
         }
     }

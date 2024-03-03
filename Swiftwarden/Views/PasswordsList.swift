@@ -60,7 +60,6 @@ struct PasswordsList: View, Equatable {
     
     private func loadData() {
             guard !isLoading else { return }
-            let _ = print("loadData")
             isLoading = true
             DispatchQueue.global().async {
                 let loadedCiphers = passwordsToDisplay()
@@ -81,7 +80,6 @@ struct PasswordsList: View, Equatable {
 
     @State var selection: Set<Int> = []
     var body: some View {
-        let _ = print("list")
         List(filtered.indices, id: \.self, selection: $selection) { index in
                     let cipher = filtered[index]
                     HStack {
@@ -144,7 +142,6 @@ struct PasswordsList: View, Equatable {
         }
         .onAppear {
             loadData()
-            print("appeared")
         }
         .onChange(of: searchText) { _ in
             loadData()
