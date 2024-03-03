@@ -42,20 +42,18 @@ extension ItemView {
         func save() async throws {
                 let index = account.user.getIndex(of: cipher!)
                 
-                var modCipher = cipher!
-                modCipher.name = name
+                cipher?.name = name
                 
-                modCipher.notes = notes
-                modCipher.fields = fields
+                cipher?.notes = notes
+                cipher?.fields = fields
                 
                 
-                modCipher.favorite = favorite
-                modCipher.reprompt = reprompt.toInt()
-                modCipher.folderID = folder
+                cipher?.favorite = favorite
+                cipher?.reprompt = reprompt.toInt()
+                cipher?.folderID = folder
                 
-                try await account.user.updateCipher(cipher: modCipher, index: index)
+                account.user.updateCipher(cipher: cipher!, index: index)
                             
-                cipher = modCipher
         }
         
         var body: some View {

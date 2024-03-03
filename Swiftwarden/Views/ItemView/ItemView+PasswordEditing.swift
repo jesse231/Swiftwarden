@@ -53,23 +53,22 @@ extension ItemView {
         
         func save() {
             let index = account.user.getIndex(of: cipher!)
-                var modCipher = cipher!
-                modCipher.name = name
+                cipher?.name = name
                 
-                modCipher.login?.username = username != "" ? username : nil
-                modCipher.login?.password = password != "" ? password : nil
+                cipher?.login?.username = username != "" ? username : nil
+                cipher?.login?.password = password != "" ? password : nil
                 if let url = uris.first?.uri, url != "" {
-                    modCipher.login?.uris = uris
-                    modCipher.login?.domain = extractHostURI(uri: url)
-                    modCipher.login?.uri = url
+                    cipher?.login?.uris = uris
+                    cipher?.login?.domain = extractHostURI(uri: url)
+                    cipher?.login?.uri = url
                 } else {
-                    modCipher.login?.uris = nil
-                    modCipher.login?.uri = nil
+                    cipher?.login?.uris = nil
+                    cipher?.login?.uri = nil
                 }
-                modCipher.folderID = folder
-                modCipher.favorite = favorite
-                modCipher.reprompt = reprompt.toInt()
-                account.user.updateCipher(cipher: modCipher, index: index)
+                cipher?.folderID = folder
+                cipher?.favorite = favorite
+                cipher?.reprompt = reprompt.toInt()
+                account.user.updateCipher(cipher: cipher!, index: index)
         }
         
         

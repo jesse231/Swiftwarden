@@ -80,8 +80,7 @@ extension ItemView {
         func save() async throws{
                 let index = account.user.getIndex(of: cipher!)
                 
-                var modCipher = cipher!
-                modCipher.name = name
+                cipher?.name = name
                 let identity = Identity(
                     address1: address1 != "" ? address1 : nil,
                     address2: address2 != "" ? address2 : nil,
@@ -102,18 +101,17 @@ extension ItemView {
                     title: title != "" ? title : nil,
                     username: username != "" ? username : nil
                 )
-                modCipher.identity = identity
+                cipher?.identity = identity
                 
-                modCipher.notes = notes
-                modCipher.fields = fields
+                cipher?.notes = notes
+                cipher?.fields = fields
                 
-                modCipher.favorite = favorite
-                modCipher.reprompt = reprompt.toInt()
-                modCipher.folderID = folder
+                cipher?.favorite = favorite
+                cipher?.reprompt = reprompt.toInt()
+                cipher?.folderID = folder
                 
                 
-                try await account.user.updateCipher(cipher: modCipher, index: index)
-                cipher = modCipher
+                account.user.updateCipher(cipher: cipher!, index: index)
         }
         
         var body: some View {

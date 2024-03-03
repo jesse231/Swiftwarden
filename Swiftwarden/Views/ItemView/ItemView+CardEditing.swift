@@ -55,8 +55,8 @@ extension ItemView {
         func save() async throws {
                 let index = account.user.getIndex(of: cipher!)
                 
-                var modCipher = cipher!
-                modCipher.name = name
+            
+                cipher?.name = name
                 let card = Card(
                     brand: brand != "" ? brand : nil,
                     cardHolderName: cardholderName != "" ? cardholderName : nil,
@@ -65,18 +65,17 @@ extension ItemView {
                     expYear: expirationYear,
                     number: number != "" ? number : nil
                 )
-                modCipher.card = card
+                cipher?.card = card
                 
-                modCipher.notes = notes != "" ? notes : nil
-                modCipher.fields = fields
+                cipher?.notes = notes != "" ? notes : nil
+                cipher?.fields = fields
                 
-                modCipher.favorite = favorite
-                modCipher.reprompt = reprompt.toInt()
-                modCipher.folderID = folder
+                cipher?.favorite = favorite
+                cipher?.reprompt = reprompt.toInt()
+                cipher?.folderID = folder
                 
                 
-                try await account.user.updateCipher(cipher: modCipher, index: index)
-                cipher = modCipher
+                account.user.updateCipher(cipher: cipher!, index: index)
         }
         
         var body: some View {
