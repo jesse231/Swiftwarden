@@ -130,11 +130,6 @@ struct CustomFieldsEdit: View {
                     }
                 }
             }
-//            Button {
-//                showOptions = true
-//            } label: {
-//                Label("Add Field", systemImage: "plus")
-//            }
             Menu {
                 Button {
                     fields.append(CustomField(type: 0))
