@@ -195,6 +195,7 @@ extension ItemView {
                                 EditingField(title: "Country", text: $country, buttons: {})
                                     .padding()
                             }
+                            CustomFieldsEdit(fields: $fields)
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
                                 .padding(.bottom, 24)

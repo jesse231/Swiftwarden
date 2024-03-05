@@ -156,14 +156,7 @@ extension ItemView {
                                 EditingField(title: "Security Code", text: $securityCode, buttons: {})
                             Divider()
                             Group {
-                                CustomFieldsEdit(fields: Binding<[CustomField]>(
-                                    get: {
-                                        return cipher?.fields ?? []
-                                    },
-                                    set: { newValue in
-                                        cipher?.fields = newValue
-                                    }
-                                ))
+                                CustomFieldsEdit(fields: $fields)
                                 NotesEditView(Binding<String>(
                                     get: {
                                         return cipher?.notes ?? ""

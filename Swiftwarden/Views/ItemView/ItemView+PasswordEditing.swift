@@ -33,6 +33,7 @@ extension ItemView {
         @State var reprompt: RepromptState
         
         @State var uris: [Uris]
+        @State var customFields: [CustomField]
         
         @State var showReprompt: Bool = false
         
@@ -49,6 +50,7 @@ extension ItemView {
             
             _editing = editing
             _account = StateObject(wrappedValue: account)
+            _customFields = State(initialValue: cipher.wrappedValue?.fields ?? [])
         }
         
         func save() {
@@ -68,6 +70,7 @@ extension ItemView {
                 cipher?.folderID = folder
                 cipher?.favorite = favorite
                 cipher?.reprompt = reprompt.toInt()
+                cipher?.fields = customFields
                 account.user.updateCipher(cipher: cipher!, index: index)
         }
         
@@ -118,14 +121,7 @@ extension ItemView {
                             AddUrlList(urls: $uris)
                                 .padding(.top)
                             Divider()
-                            CustomFieldsEdit(fields: Binding<[CustomField]>(
-                                get: {
-                                    return cipher?.fields ?? []
-                                },
-                                set: { newValue in
-                                    cipher?.fields = newValue
-                                }
-                            ))
+                            CustomFieldsEdit(fields: $customFields)
                             NotesEditView(Binding<String>(
                                 get: {
                                     return cipher?.notes ?? ""
