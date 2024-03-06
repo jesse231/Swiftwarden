@@ -20,7 +20,9 @@ struct LoginView: View {
     func unlock() {
         Task {
             do {
-                isLoading = true
+                withAnimation {
+                    isLoading = true
+                }
                 try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
                 context.invalidate()
             } catch let error as AuthError {
@@ -39,7 +41,11 @@ struct LoginView: View {
     func validateAndLogin(storedEmail: String? = nil, storedPassword: String? = nil, storedServer: String? = nil) {
         Task {
             attempt = false
-            isLoading = true
+            
+            withAnimation {
+                isLoading = true
+            }
+            
             do {
                 let checkEmail = try Regex("[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}")
                 guard email != "" && password != "" else {
@@ -133,7 +139,9 @@ struct LoginView: View {
                         authenticate(context: context) { _ in
                             Task {
                                 do {
-                                    isLoading = true
+                                    withAnimation {
+                                        isLoading = true
+                                    }
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
                                     loginSuccess = true
                                 } catch let error as AuthError {
@@ -150,6 +158,7 @@ struct LoginView: View {
                     } label: {
                         Image(systemName: "touchid")
                     }
+                    .controlSize(.large)
                 }
                 if attempt == true {
                     Text(errorMessage)
@@ -160,52 +169,43 @@ struct LoginView: View {
                         .background(.pink.opacity(0.4))
                         .cornerRadius(5)
                 }
-                HStack {
-                    Button(action: {
-                        UserDefaults.standard.set(nil, forKey: "email")
-                        UserDefaults.standard.set(nil, forKey: "server")
-                        KeyChain.deleteUser(account: storedEmail)
-                        self.storedEmail = nil
-                        self.storedServer = nil
-                        self.attempt = false
-                        self.password = ""
-                    }) {
-                        Text("Log out")
-                            .padding(22)
-                            .frame(width: 111, height: 22)
-                            .background(Color.gray)
-                            .foregroundColor(Color.white)
-                    }
-                    .disabled(isLoading)
-                    .buttonStyle(.plain)
-                    .padding(22)
-                    .frame(width: 122, height: 25)
-                    .background(Color.gray)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(5)
-                    Button {
-                        unlock()
-                    } label: {
-                        HStack {
-                            if (isLoading) {
-                                ProgressView()
-                                    .controlSize(.small)
-                            } else {
-                                Text("Unlock")
-                                    .background(Color.blue)
-                                    .foregroundColor(Color.white)
-                            }
+                VStack {
+                    if !isLoading {
+                        Button {
+                            unlock()
+                        } label: {
+                            Text("Unlock")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                                .frame(width: 200, height: 30)
+                                .background(.blue)
+                                .cornerRadius(5)
+                                .padding()
+                            
                         }
-                        .frame(width: 111, height: 22)
-                        .padding(22)
-
+                        .buttonStyle(.plain)
+                        
+                        Button(action: {
+                            UserDefaults.standard.set(nil, forKey: "email")
+                            UserDefaults.standard.set(nil, forKey: "server")
+                            KeyChain.deleteUser(account: storedEmail)
+                            self.storedEmail = nil
+                            self.storedServer = nil
+                            self.attempt = false
+                            self.password = ""
+                        }) {
+                            Text("Log out")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                                .frame(width: 200, height: 30)
+                                .background(.red)
+                                .cornerRadius(5)
+                                .padding()
+                        }
+                        .buttonStyle(.plain)
+                    } else {
+                        ProgressView()
                     }
-                    .buttonStyle(.plain)
-                    .padding(22)
-                    .frame(width: 122, height: 25)
-                    .background(Color.blue)
-                    .foregroundColor(Color.white)
-                    .cornerRadius(5)
                 }.padding().frame(maxWidth: 300)
             }.padding().frame(maxWidth: 300)
         } else {
@@ -249,26 +249,23 @@ struct LoginView: View {
                         .background(.pink.opacity(0.4))
                         .cornerRadius(5)
                 }
-                Button {
+                
+                if !isLoading {
+                    Button {
                         validateAndLogin()
-                } label: {
-                    if isLoading {
-                        ProgressView() // Show loading animation
-                            .controlSize(.small)
-                    } else {
+                    } label: {
                         Text("Log In")
-                            .padding(22)
-                            .frame(width: 111, height: 22)
-                            .background(Color.blue)
-                            .foregroundColor(Color.white)
+                            .foregroundColor(.white)
+                            .font(.headline)
+                            .frame(width: 200, height: 30)
+                            .background(.blue)
+                            .cornerRadius(5)
+                            .padding()
                     }
+                    .buttonStyle(.plain)
+                } else {
+                    ProgressView()
                 }
-                .buttonStyle(.plain)
-                .padding(22)
-                .frame(width: 111, height: 22)
-                .background(Color.blue)
-                .foregroundColor(Color.white)
-                .cornerRadius(5)
             }.padding()
                 .frame(maxWidth: 300)
         }
