@@ -241,16 +241,15 @@ class User: ObservableObject {
                 try await api.deletePassword(id: id)
                 let dateFormatter = ISO8601DateFormatter()
                 let dateString = dateFormatter.string(from: Date())
-                self.data.passwords[index].deletedDate = dateString
+                    self.data.passwords[index].deletedDate = dateString
+                }
             }
         }
-    }
     
     func deleteCipherPermanently(cipher: Cipher) async throws {
         if let index = self.data.passwords.firstIndex(of: cipher) {
             if let id = cipher.id {
                 try await api.deletePasswordPermanently(id: id)
-                //fix Publishing changes from background threads is not allowed; make sure to publish values from the main thread (via operators like receive(on:)) on model updates.
                 DispatchQueue.main.async {
                     self.data.passwords.remove(at: index)
                 }
@@ -262,7 +261,9 @@ class User: ObservableObject {
         if let id = cipher.id {
             try await api.restoreCipher(id: id)
             if let index = self.data.passwords.firstIndex(of: cipher) {
-                self.data.passwords[index].deletedDate = nil
+                DispatchQueue.main.async {
+                    self.data.passwords[index].deletedDate = nil
+                }
             }
         }
     }
