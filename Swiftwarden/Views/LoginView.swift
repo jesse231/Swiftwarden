@@ -128,11 +128,11 @@ struct LoginView: View {
                     GroupBox {
                         SecureField("Master Password", text: $password)
                             .textFieldStyle(.plain)
+                            .textContentType(nil)
                             .onSubmit {
                                 unlock()
                             }
                     }
-                    .textContentType(.oneTimeCode) // Hacky solution to disable password autofill prompt
                     .accessibilityIdentifier("Master Password")
                     .padding()
                     Button {
@@ -222,6 +222,7 @@ struct LoginView: View {
                 }.padding(4)
                 GroupBox {
                     SecureField("Password", text: $password)
+                        .textContentType(nil)
                         .onSubmit {
                             validateAndLogin()
                         }
