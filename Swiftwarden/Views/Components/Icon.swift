@@ -40,7 +40,7 @@ struct Icon: View {
 //        $0.dataCachePolicy = .storeAll
 //    }
 
-//    private let pipeline = ImagePipeline {
+//    private let pipeline = ImagePipeline 
 //        $0.dataLoader = {
 //            let config = URLSessionConfiguration.default
 //            config.urlCache = nil
@@ -53,7 +53,9 @@ struct Icon: View {
     var body: some View {
         if itemType == .password {
             LazyImage(url: api?.getIcons(host: hostname ?? "")) { state in
-                if let image = state.image {
+                if state.isLoading {
+                    ProgressView()
+                } else if let image = state.image {
                     image
                         .resizable()
                         .background(.white)
@@ -121,38 +123,38 @@ struct Icon: View {
 struct Icon_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-//            HStack{
-//                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
-//                Spacer().frame(width: 20)
-//                VStack {
-//                    Text("name")
-//                        .id(UUID())
-//                        .font(.system(size: 15)).fontWeight(.semibold)
-//                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                    Spacer().frame(height: 5)
-//                    Text(verbatim: "username")
-//                        .font(.system(size: 10))
-//                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                }
-//            }
-//            .padding(.leading)
-//            HStack{
-//                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
-//                Spacer().frame(width: 20)
-//                VStack {
-//                    Text("name")
-//                        .id(UUID())
-//                        .font(.system(size: 15)).fontWeight(.semibold)
-//                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                    Spacer().frame(height: 5)
-//                    Text(verbatim: "username")
-//                        .font(.system(size: 10))
-//                        .frame(maxWidth: .infinity, alignment: .topLeading)
-//                }
-//            }.padding(.leading)
-//            Icon(itemType: ItemType.card)
-//            Icon(itemType: ItemType.identity)
-//            Icon(itemType: ItemType.secureNote)
+            HStack{
+                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
+                Spacer().frame(width: 20)
+                VStack {
+                    Text("name")
+                        .id(UUID())
+                        .font(.system(size: 15)).fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                    Spacer().frame(height: 5)
+                    Text(verbatim: "username")
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
+            }
+            .padding(.leading)
+            HStack{
+                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
+                Spacer().frame(width: 20)
+                VStack {
+                    Text("name")
+                        .id(UUID())
+                        .font(.system(size: 15)).fontWeight(.semibold)
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                    Spacer().frame(height: 5)
+                    Text(verbatim: "username")
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                }
+            }.padding(.leading)
+            Icon(itemType: ItemType.card)
+            Icon(itemType: ItemType.identity)
+            Icon(itemType: ItemType.secureNote)
             LazyImage(url: URL(string:"")).onCompletion {
                 if case .failure(let error) = $0 {
                     print(error)
@@ -164,3 +166,4 @@ struct Icon_Previews: PreviewProvider {
 
     }
 }
+
