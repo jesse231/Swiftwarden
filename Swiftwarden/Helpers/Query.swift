@@ -12,6 +12,7 @@ extension URLQueryItem {
             .replacingOccurrences(of: "@", with: "%40")
             .replacingOccurrences(of: "=", with: "%3D")
             .replacingOccurrences(of: " ", with: "%20")
+            .replacingOccurrences(of: "/", with: "%2F")
 //            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         return newQueryItem
     }
