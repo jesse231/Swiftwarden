@@ -36,6 +36,7 @@ extension ItemView {
         @State var customFields: [CustomField]
         
         @State var showReprompt: Bool = false
+        @Environment(\.api) var api: Api
         
         init(cipher: Binding<Cipher?>, editing: Binding<Bool>, account: Account) {
             _cipher = cipher
@@ -79,11 +80,7 @@ extension ItemView {
         var body: some View {
                 VStack {
                     HStack {
-                        if let url = uris.first?.uri {
-                            Icon(itemType: .password, hostname: extractHostURI(uri: url))
-                        } else {
-                            Icon(itemType: .password)
-                        }
+                        Icon(itemType: .password, hostname: cipher?.login?.domain, api: api)
                         VStack {
                             TextField("No Name", text: $name)
                                 .font(.system(size: 15))
@@ -104,7 +101,6 @@ extension ItemView {
                         VStack {
                             EditingField(title: "Username", text: $username) {
                             }
-//                            .padding()
                             if showPassword {
                                 EditingField(title: "Password", text: $password) {
                                     TogglePassword(showPassword: $showPassword, reprompt: $reprompt, showReprompt: $showReprompt)
