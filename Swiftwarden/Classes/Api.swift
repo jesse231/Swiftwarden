@@ -157,15 +157,19 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 
         url = self.identityPath.appendingPathComponent("connect/token")
         request = URLRequest(url: url)
+        
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         request.setValue(String(Data(email.utf8).base64EncodedString().dropLast(2)), forHTTPHeaderField: "Auth-Email")
+        // Required for Auth (not sure why)
+        request.setValue("2023.1.0", forHTTPHeaderField: "Bitwarden-Client-Version")
+        request.setValue("cli", forHTTPHeaderField: "Bitwarden-Client-Name")
         var components = URLComponents()
         components.queryItems = [
             URLQueryItem(name: "scope", value: "api offline_access"),
             URLQueryItem(name: "client_id", value: "cli"),
             URLQueryItem(name: "deviceType", value: "7"),
-            URLQueryItem(name: "deviceIdentifier", value: "b3e4aa90-7020-4c50-8b65-5730e9f3ff3e"),
+            URLQueryItem(name: "deviceIdentifier", value: "62d73000-c2ef-4cee-aac9-2eff0a6e22b0"),
             URLQueryItem(name: "deviceName", value: "macos"),
             URLQueryItem(name: "grant_type", value: "password"),
             URLQueryItem(name: "username", value: email),
@@ -173,12 +177,19 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
         ].percentEncoded()
         components.scheme = "https"
         let query = components.query
+
         request.httpBody = Data(query!.utf8)
+
         (data, response) = try await URLSession.shared.data(for: request)
         if let httpResponse = response as? HTTPURLResponse {
-            if httpResponse.statusCode != 200 {
+            switch httpResponse.statusCode {
+            case 400:
                 throw AuthError(message: "Invalid email or password")
+                break
+            default:
+                break
             }
+            
         }
         let token = try JSONDecoder().decode(Token.self, from: data)
         return token
