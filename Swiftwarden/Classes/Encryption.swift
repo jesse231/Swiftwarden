@@ -1,11 +1,23 @@
 import Foundation
+import LocalAuthentication
 import CryptoSwift
 
 class Encryption {
     static private var symcKey: [UInt8] = []
     static private var key: [UInt8] = []
     static var privateKey: SecKey?
+    // userKey in Bitwarden
+    static private var encKey: [UInt8] = []
     static private var iterations: Int = 0
+    static let contex = LAContext()
+    
+    static func getEncKey() -> [UInt8]? {
+        var encKey: [UInt8]?
+        authenticate(context: contex) { _ in
+            encKey = Encryption.encKey
+        }
+        return encKey
+    }
 
     init(email: String, password: String, encKey: String, iterations: Int) throws {
         Encryption.iterations = iterations
