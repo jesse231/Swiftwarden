@@ -76,6 +76,7 @@
 		3BD0746828A0829F00812AAB /* PopupEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BD0746728A0829F00812AAB /* PopupEdit.swift */; };
 		3BDBDF292A5509C2000E61F5 /* ItemView+ToolBarComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */; };
 		3BDBDF2B2A5741FA000E61F5 /* CipherOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */; };
+		3BDE34902C18929C00C7C4FB /* NativeMessaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDE348F2C18929C00C7C4FB /* NativeMessaging.swift */; };
 		3BDEA75D2A0480870007DFB4 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDEA75C2A0480870007DFB4 /* Parser.swift */; };
 		3BDEA7F92A0591510007DFB4 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7F82A0591510007DFB4 /* Nuke */; };
 		3BDEA7FB2A0591510007DFB4 /* NukeExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 3BDEA7FA2A0591510007DFB4 /* NukeExtensions */; };
@@ -194,6 +195,7 @@
 		3BD0746728A0829F00812AAB /* PopupEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupEdit.swift; sourceTree = "<group>"; };
 		3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemView+ToolBarComponents.swift"; sourceTree = "<group>"; };
 		3BDBDF2A2A5741FA000E61F5 /* CipherOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CipherOptions.swift; sourceTree = "<group>"; };
+		3BDE348F2C18929C00C7C4FB /* NativeMessaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeMessaging.swift; sourceTree = "<group>"; };
 		3BDEA75C2A0480870007DFB4 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		3BF0BE7F2A38FCC200989419 /* CustomFieldsEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldsEditView.swift; sourceTree = "<group>"; };
 		3BF9B587296C9C180095B557 /* CryptoSwift.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = CryptoSwift.xcframework; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				3B5865152A05A87400A39868 /* SaveData.swift */,
 				3B0486DF2875018C007CCC5A /* Api.swift */,
 				3B0A8E03296209830055DA2D /* Encryption.swift */,
+				3BDE348F2C18929C00C7C4FB /* NativeMessaging.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -628,6 +631,7 @@
 				3BC8C2972A3D655A004B2B14 /* ItemView+CardView.swift in Sources */,
 				3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */,
 				3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */,
+				3BDE34902C18929C00C7C4FB /* NativeMessaging.swift in Sources */,
 				3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */,
 				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
 				3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */,
@@ -822,9 +826,9 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.swiftwarden.local;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swiftwarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -852,7 +856,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Swiftwarden;
 				PRODUCT_NAME = "$(TARGET_NAME)";
