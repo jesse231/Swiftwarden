@@ -35,6 +35,12 @@ struct ContentView: View {
                 .environment(\.api, account.api)
         } else {
             LoginView(loginSuccess: $loginSuccess).environmentObject(account)
+            .onAppear {
+                DispatchQueue.global().async {
+                    let native = NativeMessenger()
+                    native.listen()
+                }
+            }
         }
 
     }

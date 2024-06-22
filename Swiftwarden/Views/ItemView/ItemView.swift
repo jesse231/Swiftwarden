@@ -35,7 +35,6 @@ struct ItemView: View {
     @EnvironmentObject var routeManager: RouteManager
     @State var favorite: Bool = false
     
-    @State var showPassword = false
     
     @State var editing: Bool = false
     @State var reprompt: RepromptState = .none

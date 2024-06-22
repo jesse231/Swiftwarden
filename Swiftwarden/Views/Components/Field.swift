@@ -63,6 +63,9 @@ struct Field<Content: View>: View {
                 .padding(.trailing)
             }
         }
+        .onChange(of: content) {
+            showPassword = false
+        }
         .sheet(isPresented: $showReprompt) {
             if let email {
                 RepromptPopup(showReprompt: $showReprompt, showPassword: $showPassword, reprompt: $reprompt, email: email)
