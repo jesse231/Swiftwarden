@@ -396,7 +396,9 @@ class User: ObservableObject {
             try await api.updatePassword(encCipher: encCipher)
         }
         if let index = getIndex(of: cipher) {
-            data.passwords[index] = cipher
+            DispatchQueue.main.async {
+                self.data.passwords[index] = cipher
+            }
         }
     }
     
