@@ -222,6 +222,7 @@ struct LoginView: View {
                 }.padding(4)
                 GroupBox {
                     SecureField("Password", text: $password)
+                    // prevent macos password popup
                         .textContentType(nil)
                         .onSubmit {
                             validateAndLogin()
