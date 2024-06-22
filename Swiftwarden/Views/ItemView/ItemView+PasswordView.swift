@@ -12,40 +12,9 @@ extension ItemView {
         @Binding var editing: Bool
         @Binding var reprompt: RepromptState
         @State var showReprompt: Bool = false
-        @State var showPassword: Bool = false
         
         @Environment(\.api) var api: Api
         
-        func delete() async throws {
-            if let cipher {
-                do {
-//                    try await account.user.deleteCipher(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func deletePermanently() async throws {
-            if let cipher {
-                do {
-//                    try await account.user.deleteCipherPermanently(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func restore() async throws {
-            if let cipher {
-                do {
-//                    try await account.user.restoreCipher(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
         
         var body: some View {
 
@@ -83,7 +52,6 @@ extension ItemView {
                                 secure: true,
                                 reprompt: $reprompt,
                                 showReprompt: $showReprompt,
-//                                email: account.user.getEmail(),
                                 buttons: {
                                     Copy(content: password)
                                 })
