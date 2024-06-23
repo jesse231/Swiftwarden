@@ -214,6 +214,9 @@ struct LoginView: View {
                 Divider().padding(.bottom, 5)
                 GroupBox {
                     TextField("Email Address", text: $email)
+                        .textFieldStyle(.plain)
+                        // prevent macos password popup
+                        .textContentType(.username)
                         .onSubmit {
                             validateAndLogin()
                         }
@@ -222,15 +225,14 @@ struct LoginView: View {
                 }.padding(4)
                 GroupBox {
                     SecureField("Password", text: $password)
-                    // prevent macos password popup
-                        .textContentType(nil)
+                        .textFieldStyle(.plain)
+                        // prevent macos password popup
+                        .textContentType(.none)
+                        .autocorrectionDisabled()
                         .onSubmit {
                             validateAndLogin()
                         }
-                        .textFieldStyle(.plain)
                         .padding(4)
-                        .disableAutocorrection(true)
-                        .textContentType(.oneTimeCode) // Hacky solution to disable password autofill prompt
                 }.padding(4)
                 Section(header: Text("Server URL")) {
                     GroupBox {
