@@ -19,6 +19,8 @@
 - [X] Fingerprint authentication
 
 # Todo
-- [ ] Properly implement other Bitwarden features (identity, card, securenote) and encryption methods
+- [ ] Properly implement other Bitwarden features 
+    - [X] (identity, card, securenote) 
+    - [ ] Other encryption methods
 - [ ] Create settings page
 - [ ] Save user data/allow multiple logins
