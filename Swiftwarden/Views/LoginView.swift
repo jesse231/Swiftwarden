@@ -97,8 +97,6 @@ struct LoginView: View {
         var privateKeyDec = try Encryption.decrypt(str: privateKey!).toBase64()
 
         // Turn the private key into PEM formatted key
-        privateKeyDec = "-----BEGIN PRIVATE KEY-----\n" + privateKeyDec + "\n-----END PRIVATE KEY-----"
-
         let pk = try SwKeyConvert.PrivateKey.pemToPKCS1DER(privateKeyDec)
         Encryption.privateKey = SecKeyCreateWithData(pk as CFData, [kSecAttrKeyType: kSecAttrKeyTypeRSA, kSecAttrKeyClass: kSecAttrKeyClassPrivate] as CFDictionary, nil)
 
@@ -143,7 +141,6 @@ struct LoginView: View {
                                         isLoading = true
                                     }
                                     try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
-                                    loginSuccess = true
                                 } catch let error as AuthError {
                                     attempt = true
                                     errorMessage = error.message

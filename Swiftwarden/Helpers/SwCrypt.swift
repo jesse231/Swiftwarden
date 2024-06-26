@@ -384,10 +384,10 @@ open class PEM {
     open class PrivateKey {
 
         public static func toDER(_ pemKey: String) throws -> Data {
-            guard let strippedKey = stripHeader(pemKey) else {
-                throw SwError(.parse("header"))
-            }
-            guard let data = PEM.base64Decode(strippedKey) else {
+//            guard let strippedKey = stripHeader(pemKey) else {
+//                throw SwError(.parse("header"))
+//            }
+            guard let data = PEM.base64Decode(pemKey) else {
                 throw SwError(.parse("base64decode"))
             }
             return data
