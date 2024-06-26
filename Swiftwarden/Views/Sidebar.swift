@@ -140,14 +140,13 @@ struct SideBar: View {
                     TextField("", text: $folderName)
                         .textFieldStyle(.roundedBorder)
                     .onExitCommand(perform: {
-//                        //folderName = ""
                         newFolder = false
                     })
                     .focused($isNewFolder)
                     .onSubmit {
                                 Task {
                                     do {
-                                        await try account.user.addFolder(name: folderName)
+                                        try await account.user.addFolder(name: folderName)
                                         folderName = ""
                                         folders = account.user.getFolders()
                                     } catch {
@@ -157,11 +156,7 @@ struct SideBar: View {
                             }
                     }
                     .onChange(of: isNewFolder, perform: { new in
-                        print(new)
-                        if new == false {
-                            newFolder = false
-                        }
-                        
+                        newFolder = new
                     })
                 }
             }
