@@ -8,11 +8,10 @@ struct FavoriteButton: View {
     var body: some View {
         if let favorite = cipher?.favorite {
             Button {
-                let index = account.user.getCiphers(deleted: true).firstIndex(of: cipher!)
                 cipher?.favorite?.toggle()
                     Task {
                         do {
-                            account.user.updateCipher(cipher: cipher!, index: index)
+                            account.user.updateCipher(cipher: cipher!)
                         } catch {
                             print(error)
                         }

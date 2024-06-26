@@ -78,7 +78,6 @@ extension ItemView {
         
         
         func save() async throws{
-                let index = account.user.getIndex(of: cipher!)
                 
                 cipher?.name = name
                 let identity = Identity(
@@ -111,7 +110,7 @@ extension ItemView {
                 cipher?.folderID = folder
                 
                 
-                account.user.updateCipher(cipher: cipher!, index: index)
+                account.user.updateCipher(cipher: cipher!)
         }
         
         var body: some View {

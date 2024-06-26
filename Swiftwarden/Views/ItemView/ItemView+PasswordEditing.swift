@@ -55,7 +55,6 @@ extension ItemView {
         }
         
         func save() {
-            let index = account.user.getIndex(of: cipher!)
                 cipher?.name = name
                 
                 cipher?.login?.username = username != "" ? username : nil
@@ -72,7 +71,7 @@ extension ItemView {
                 cipher?.favorite = favorite
                 cipher?.reprompt = reprompt.toInt()
                 cipher?.fields = customFields
-                account.user.updateCipher(cipher: cipher!, index: index)
+                account.user.updateCipher(cipher: cipher!)
         }
         
         

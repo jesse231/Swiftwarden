@@ -40,7 +40,6 @@ extension ItemView {
         
         
         func save() async throws {
-                let index = account.user.getIndex(of: cipher!)
                 
                 cipher?.name = name
                 
@@ -52,7 +51,7 @@ extension ItemView {
                 cipher?.reprompt = reprompt.toInt()
                 cipher?.folderID = folder
                 
-                account.user.updateCipher(cipher: cipher!, index: index)
+                account.user.updateCipher(cipher: cipher!)
                             
         }
         

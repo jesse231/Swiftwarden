@@ -241,7 +241,9 @@ class User: ObservableObject {
                 try await api.deletePassword(id: id)
                 let dateFormatter = ISO8601DateFormatter()
                 let dateString = dateFormatter.string(from: Date())
-                    self.data.passwords[index].deletedDate = dateString
+                    DispatchQueue.main.async {
+                        self.data.passwords[index].deletedDate = dateString
+                    }
                 }
             }
         }
@@ -390,7 +392,7 @@ class User: ObservableObject {
         return encCipher
     }
     
-    func updateCipher(cipher: Cipher, index: Array<Cipher>.Index? = nil) {
+    func updateCipher(cipher: Cipher) {
         Task {
             let encCipher = try self.encryptCipher(cipher: cipher)
             try await api.updatePassword(encCipher: encCipher)
