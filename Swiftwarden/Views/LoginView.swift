@@ -133,29 +133,32 @@ struct LoginView: View {
                     }
                     .accessibilityIdentifier("Master Password")
                     .padding()
-                    Button {
-                        authenticate(context: context) { _ in
-                            Task {
-                                do {
-                                    withAnimation {
-                                        isLoading = true
+                    if !isLoading {
+                        Button {
+                            authenticate(context: context) { _ in
+                                Task {
+                                    do {
+                                        withAnimation {
+                                            isLoading = true
+                                        }
+                                        try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
+                                    } catch let error as AuthError {
+                                        attempt = true
+                                        errorMessage = error.message
+                                        isLoading = false
+                                    } catch {
+                                        attempt = true
+                                        errorMessage = error.localizedDescription
+                                        isLoading = false
                                     }
-                                    try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
-                                } catch let error as AuthError {
-                                    attempt = true
-                                    errorMessage = error.message
-                                    isLoading = false
-                                } catch {
-                                    attempt = true
-                                    errorMessage = error.localizedDescription
-                                    isLoading = false
                                 }
                             }
+                        } label: {
+                            Image(systemName: "touchid")
                         }
-                    } label: {
-                        Image(systemName: "touchid")
+                        .transition(.opacity.animation(.easeInOut))
+                        .controlSize(.large)
                     }
-                    .controlSize(.large)
                 }
                 if attempt == true {
                     Text(errorMessage)

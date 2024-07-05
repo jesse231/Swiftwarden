@@ -53,7 +53,7 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             SideBar(searchResults: $searchObserver.debouncedText)
-            PasswordsList(searchText: $searchObserver.debouncedText, display: .normal)
+            HStack{}
             ItemView()
         }
         .environmentObject(routeManager)
