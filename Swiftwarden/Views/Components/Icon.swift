@@ -13,14 +13,13 @@ struct Icon: View {
     let hostname: String?
     let itemType: ItemType
     
-    var api: Api?
+    @EnvironmentObject var account: Account
     let priority: ImageRequest.Priority
-    init(itemType: ItemType, hostname: String? = nil, priority: ImageRequest.Priority = .high, api: Api? = nil) {
+    init(itemType: ItemType, hostname: String? = nil, priority: ImageRequest.Priority = .high) {
         self.itemType = itemType
         self.hostname = hostname
         self.priority = priority
-        self.api = api
-        ImagePipeline.Configuration.isSignpostLoggingEnabled = true
+//        ImagePipeline.Configuration.isSignpostLoggingEnabled = true
     }
     
 //    let pipeline =
@@ -52,7 +51,7 @@ struct Icon: View {
         
     var body: some View {
         if itemType == .password {
-            LazyImage(url: api?.getIcons(host: hostname ?? "")) { state in
+            LazyImage(url: account.api.getIcons(host: hostname ?? "")) { state in
                 if state.isLoading {
                     ProgressView()
                 } else if let image = state.image {
@@ -124,7 +123,7 @@ struct Icon_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
             HStack{
-                Icon(itemType: ItemType.password, hostname: "", api: Account().api)
+                Icon(itemType: ItemType.password, hostname: "")
                 Spacer().frame(width: 20)
                 VStack {
                     Text("name")
@@ -139,7 +138,7 @@ struct Icon_Previews: PreviewProvider {
             }
             .padding(.leading)
             HStack{
-                Icon(itemType: ItemType.password, hostname: "google.com", api: Account().api)
+                Icon(itemType: ItemType.password, hostname: "google.com")
                 Spacer().frame(width: 20)
                 VStack {
                     Text("name")
