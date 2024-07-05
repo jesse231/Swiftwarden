@@ -65,8 +65,11 @@ struct GeneratePasswordPopup: View {
                         }
                         Spacer()
                         Button {
-                            if password != "" {
+                            if change != "" {
                                 showAlert = true
+                            } else {
+                                show = false
+                                switchPassword = true
                             }
                         } label: {
                             Text("Use")
