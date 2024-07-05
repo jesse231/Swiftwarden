@@ -4,18 +4,15 @@ import SwiftUI
 struct FavoriteButton: View {
     @Binding var cipher: Cipher?
     @EnvironmentObject var account: Account
+    @Environment (\.route) var route: RouteManager
     
     var body: some View {
         if let favorite = cipher?.favorite {
             Button {
-                cipher?.favorite?.toggle()
-                    Task {
-                        do {
-                            account.user.updateCipher(cipher: cipher!)
-                        } catch {
-                            print(error)
-                        }
-                    }
+                withAnimation{
+                    account.user.toggleFavorite(cipher: cipher!)
+                    cipher?.favorite?.toggle()
+                }
             } label: {
                 HoverSquare {
                     Image(systemName: favorite ? "star.fill" : "star")
