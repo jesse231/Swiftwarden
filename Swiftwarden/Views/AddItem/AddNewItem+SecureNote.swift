@@ -18,6 +18,29 @@ extension AddNewItemPopup {
         @State private var folder: String?
         @State private var favorite = false
         @State private var reprompt: RepromptState = .none
+        
+        func create() {
+            Task {
+                let newCipher = Cipher(
+                    favorite: favorite,
+                    fields: fields,
+                    folderID: folder,
+                    bid: "",
+                    name: name,
+                    notes: notes != "" ? notes : nil,
+                    reprompt: reprompt.toInt(),
+                    secureNote: SecureNote(),
+                    type: 2
+                )
+                do {
+                    try await account.user.addCipher(cipher: newCipher)
+                }
+                catch {
+                    print(error)
+                }
+                
+            }
+        }
         var body: some View {
                 ScrollView {
                     VStack {
@@ -33,48 +56,16 @@ extension AddNewItemPopup {
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                             .environmentObject(account)
                     }
-                    .padding()
+                    .padding(20)
                 }
-            Divider()
-            HStack {
-                Button {
-                    itemType = nil
-                } label: {
-                    Text("Cancel")
-                }
-                Spacer()
-                Button {
-                    Task {
-                        
-                        let newCipher = Cipher(
-                            favorite: favorite,
-                            fields: fields,
-                            folderID: folder,
-                            name: name,
-                            notes: notes != "" ? notes : nil,
-                            reprompt: reprompt.toInt(),
-                            secureNote: SecureNote(),
-                            type: 2
-                        )
-                        do {
-                            try await account.user.addCipher(cipher: newCipher)
-                        }
-                        catch {
-                            print(error)
-                        }
-                        
-                    }
-                    itemType = nil
-                } label: {
-                    Text("Save")
-                }
-            }
+            Footer(itemType: $itemType, create: create)
+                .padding(20)
+                .background(.gray.opacity(0.1))
         }
     }
 }
 
-struct AddSecureNote_Previews: PreviewProvider {
-    static var previews: some View {
-        AddNewItemPopup.AddSecureNote(name: .constant("Name"), itemType: .constant(.secureNote)).environmentObject(Account())
-    }
+#Preview {
+    AddNewItemPopup(itemType: .constant(.secureNote))
+        .environmentObject(Account())
 }

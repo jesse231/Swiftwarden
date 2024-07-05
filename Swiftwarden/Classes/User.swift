@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
-struct AccountData {
-    var passwords: [Cipher] = []
+class AccountData {
+    @Published var passwords: [Cipher] = []
     var folders: [Folder] = []
     var organizations: [Organization] = []
 }
@@ -17,7 +18,7 @@ class User: ObservableObject {
     private var keys: [String: [UInt8]]
     private var api: Api
     private var email: String
-    @Published private(set) var data: AccountData
+    @Published var data: AccountData
     
     init(sync: Response, api: Api, email: String) {
         self.api = api
@@ -200,7 +201,7 @@ class User: ObservableObject {
         }
     }
     func getIndex(of cipher: Cipher) -> Array<Cipher>.Index? {
-        return self.data.passwords.firstIndex(where: {$0.id == cipher.id})
+        return self.data.passwords.firstIndex(where: {$0.bid == cipher.bid})
     }
     
     func getCiphersInFolder(folderID: String?) -> [Cipher] {
@@ -235,37 +236,36 @@ class User: ObservableObject {
         return self.data.folders
     }
     
-    func deleteCipher(cipher: Cipher) async throws {
+    func deleteCipher(cipher: Cipher) {
         if let index = self.data.passwords.firstIndex(of: cipher) {
-            if let id = cipher.id {
-                try await api.deletePassword(id: id)
+            if let bid = cipher.bid {
+                Task {
+                    try await api.deletePassword(id: bid)
+                }
                 let dateFormatter = ISO8601DateFormatter()
                 let dateString = dateFormatter.string(from: Date())
-                    DispatchQueue.main.async {
-                        self.data.passwords[index].deletedDate = dateString
-                    }
-                }
+                self.data.passwords[index].deletedDate = dateString
+            }
             }
         }
     
-    func deleteCipherPermanently(cipher: Cipher) async throws {
+    func deleteCipherPermanently(cipher: Cipher)  {
         if let index = self.data.passwords.firstIndex(of: cipher) {
-            if let id = cipher.id {
-                try await api.deletePasswordPermanently(id: id)
-                DispatchQueue.main.async {
-                    self.data.passwords.remove(at: index)
+            if let bid = cipher.bid {
+                Task {
+                    try await api.deletePasswordPermanently(id: bid)
                 }
+                self.data.passwords.remove(at: index)
             }
         }
     }
-    
-    func restoreCipher(cipher: Cipher) async throws {
-        if let id = cipher.id {
-            try await api.restoreCipher(id: id)
+    func restoreCipher(cipher: Cipher) {
+        if let bid = cipher.bid {
+            Task {
+                try await api.restoreCipher(id: bid)
+            }
             if let index = self.data.passwords.firstIndex(of: cipher) {
-                DispatchQueue.main.async {
                     self.data.passwords[index].deletedDate = nil
-                }
             }
         }
     }
@@ -398,9 +398,7 @@ class User: ObservableObject {
             try await api.updatePassword(encCipher: encCipher)
         }
         if let index = getIndex(of: cipher) {
-            DispatchQueue.main.async {
                 self.data.passwords[index] = cipher
-            }
         }
     }
     
@@ -415,6 +413,12 @@ class User: ObservableObject {
         if let index = self.data.folders.firstIndex(where: {$0.id == id}) {
             self.data.folders.remove(at: index)
         }
+    }
+    
+    func toggleFavorite(cipher: Cipher) {
+        var modCipher = cipher
+        modCipher.favorite?.toggle()
+        self.updateCipher(cipher: modCipher)
     }
     
 }

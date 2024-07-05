@@ -7,7 +7,7 @@
 
 import SwiftUI
 extension AddNewItemPopup {
-
+    
     struct AddCard: View {
         var account: Account
         @Binding var name: String
@@ -29,10 +29,41 @@ extension AddNewItemPopup {
         
         @State private var fields: [CustomField] = []
         
+        func create() {
+            Task {
+                let card = Card(
+                    brand: brand != "" ? brand : nil,
+                    cardHolderName: cardholderName != "" ? cardholderName : nil,
+                    code: securityCode != "" ? securityCode : nil,
+                    expMonth: expirationMonth,
+                    expYear: expirationYear,
+                    number: number != "" ? number : nil
+                )
+                
+                let newCipher = Cipher(
+                    card: card,
+                    favorite: favorite,
+                    fields: fields,
+                    folderID: folder,
+                    name: name,
+                    notes: notes != "" ? notes : nil,
+                    reprompt: reprompt.toInt(),
+                    type: 3
+                )
+                do {
+                    try await account.user.addCipher(cipher: newCipher)
+                }
+                catch {
+                    print(error)
+                }
+                
+            }
+        }
+        
         var body: some View {
             VStack {
                 ScrollView {
-                    VStack{
+                    VStack {
                         Group {
                             GroupBox {
                                 TextField("Name", text: $name)
@@ -114,58 +145,17 @@ extension AddNewItemPopup {
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                             .environmentObject(account)
                     }
-                    .padding()
+                    .padding(20)
                 }
-                HStack {
-                    Button {
-                        itemType = nil
-                    } label: {
-                        Text("Cancel")
-                    }
-                    Spacer()
-                    Button {
-                        Task {
-                            let card = Card(
-                                brand: brand != "" ? brand : nil,
-                                cardHolderName: cardholderName != "" ? cardholderName : nil,
-                                code: securityCode != "" ? securityCode : nil,
-                                expMonth: expirationMonth,
-                                expYear: expirationYear,
-                                number: number != "" ? number : nil
-                            )
-                            
-                            let newCipher = Cipher(
-                                card: card,
-                                favorite: favorite,
-                                fields: fields,
-                                folderID: folder,
-                                name: name,
-                                notes: notes != "" ? notes : nil,
-                                reprompt: reprompt.toInt(),
-                                type: 3
-                            )
-                            do {
-                                try await account.user.addCipher(cipher: newCipher)
-                            }
-                            catch {
-                                print(error)
-                            }
-                            
-                        }
-                        itemType = nil
-                    } label: {
-                        Text("Save")
-                    }
-                }
+                Footer(itemType: $itemType, create: create)
+                    .padding(20)
+                    .background(.gray.opacity(0.1))
             }
         }
     }
     
 }
 
-struct AddNewItem_Card_Previews: PreviewProvider {
-    static var previews: some View {
-        AddNewItemPopup.AddCard(account: Account(), name: .constant("New Card"), itemType: .constant(.card))
-            .padding()
-    }
+#Preview {
+    AddNewItemPopup.AddCard(account: Account(), name: .constant("New Card"), itemType: .constant(.card))
 }

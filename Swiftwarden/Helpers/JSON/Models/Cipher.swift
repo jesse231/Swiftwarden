@@ -16,7 +16,8 @@ struct Cipher: Codable & Hashable & Identifiable {
     var edit, favorite: Bool?
     var fields: [CustomField]?
     var folderID: String?
-    var id: String?
+    var id = UUID()
+    var bid: String?
     var identity: Identity?
     var login: Login?
     var name: String?
@@ -42,7 +43,7 @@ struct Cipher: Codable & Hashable & Identifiable {
         case favorite = "favorite"
         case fields = "fields"
         case folderID = "folderId"
-        case id = "id"
+        case bid = "id"
         case identity = "identity"
         case login = "login"
         case name = "name"
@@ -117,7 +118,7 @@ extension Cipher {
             favorite: favorite ?? self.favorite,
             fields: fields ?? self.fields,
             folderID: folderID ?? self.folderID,
-            id: id ?? self.id,
+            bid: bid ?? self.bid,
             identity: identity ?? self.identity,
             login: login ?? self.login,
             name: name ?? self.name,

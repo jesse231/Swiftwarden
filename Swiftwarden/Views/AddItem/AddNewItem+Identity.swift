@@ -42,6 +42,48 @@ extension AddNewItemPopup {
         @State private var favorite = false
         @State private var reprompt: RepromptState = .none
         
+        func create() {
+            Task {
+                let identity = Identity(
+                    address1: address1 != "" ? address1 : nil,
+                    address2: address2 != "" ? address2 : nil,
+                    address3: address3 != "" ? address3 : nil,
+                    city: city != "" ? city : nil,
+                    company: company != "" ? company : nil,
+                    country: country != "" ? country : nil,
+                    email: email != "" ? email : nil,
+                    firstName: firstName != "" ? firstName : nil,
+                    lastName: lastName != "" ? lastName : nil,
+                    licenseNumber: licenseNumber != "" ? licenseNumber : nil,
+                    middleName: middleName != "" ? middleName : nil,
+                    passportNumber: passportNumber != "" ? passportNumber : nil,
+                    phone: phone != "" ? phone : nil,
+                    postalCode: zip != "" ? zip : nil,
+                    ssn: socialSecurityNumber != "" ? socialSecurityNumber : nil,
+                    state: state != "" ? state : nil,
+                    title: title != "" ? title : nil,
+                    username: username != "" ? username : nil
+                )
+                
+                let newCipher = Cipher(
+                    favorite: favorite,
+                    fields: fields,
+                    folderID: folder,
+                    identity: identity,
+                    name: name,
+                    notes: notes != "" ? notes : nil,
+                    reprompt: reprompt.toInt(),
+                    type: 4
+                )
+                do {
+                    try await account.user.addCipher(cipher: newCipher)
+                }
+                catch {
+                    print(error)
+                }
+                
+            }
+        }
         var body: some View {
             VStack {
                 ScrollView {
@@ -52,7 +94,7 @@ extension AddNewItemPopup {
                                     .textFieldStyle(.plain)
                                     .padding(8)
                             }
-                            .padding(.bottom, -8)
+                            .padding(.bottom, -16)
                             Form {
                                 Picker("Title", selection: $title) {
                                     Group {
@@ -65,12 +107,12 @@ extension AddNewItemPopup {
                                         Text("Dr.").tag("Dr." as String?)
                                     }
                                 }
+                                .frame(height: 22)
                             }
                             .formStyle(.grouped)
                             .scrollContentBackground(.hidden)
-                            .padding(.top, 0)
                             .padding([.leading, .trailing], -20)
-                            .padding(.bottom, -8)
+                            .padding(.bottom, -16)
                         }
                         Group {
                             GroupBox {
@@ -83,6 +125,7 @@ extension AddNewItemPopup {
                                     .textFieldStyle(.plain)
                                     .padding(8)
                             }
+                            .padding(.bottom, 4)
                             GroupBox {
                                 TextField("Last Name", text: $lastName)
                                     .textFieldStyle(.plain)
@@ -181,69 +224,17 @@ extension AddNewItemPopup {
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                             .environmentObject(account)
                     }
-                }.padding()
-            }
-            .padding()
-            HStack {
-                Button {
-                    itemType = nil
-                } label: {
-                    Text("Cancel")
-                }
-                Spacer()
-                Button {
-                    Task {
-                        let identity = Identity(
-                            address1: address1 != "" ? address1 : nil,
-                            address2: address2 != "" ? address2 : nil,
-                            address3: address3 != "" ? address3 : nil,
-                            city: city != "" ? city : nil,
-                            company: company != "" ? company : nil,
-                            country: country != "" ? country : nil,
-                            email: email != "" ? email : nil,
-                            firstName: firstName != "" ? firstName : nil,
-                            lastName: lastName != "" ? lastName : nil,
-                            licenseNumber: licenseNumber != "" ? licenseNumber : nil,
-                            middleName: middleName != "" ? middleName : nil,
-                            passportNumber: passportNumber != "" ? passportNumber : nil,
-                            phone: phone != "" ? phone : nil,
-                            postalCode: zip != "" ? zip : nil,
-                            ssn: socialSecurityNumber != "" ? socialSecurityNumber : nil,
-                            state: state != "" ? state : nil,
-                            title: title != "" ? title : nil,
-                            username: username != "" ? username : nil
-                        )
-                        
-                        let newCipher = Cipher(
-                            favorite: favorite,
-                            fields: fields,
-                            folderID: folder,
-                            identity: identity,
-                            name: name,
-                            notes: notes != "" ? notes : nil,
-                            reprompt: reprompt.toInt(),
-                            type: 4
-                        )
-                        do {
-                            try await account.user.addCipher(cipher: newCipher)
-                        }
-                        catch {
-                            print(error)
-                        }
-                        
-                    }
-                    itemType = nil
-                } label: {
-                    Text("Save")
+                    .padding(20)
                 }
             }
+            Footer(itemType: $itemType, create: create)
+                .padding(20)
+                .background(.gray.opacity(0.1))
         }
     }
 }
 
-struct NewIdentity_Previews: PreviewProvider {
-    static var previews: some View {
-        AddNewItemPopup.AddIdentity(account: Account(), name: .constant("Name"), itemType: .constant(.identity))
-            .padding()
-    }
+#Preview {
+    AddNewItemPopup(itemType: .constant(.identity))
+        .environmentObject(Account())
 }

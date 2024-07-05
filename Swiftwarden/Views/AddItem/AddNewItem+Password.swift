@@ -30,11 +30,37 @@ extension AddNewItemPopup {
             self._itemType = itemType
         }
         
+        func create() {
+            Task {
+                let url = uris.first?.uri
+                let newCipher = Cipher(
+                    favorite: favorite,
+                    fields: fields,
+                    folderID: folder,
+                    login: Login(
+                        password: password != "" ? password : nil,
+                        uri: url,
+                        uris: uris,
+                        username: username != "" ? username : nil),
+                    name: name,
+                    notes: notes != "" ? notes : nil,
+                    reprompt: reprompt.toInt(),
+                    type: 1
+                )
+                do {
+                    try await account.user.addCipher(cipher: newCipher)
+                }
+                catch {
+                    print(error)
+                }
+            }
+        }
+        
         
         var body: some View {
             VStack {
                 ScrollView {
-                    VStack{
+                    VStack {
                         Group {
                             GroupBox {
                                 TextField("Name", text: $name)
@@ -63,53 +89,17 @@ extension AddNewItemPopup {
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                             .environmentObject(account)
                     }
-                    .padding()
+                    .padding(20)
                 }
-                HStack{
-                    Button {
-                        itemType = nil
-                    } label: {
-                        Text("Cancel")
-                    }
-                    Spacer()
-                    Button {
-                        Task {
-                            let url = uris.first?.uri
-                            let newCipher = Cipher(
-                                favorite: favorite,
-                                fields: fields,
-                                folderID: folder,
-                                login: Login(
-                                    password: password != "" ? password : nil,
-                                    uri: url,
-                                    uris: uris,
-                                    username: username != "" ? username : nil),
-                                name: name,
-                                notes: notes != "" ? notes : nil,
-                                reprompt: reprompt.toInt(),
-                                type: 1
-                            )
-                            do {
-                                try await account.user.addCipher(cipher: newCipher)
-                            }
-                            catch {
-                                print(error)
-                            }
-                            
-                        }
-                        itemType = nil
-                    } label: {
-                        Text("Save")
-                    }
-                }
+                Footer(itemType: $itemType, create: create)
+                .padding(20)
+                .background(.gray.opacity(0.1))
             }
         }
     }
 }
 
-struct AddNewPassword_Previews: PreviewProvider {
-    static var previews: some View {
-        AddNewItemPopup.AddPassword(account: Account(), name: .constant(""), itemType: .constant(.password))
-            .padding()
-    }
+#Preview {
+    AddNewItemPopup.AddPassword(account: Account(), name: .constant(""), itemType: .constant(.password))
+
 }

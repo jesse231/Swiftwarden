@@ -113,7 +113,7 @@ init (username: String, password: String, base: URL?, identityPath: URL?, apiPat
 //    }
 //
     func updatePassword(encCipher: Cipher) async throws {
-        let url = self.apiPath.appendingPathComponent("ciphers/" + encCipher.id!)
+        let url = self.apiPath.appendingPathComponent("ciphers/" + encCipher.bid!)
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.addValue("Bearer " + self.bearer, forHTTPHeaderField: "Authorization")

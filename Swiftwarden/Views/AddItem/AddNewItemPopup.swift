@@ -26,38 +26,40 @@ struct AddNewItemPopup: View {
     
     var body: some View {
         VStack {
-            if name.count != 0{
-                Text(name).font(.title).bold()
-            } else {
-                Text(defaultName).font(.title).bold()
-            }
-            Divider()
-            if let itemType {
-                switch itemType {
-                case .password:
-                    AddPassword(account: account, name: $name, itemType: self.$itemType)
-                case .card:
-                    AddCard(account: account, name: $name, itemType: self.$itemType)
-                case .identity:
-                    AddIdentity(account: account, name: $name, itemType: self.$itemType)
-                case .secureNote:
-                    AddSecureNote(name: $name, itemType: self.$itemType).environmentObject(account)
-                case .folder:
-                    Text("folder")
+            VStack {
+                if name.count != 0{
+                    Text(name).font(.title).bold()
+                } else {
+                    Text(defaultName).font(.title).bold()
                 }
+                Divider()
             }
+            .padding(.init(arrayLiteral: .leading, .trailing, .top))
+                        if let itemType {
+                            switch itemType {
+                            case .password:
+                                AddPassword(account: account, name: $name, itemType: self.$itemType)
+                            case .card:
+                                AddCard(account: account, name: $name, itemType: self.$itemType)
+                            case .identity:
+                                AddIdentity(account: account, name: $name, itemType: self.$itemType)
+                            case .secureNote:
+                                AddSecureNote(name: $name, itemType: self.$itemType).environmentObject(account)
+                            case .folder:
+                                Text("folder")
+                            }
+                        }
+            }
+            .frame(width: 500, height: 500)
+
         }
-        .padding()
-        .frame(width: 500, height: 500)
+    }
+struct AddNewItemPopup_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            AddNewItemPopup(itemType: .constant(.password))
+                .environmentObject(Account())
+            
+        }
     }
 }
-        struct AddNewItemPopup_Previews: PreviewProvider {
-            @State static var show = true
-            var account: Account = Account()
-            static var previews: some View {
-                Group {
-                    AddNewItemPopup(itemType: .constant(.password)).environmentObject(Account())
-//                    AddNewItemPopup(show: $show, itemType: .card).environmentObject(Account())
-                }
-            }
-        }
