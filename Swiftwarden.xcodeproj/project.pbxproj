@@ -47,6 +47,8 @@
 		3BB8CE522A155C3F00644F5D /* AddUrlList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BB8CE512A155C3F00644F5D /* AddUrlList.swift */; };
 		3BBF419E2A54C6AA004C5C69 /* PasswordType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF419D2A54C6AA004C5C69 /* PasswordType.swift */; };
 		3BBF9C862A0827720058E82E /* Biometric.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BBF9C852A0827720058E82E /* Biometric.swift */; };
+		3BC0B4962C2B51FC00FC7F76 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC0B4952C2B51FC00FC7F76 /* ListElement.swift */; };
+		3BC3AD892C2CEA2A00EEBB1B /* ListToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC3AD882C2CEA2A00EEBB1B /* ListToolbar.swift */; };
 		3BC7579D2A031BFA0065CCF0 /* DataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757902A031BF90065CCF0 /* DataClass.swift */; };
 		3BC7579E2A031BFA0065CCF0 /* Uris.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757912A031BF90065CCF0 /* Uris.swift */; };
 		3BC757A02A031BFA0065CCF0 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BC757932A031BF90065CCF0 /* Folder.swift */; };

@@ -18,6 +18,7 @@ class SearchObserver : ObservableObject {
 
 class RouteManager: ObservableObject {
     @Published var lastSelected: Cipher?
+    @Published var selection = Set<Int>()
 }
 
 private struct RouterKey: EnvironmentKey {
