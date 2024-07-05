@@ -9,6 +9,7 @@ struct Field<Content: View>: View {
     var secure: Bool = false
     var monospaced: Bool = false
     var email: String?
+    var showButton: Bool = false
     @ViewBuilder var buttons: Content
     @Binding var reprompt: RepromptState
     @Binding var showReprompt: Bool
@@ -19,6 +20,7 @@ struct Field<Content: View>: View {
          showReprompt: Binding<Bool>? = nil,
          email: String? = nil,
          monospaced: Bool = false,
+         showButton: Bool = false,
          @ViewBuilder buttons: () -> Content) {
         self.title = title
         self.content = content
@@ -27,8 +29,10 @@ struct Field<Content: View>: View {
         self._reprompt = reprompt ?? .constant(.none)
         self._showReprompt = showReprompt ?? .constant(false)
         self.email = email
+        self.showButton = showButton
         self.buttons = buttons()
     }
+    
     
     @State private var showPassword: Bool = false
     @State private var isHovered = false
@@ -52,18 +56,21 @@ struct Field<Content: View>: View {
                 }
             }
             .padding()
-            if isHovered {
-                HStack {
-                    if secure {
-                        TogglePassword(showPassword: $showPassword, reprompt: reprompt != .none ? $reprompt : nil, showReprompt: $showReprompt)
+            if secure || showButton {
+                if isHovered {
+                    HStack {
+                        if secure {
+                            TogglePassword(showPassword: $showPassword, reprompt: reprompt != .none ? $reprompt : nil, showReprompt: $showReprompt)
+                        }
+                        buttons
+                            .buttonStyle(.plain)
+                        
                     }
-                    buttons
-                        .buttonStyle(.plain)
+                    .padding(.trailing)
                 }
-                .padding(.trailing)
             }
         }
-        .onChange(of: content) {
+        .onChange(of: content) { _ in
             showPassword = false
         }
         .sheet(isPresented: $showReprompt) {
