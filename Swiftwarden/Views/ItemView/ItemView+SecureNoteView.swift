@@ -12,23 +12,8 @@ extension ItemView {
         @StateObject var account: Account
         
         var body: some View {
-                VStack {                    
-                    HStack {
-                        Icon(itemType: .secureNote)
-                        VStack {
-                            Text(cipher?.name ?? "")
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                            Text(verbatim: "Secure Note")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteButton(cipher: $cipher)
-                    }
-                    .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                VStack {     
+                    ViewHeader(itemType: .secureNote, cipher: $cipher)
                     ScrollView {
                         VStack {
                             if let fields = cipher?.fields {
@@ -37,13 +22,12 @@ extension ItemView {
                             
                             if let notes = cipher?.notes {
                                 Field(title: "Note", content: notes, buttons: {})
+                                let _ = print(notes)
                             }
                         }
-                                .padding([.trailing])
+                        .padding()
                         }
-                        .padding(.trailing)
                     }
-                .frame(maxWidth: .infinity)
                 .toolbar {
                     RegularCipherOptions(cipher: $cipher, editing: $editing)
             }
@@ -52,9 +36,3 @@ extension ItemView {
         }
         
     }
-struct SecureNoteView_Preview: PreviewProvider {
-    static var previews: some View {
-        Text("test")
-    }
-}
-

@@ -13,23 +13,8 @@ extension ItemView {
         @StateObject var account: Account
                 
         var body: some View {
-                VStack {                    
-                    HStack {
-                        Icon(itemType: .identity)
-                        VStack {
-                            Text(cipher?.name ?? "")
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                            Text(verbatim: "Identity")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteButton(cipher: $cipher)
-                    }
-                    .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                VStack {           
+                    ViewHeader(itemType: .identity, cipher: $cipher)
                     ScrollView {
                         VStack {
                             Group {
@@ -93,11 +78,9 @@ extension ItemView {
                                 }
                             }
                         }
-                                .padding([.trailing])
+                        .padding()
                         }
-                        .padding(.trailing)
                     }
-                .frame(maxWidth: .infinity)
                 .toolbar {
                     RegularCipherOptions(cipher: $cipher, editing: $editing)
             }

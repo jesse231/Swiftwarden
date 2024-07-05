@@ -52,7 +52,7 @@ extension ItemView {
         
         
         
-        func save() async throws {
+        func save() {
                 
             
                 cipher?.name = name
@@ -80,24 +80,7 @@ extension ItemView {
         var body: some View {
             Group {
                 VStack {
-                    HStack {
-                        Icon(itemType: .card)
-                        VStack {
-                            TextField("No Name", text: $name)
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -3)
-                            Text(verbatim: "Credit Card")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteEditingButton(favorite: $favorite)
-                    }
-                    .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                    EditHeader(name: $name, favorite: $favorite, cipher: cipher, itemType: .card)
                     ScrollView {
                         VStack {
                             EditingField(title: "Cardholder Name", text: $cardholderName) {
@@ -170,8 +153,7 @@ extension ItemView {
                                 .environmentObject(account)
                                 .padding(.bottom, 24)
                         }
-                        .padding(.trailing)
-                        .padding(.leading)
+                        .padding(25)
                     }
                     .frame(maxWidth: .infinity)
                     .toolbar {
@@ -183,12 +165,12 @@ extension ItemView {
     }
 }
 
-struct CardEditing_Preview: PreviewProvider {
-    static var previews: some View {
-        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
-        let account = Account()
-        
-        ItemView.CardEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
-            .padding()
-    }
-}
+//struct CardEditing_Preview: PreviewProvider {
+//    static var previews: some View {
+//        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
+//        let account = Account()
+//        
+//        ItemView.CardEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
+//            .padding()
+//    }
+//}

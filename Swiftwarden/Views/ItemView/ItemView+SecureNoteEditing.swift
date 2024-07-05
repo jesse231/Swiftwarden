@@ -39,13 +39,11 @@ extension ItemView {
         
         
         
-        func save() async throws {
-                
+        func save() {
                 cipher?.name = name
                 
                 cipher?.notes = notes
                 cipher?.fields = fields
-                
                 
                 cipher?.favorite = favorite
                 cipher?.reprompt = reprompt.toInt()
@@ -58,24 +56,7 @@ extension ItemView {
         var body: some View {
             Group {
                 VStack {
-                    HStack {
-                        Icon(itemType: .secureNote)
-                        VStack {
-                            TextField("No Name", text: $name)
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -3)
-                            Text(verbatim: "Secure Note")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteEditingButton(favorite: $favorite)
-                    }
-                        .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                    EditHeader(name: $name, favorite: $favorite, cipher: cipher, itemType: .secureNote)
                     ScrollView {
                         VStack {
                             Group {
@@ -94,10 +75,8 @@ extension ItemView {
                                 .environmentObject(account)
                                 .padding(.bottom, 24)
                         }
-                        .padding(.trailing)
-                        .padding(.leading)
+                        .padding(25)
                     }
-                    .frame(maxWidth: .infinity)
                     .toolbar {
                         EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
                     }

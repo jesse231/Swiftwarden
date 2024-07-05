@@ -15,13 +15,13 @@ struct CipherOptions: View {
     var body: some View {
         Form {
             Picker(selection: $folder, label: Text("Folder")) {
-                ForEach(account.user.getFolders(), id: \.self) {folder in
+                ForEach(account.user.getFolders(), id: \.self) { folder in
                     Text(folder.name).tag(folder.id)
                 }
             }
             Toggle("Favorite", isOn: Binding<Bool>(
                 get: {
-                    return favorite ?? false
+                    return favorite
                 },
                 set: { newValue in
                     favorite = newValue
@@ -38,7 +38,7 @@ struct CipherOptions: View {
             ))
         }
         .formStyle(.grouped)
-        .padding([.leading, .trailing], -25)
+        .padding([.leading, .trailing], -20)
         .scrollContentBackground(.hidden)
     }
 }

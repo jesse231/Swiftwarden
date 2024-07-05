@@ -77,8 +77,7 @@ extension ItemView {
         
         
         
-        func save() async throws{
-                
+        func save() {
                 cipher?.name = name
                 let identity = Identity(
                     address1: address1 != "" ? address1 : nil,
@@ -115,24 +114,7 @@ extension ItemView {
         
         var body: some View {
                 VStack {
-                    HStack {
-                        Icon(itemType: .identity)
-                        VStack {
-                            TextField("No Name", text: $name)
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -3)
-                            Text(verbatim: "Identity")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteEditingButton(favorite: $favorite)
-                    }
-                        .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                    EditHeader(name: $name, favorite: $favorite, cipher: cipher, itemType: .identity)
                     ScrollView {
                         VStack {
                             Group {
@@ -148,11 +130,11 @@ extension ItemView {
                                             Text("Dr.").tag("Dr." as String?)
                                         }
                                     }
+                                    .frame(height: 22)
                                 }
                                 .formStyle(.grouped)
                                 .scrollContentBackground(.hidden)
-                                .padding(.top, 0)
-                                .padding([.leading, .trailing], -20)
+                                .padding([.leading, .trailing], -8)
                                 .padding(.bottom, -8)
                                 
                                 EditingField(title: "First Name", text: $firstName, buttons: {})
@@ -191,17 +173,15 @@ extension ItemView {
                                     .padding()
                                 EditingField(title: "Zip", text: $zip, buttons: {})
                                     .padding()
-                                EditingField(title: "Country", text: $country, buttons: {})
-                                    .padding()
+                                EditingField(title: "Country", text: $country, buttons: {}).padding()
                             }
-                            CustomFieldsEdit(fields: $fields)
+                            NotesEditView($notes).padding()
+                            CustomFieldsEdit(fields: $fields).padding()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
                                 .padding(.bottom, 24)
-                            
                         }
-                        .padding(.trailing)
-                        .padding(.leading)
+                        .padding(25)
                         }
                     .frame(maxWidth: .infinity)
                     }
@@ -212,12 +192,6 @@ extension ItemView {
     }
 }
 
-struct IdentityEditing_Preview: PreviewProvider {
-    static var previews: some View {
-        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test")
-        let account = Account()
-        
-        ItemView.IdentityEditing(cipher: .constant(cipher), editing: .constant(true), account: account)
-            .padding()
-    }
+#Preview{
+        ItemView.IdentityEditing(cipher: .constant(Cipher()), editing: .constant(true), account: Account())
 }

@@ -45,43 +45,35 @@ struct ItemView: View {
                 if routeManager.lastSelected?.type == 1 {
                     if !editing {
                         PasswordView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     } else {
                         PasswordEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     }
                 } else if routeManager.lastSelected?.type == 2{
                     if !editing {
                         SecureNoteView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     } else {
                         SecureNoteEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     }
 
                 } else if routeManager.lastSelected?.type == 3 {
                     if !editing {
                         CardView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     } else {
                         CardEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     }
                 } else if routeManager.lastSelected?.type == 4 {
                     if !editing {
                         IdentityView(cipher: self.$routeManager.lastSelected, editing: $editing, reprompt: $reprompt, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     } else {
                         IdentityEditing(cipher: $routeManager.lastSelected, editing: $editing, account: account)
-                            .padding(20)
-                            .frame(maxWidth: 800)
+                            .padding(.bottom, 60)
                     }
                 }
             } else {
@@ -110,14 +102,14 @@ struct ItemView: View {
     }
 }
 
-struct Preview: PreviewProvider {
-    static var previews: some View {
-        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
-        let account = Account()
-        Group {
-            ItemView()
-                .environmentObject(account)
-                .padding()
-        }
-    }
-}
+//struct Preview: PreviewProvider {
+//    static var previews: some View {
+//        let cipher = Cipher(login: Login(password: "test", username: "test"), name: "Test", type: 1)
+//        let account = Account()
+//        Group {
+//            ItemView()
+//                .environmentObject(account)
+//                .padding()
+//        }
+//    }
+//}

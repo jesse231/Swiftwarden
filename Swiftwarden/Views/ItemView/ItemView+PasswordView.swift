@@ -17,30 +17,15 @@ extension ItemView {
         
         
         var body: some View {
-
             VStack {
-                HStack {
-                    Icon(itemType: .password, hostname: cipher?.login?.domain, api: api)
-                    VStack {
-                        Text(cipher?.name ?? "")
-                            .font(.system(size: 15))
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                        Text(verbatim: "Login")
-                            .font(.system(size: 10))
-                            .frame(maxWidth: .infinity, alignment: .topLeading)
-                    }
-                    FavoriteButton(cipher: $cipher)
-                }
-                .padding([.leading,.trailing], 5)
-                Divider()
-                    .padding([.leading,.trailing], 5)
+                ViewHeader(itemType: .password, cipher: $cipher)
                 ScrollView {
                     Group {
                         if let username = cipher?.login?.username {
                             Field(
                                 title: "Username",
                                 content: username,
+                                showButton: true,
                                 buttons: {
                                     Copy(content: username)
                                 })
@@ -52,6 +37,7 @@ extension ItemView {
                                 secure: true,
                                 reprompt: $reprompt,
                                 showReprompt: $showReprompt,
+                                showButton: true,
                                 buttons: {
                                     Copy(content: password)
                                 })
@@ -63,6 +49,7 @@ extension ItemView {
                                         Field(
                                             title: "Website",
                                             content: extractHostURI(uri: url),
+                                            showButton: true,
                                             buttons: {
                                                 if hasScheme(url) {
                                                     Open(link: url)
@@ -83,11 +70,9 @@ extension ItemView {
                             Field(title: "Note", content: notes, buttons: {})
                         }
                     }
-                    .padding([.trailing])
+                    .padding()
                 }
-                .padding(.trailing)
             }
-            .frame(maxWidth: .infinity)
             .toolbar {
                 RegularCipherOptions(cipher: $cipher, editing: $editing)
         }
@@ -99,9 +84,9 @@ extension ItemView {
 }
 
 
-struct ItemView_PasswordView_Previews: PreviewProvider {
-    static var previews: some View {
-        @State var cipher: Cipher? = Cipher(favorite: false, id: "1", login: Login(password: "test", uris: [Uris(uri: "https://google.com")], username: "test"), name: "Test", type: 1)
-        ItemView.PasswordView(cipher: $cipher, editing: .constant(false), reprompt: .constant(.none))
-    }
-}
+//struct ItemView_PasswordView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        @State var cipher: Cipher? = Cipher(favorite: false, id: "1", login: Login(password: "test", uris: [Uris(uri: "https://google.com")], username: "test"), name: "Test", type: 1, bid: "")
+//        ItemView.PasswordView(cipher: $cipher, editing: .constant(false), reprompt: .constant(.none))
+//    }
+//}

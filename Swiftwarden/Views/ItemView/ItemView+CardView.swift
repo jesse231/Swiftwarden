@@ -12,63 +12,16 @@ extension ItemView {
         
         @StateObject var account: Account
         
-        func delete() async throws {
-            if let cipher {
-                do {
-                    try await account.user.deleteCipher(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func deletePermanently() async throws {
-            if let cipher {
-                do {
-                    try await account.user.deleteCipherPermanently(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        func restore() async throws {
-            if let cipher {
-                do {
-                    try await account.user.restoreCipher(cipher: cipher)
-                    self.cipher = nil
-                } catch {
-                    print(error)
-                }
-            }
-        }
-        
         var body: some View {
                 VStack {
-                    HStack {
-                        Icon(itemType: .card)
-                        VStack {
-                            Text(cipher?.name ?? "")
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                            Text(verbatim: "Credit Card")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                            
-                        }
-                        FavoriteButton(cipher: $cipher)
-                        
-                    }
-                    .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                    ViewHeader(itemType: .card, cipher: $cipher)
                     ScrollView {
                         Group {
                             if let cardholder = cipher?.card?.cardHolderName {
                                 Field(
                                     title: "Cardholder Name",
                                     content: cardholder,
+                                    showButton: true,
                                     buttons: {
                                         Copy(content: cardholder)
                                     })
@@ -81,6 +34,7 @@ extension ItemView {
                                     reprompt: $reprompt,
                                     showReprompt: $showReprompt,
                                     email: account.user.getEmail(),
+                                    showButton: true,
                                     buttons: {
                                         Copy(content: number)
                                     })
@@ -89,6 +43,7 @@ extension ItemView {
                                 Field(
                                     title: "Brand",
                                     content: brand,
+                                    showButton: true,
                                     buttons: {
                                         Copy(content: brand)
                                     })
@@ -98,6 +53,7 @@ extension ItemView {
                                 Field(
                                     title: "Expiration Date",
                                     content: "\(cipher?.card?.expMonth ?? "_") / \(cipher?.card?.expYear ?? "_")",
+                                    showButton: true,
                                     buttons: {
                                         Copy(content: "\(cipher?.card?.expMonth ?? "_") / \(cipher?.card?.expYear ?? "_")")
                                     }
@@ -111,6 +67,7 @@ extension ItemView {
                                     reprompt: $reprompt,
                                     showReprompt: $showReprompt,
                                     email: account.user.getEmail(),
+                                    showButton: true,
                                     buttons: {
                                         Copy(content: code)
                                     })
@@ -124,9 +81,8 @@ extension ItemView {
                                     Field(title: "Note", content: notes, buttons: {})
                                 }
                             }
-                                .padding([.trailing])
+                            .padding()
                         }
-                        .padding(.trailing)
                     }
                 .frame(maxWidth: .infinity)
                 .toolbar {
@@ -137,16 +93,16 @@ extension ItemView {
         }
         
     }
-struct CardViewPreview: PreviewProvider {
-    static var previews: some View {
-        let cardInfo = Card(cardHolderName: "Test", code: "123", expMonth: nil, expYear: "2021", number: "1234")
-        @State var card: Cipher? = Cipher(card: cardInfo, fields: [CustomField(type: 3, name: "test", value: "test")])
-
-        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 0, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
-        
-        let account = Account()
-
-        ItemView.CardView(cipher: $card, editing: .constant(false), reprompt: .constant(.none), account: Account())
-    }
-}
+//struct CardViewPreview: PreviewProvider {
+//    static var previews: some View {
+//        let cardInfo = Card(cardHolderName: "Test", code: "123", expMonth: nil, expYear: "2021", number: "1234")
+//        @State var card: Cipher? = Cipher(card: cardInfo, fields: [CustomField(type: 3, name: "test", value: "test")])
+//
+//        let cipherDeleted = Cipher(deletedDate: "today", fields: [CustomField(type: 0, name: "test", value: "test")], login: Login(password: "test", username: "test"), name: "Test")
+//        
+//        let account = Account()
+//
+//        ItemView.CardView(cipher: $card, editing: .constant(false), reprompt: .constant(.none), account: Account())
+//    }
+//}
 

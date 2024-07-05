@@ -78,24 +78,7 @@ extension ItemView {
         
         var body: some View {
                 VStack {
-                    HStack {
-                        Icon(itemType: .password, hostname: cipher?.login?.domain, api: api)
-                        VStack {
-                            TextField("No Name", text: $name)
-                                .font(.system(size: 15))
-                                .fontWeight(.semibold)
-                                .textFieldStyle(.plain)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .padding(.bottom, -3)
-                            Text(verbatim: "Login")
-                                .font(.system(size: 10))
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                        }
-                        FavoriteEditingButton(favorite: $favorite)
-                    }
-                    .padding([.leading,.trailing], 5)
-                    Divider()
-                        .padding([.leading,.trailing], 5)
+                    EditHeader(name: $name, favorite: $favorite, cipher: cipher, itemType: .password)
                     ScrollView {
                         VStack {
                             EditingField(title: "Username", text: $username) {
@@ -130,10 +113,8 @@ extension ItemView {
                                 .environmentObject(account)
                                 .padding(.bottom, 24)
                         }
-                        .padding(.trailing)
-                        .padding(.leading)
+                        .padding(25)
                     }
-                    .frame(maxWidth: .infinity)
             }
             .toolbar {
                 EditingToolbarOptions(cipher: $cipher, editing: $editing, account: account, save: save)
