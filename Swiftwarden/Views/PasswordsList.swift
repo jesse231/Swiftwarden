@@ -6,7 +6,7 @@ import Nuke
 
 struct PasswordsList: View, Equatable {
     @EnvironmentObject var account: Account
-    @EnvironmentObject var routeManager: RouteManager
+    @Environment (\.route) var routeManager: RouteManager
     @Binding var searchText: String
     @State private var deleteDialog = false
     @State private var filtered: [Cipher] = []
@@ -124,9 +124,7 @@ struct PasswordsList: View, Equatable {
             if routeManager.lastSelected?.id == cipher.id {
                 routeManager.lastSelected = nil
             }
-            Task {
-                try await account.user.deleteCipherPermanently(cipher: cipher)
-            }
+            account.user.deleteCipherPermanently(cipher: cipher)
         } label: {
             Label("Delete", systemImage: "trash")
         }
@@ -134,7 +132,12 @@ struct PasswordsList: View, Equatable {
     }
 
     var body: some View {
-        List(filtered.indices, id: \.self, selection: $routeManager.selection) { index in
+        let selectionBinding = Binding<Set<Int>>(
+            get: { routeManager.selection },
+            set: { routeManager.selection = $0
+            }
+        )
+        List(filtered.indices, id: \.self, selection: selectionBinding) { index in
             let cipher = filtered[index]
             let globalIndex = account.user.data.passwords.firstIndex(where: { $0.id == cipher.id }) ?? 0
             ListElement(cipher: cipher, globCipher: $account.user.data.passwords[globalIndex])
@@ -157,7 +160,7 @@ struct PasswordsList: View, Equatable {
                 }
         }
         .animation(.default, value: filtered)
-        .onChange(of: routeManager.selection) { select in
+        .onReceive(routeManager.$selection.dropFirst()) { select in
             if select.isEmpty {
                 routeManager.lastSelected = nil
             }
