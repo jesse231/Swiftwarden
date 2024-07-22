@@ -11,6 +11,8 @@
 		3B0887112C360D6F0074BEE0 /* Footer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0887102C360D6F0074BEE0 /* Footer.swift */; };
 		3B0A8E04296209830055DA2D /* Encryption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0A8E03296209830055DA2D /* Encryption.swift */; };
 		3B0C2B4C2A3A594A002CAA91 /* CustomFieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */; };
+		3B11987D2C3A4D870011D956 /* UniversalViewItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B11987C2C3A4D870011D956 /* UniversalViewItems.swift */; };
+		3B11987F2C3A4FA00011D956 /* UniversalEditItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B11987E2C3A4FA00011D956 /* UniversalEditItems.swift */; };
 		3B194B062A37654400F6206D /* AddNewItem+Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B194B052A37654400F6206D /* AddNewItem+Card.swift */; };
 		3B2C42022A0C581800720E43 /* EditingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42012A0C581800720E43 /* EditingField.swift */; };
 		3B2C42042A11C11500720E43 /* ItemView+PasswordEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B2C42032A11C11500720E43 /* ItemView+PasswordEditing.swift */; };
@@ -133,6 +135,8 @@
 		3B0A8E03296209830055DA2D /* Encryption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryption.swift; sourceTree = "<group>"; };
 		3B0C2B4B2A3A594A002CAA91 /* CustomFieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldsView.swift; sourceTree = "<group>"; };
 		3B112FB72982F9940018F53B /* SwCrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwCrypt.swift; sourceTree = "<group>"; };
+		3B11987C2C3A4D870011D956 /* UniversalViewItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalViewItems.swift; sourceTree = "<group>"; };
+		3B11987E2C3A4FA00011D956 /* UniversalEditItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalEditItems.swift; sourceTree = "<group>"; };
 		3B194B052A37654400F6206D /* AddNewItem+Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewItem+Card.swift"; sourceTree = "<group>"; };
 		3B2C41FB2A0B5AE800720E43 /* SwiftwardenDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SwiftwardenDebug.entitlements; sourceTree = "<group>"; };
 		3B2C42012A0C581800720E43 /* EditingField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingField.swift; sourceTree = "<group>"; };
@@ -278,6 +282,7 @@
 				3BDBDF282A5509C2000E61F5 /* ItemView+ToolBarComponents.swift */,
 				3BDF0B842C3617BF009EEF3F /* ViewHeader.swift */,
 				3BDF0B862C361A1C009EEF3F /* EditHeader.swift */,
+				3B11987C2C3A4D870011D956 /* UniversalViewItems.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -369,6 +374,7 @@
 				3B59FE222A17FEE6005288F0 /* Buttons */,
 				3B4513AB289AF380002164C9 /* Field.swift */,
 				3B2C42012A0C581800720E43 /* EditingField.swift */,
+				3B11987E2C3A4FA00011D956 /* UniversalEditItems.swift */,
 				3B2CF2672A13DE4D00E3D16F /* Icon.swift */,
 				3B4513AE289B78E5002164C9 /* Buttons.swift */,
 				3BD0746528A01FC000812AAB /* TestField.swift */,
@@ -668,6 +674,7 @@
 				3B4513A72899DAAB002164C9 /* PasswordsList.swift in Sources */,
 				3BC8C29F2A3E6CFD004B2B14 /* ItemView+IdentityEditing.swift in Sources */,
 				3BC3AD892C2CEA2A00EEBB1B /* ListToolbar.swift in Sources */,
+				3B11987F2C3A4FA00011D956 /* UniversalEditItems.swift in Sources */,
 				3B5865162A05A87400A39868 /* SaveData.swift in Sources */,
 				3BC757A72A031BFA0065CCF0 /* PasswordHistory.swift in Sources */,
 				3BC757B32A0320280065CCF0 /* JSONSchemaSupport.swift in Sources */,
@@ -689,6 +696,7 @@
 				3B4513A9289AF29F002164C9 /* ItemView.swift in Sources */,
 				3BDE34902C18929C00C7C4FB /* NativeMessaging.swift in Sources */,
 				3B98714B2A40ABDE00CABFDC /* AddNewItem+SecureNote.swift in Sources */,
+				3B11987D2C3A4D870011D956 /* UniversalViewItems.swift in Sources */,
 				3BD0746628A01FC000812AAB /* TestField.swift in Sources */,
 				3B2C42062A11C5F100720E43 /* ItemView+PasswordView.swift in Sources */,
 				3BDBDF292A5509C2000E61F5 /* ItemView+ToolBarComponents.swift in Sources */,

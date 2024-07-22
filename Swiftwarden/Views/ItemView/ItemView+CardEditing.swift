@@ -27,7 +27,7 @@ extension ItemView {
         @State private var favorite: Bool
         @State private var reprompt: RepromptState
         
-        @State private var notes = ""
+        @State private var notes: String?
         
         @State private var fields: [CustomField] = []
         
@@ -46,7 +46,7 @@ extension ItemView {
             _folder = State(initialValue: cipher.wrappedValue?.folderID ?? nil as String?)
             _favorite = State(initialValue: cipher.wrappedValue?.favorite ?? false)
             reprompt = RepromptState.fromInt(cipher.wrappedValue?.reprompt ?? 0)
-            _notes = State(initialValue: cipher.wrappedValue?.notes ?? "")
+            _notes = State(initialValue: cipher.wrappedValue?.notes)
             _fields = State(initialValue: cipher.wrappedValue?.fields ?? [])
         }
         
@@ -139,14 +139,7 @@ extension ItemView {
                             Divider()
                             Group {
                                 CustomFieldsEdit(fields: $fields)
-                                NotesEditView(Binding<String>(
-                                    get: {
-                                        return cipher?.notes ?? ""
-                                    },
-                                    set: { newValue in
-                                        cipher?.notes = newValue
-                                    }
-                                ))
+                                NotesEditView(text: $notes)
                             }
                             Divider()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)

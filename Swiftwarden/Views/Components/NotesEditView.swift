@@ -8,9 +8,12 @@
 import SwiftUI
 
 struct NotesEditView: View {
-    @Binding var text: String
-    init(_ text: Binding<String>) {
-        self._text = text
+    @Binding var text: String? {
+        didSet {
+            if text == "" {
+                text = nil
+            }
+        }
     }
     
     var body: some View {
@@ -20,7 +23,11 @@ struct NotesEditView: View {
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 .foregroundColor(.gray)
             GroupBox {
-                TextEditor(text: $text)
+                let binding = Binding<String>(
+                    get: { text ?? "" },
+                    set: { text = $0 }
+                )
+                TextEditor(text: binding)
                     .scrollContentBackground(.hidden)
                     .font(.custom("Avenir", size: 14))
                     .lineSpacing(5)
@@ -33,8 +40,8 @@ struct NotesEditView: View {
 
 struct NotesEditView_Previews: PreviewProvider {
     static var previews: some View {
-        @State var text: String = "Tersting text"
-        NotesEditView($text)
+        @State var text: String? = "Tersting text"
+        NotesEditView(text: $text)
             .padding()
     }
 }

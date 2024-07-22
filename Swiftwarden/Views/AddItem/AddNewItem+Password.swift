@@ -18,7 +18,7 @@ extension AddNewItemPopup {
         
         @State var uris: [Uris] = [Uris(url: "")]
         @State var fields: [CustomField] = []
-        @State var notes: String = ""
+        @State var notes: String? = ""
         
         @State var favorite = false
         @State var reprompt: RepromptState = .none
@@ -43,7 +43,7 @@ extension AddNewItemPopup {
                         uris: uris,
                         username: username != "" ? username : nil),
                     name: name,
-                    notes: notes != "" ? notes : nil,
+                    notes: notes,
                     reprompt: reprompt.toInt(),
                     type: 1
                 )
@@ -78,12 +78,14 @@ extension AddNewItemPopup {
                                     .textFieldStyle(.plain)
                                     .padding(8)
                             }.padding(.bottom, 12)
+                        }
+                        Group {
                             Divider()
                             AddUrlList(urls: $uris)
                             Divider()
                             CustomFieldsEdit(fields: $fields)
                             Divider()
-                            NotesEditView($notes)
+                            NotesEditView(text: $notes)
                             Divider()
                         }
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)

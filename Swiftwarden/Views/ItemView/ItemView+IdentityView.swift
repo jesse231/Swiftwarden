@@ -77,6 +77,13 @@ extension ItemView {
                                     Field(title: "Country", content: country, buttons: {})
                                 }
                             }
+                            if let fields = cipher?.fields {
+                                CustomFieldsView(fields)
+                            }
+
+                            if let notes = cipher?.notes {
+                                Field(title: "Note", content: notes, showButton: false, buttons: {})
+                            }
                         }
                         .padding()
                         }

@@ -38,7 +38,7 @@ extension ItemView {
         
         @State private var fields: [CustomField] = []
         
-        @State private var notes = ""
+        @State private var notes: String?
         
         @State private var folder: String?
         @State private var favorite: Bool
@@ -70,7 +70,7 @@ extension ItemView {
             _fields = State(wrappedValue: cipher.wrappedValue?.fields ?? [])
             
             reprompt = RepromptState.fromInt(cipher.wrappedValue?.reprompt ?? 0)
-            _notes = State(initialValue: cipher.wrappedValue?.notes ?? "")
+            _notes = State(initialValue: cipher.wrappedValue?.notes)
             _fields = State(initialValue: cipher.wrappedValue?.fields ?? [])
             _favorite = State(initialValue: cipher.wrappedValue?.favorite ?? false)
         }
@@ -101,7 +101,7 @@ extension ItemView {
                 )
                 cipher?.identity = identity
                 
-                cipher?.notes = notes
+                cipher?.notes = notes != "" ? notes : nil
                 cipher?.fields = fields
                 
                 cipher?.favorite = favorite
@@ -175,8 +175,7 @@ extension ItemView {
                                     .padding()
                                 EditingField(title: "Country", text: $country, buttons: {}).padding()
                             }
-                            NotesEditView($notes).padding()
-                            CustomFieldsEdit(fields: $fields).padding()
+                            UniversalEditItems(notes: $notes, fields: $fields)
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)
                                 .padding(.bottom, 24)
@@ -192,6 +191,6 @@ extension ItemView {
     }
 }
 
-#Preview{
+#Preview {
         ItemView.IdentityEditing(cipher: .constant(Cipher()), editing: .constant(true), account: Account())
 }

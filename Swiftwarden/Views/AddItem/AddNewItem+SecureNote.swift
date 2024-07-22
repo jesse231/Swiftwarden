@@ -12,7 +12,7 @@ extension AddNewItemPopup {
         @Binding var name: String
         @Binding var itemType: ItemType?
         
-        @State private var notes = ""
+        @State private var notes: String?
         @State private var fields: [CustomField] = []
                 
         @State private var folder: String?
@@ -27,7 +27,7 @@ extension AddNewItemPopup {
                     folderID: folder,
                     bid: "",
                     name: name,
-                    notes: notes != "" ? notes : nil,
+                    notes: notes,
                     reprompt: reprompt.toInt(),
                     secureNote: SecureNote(),
                     type: 2
@@ -50,7 +50,7 @@ extension AddNewItemPopup {
                                 .padding(8)
                         }
                         Divider()
-                        NotesEditView($notes)
+                        NotesEditView(text: $notes)
                         Divider()
                         CustomFieldsEdit(fields: $fields, showLinked: false)
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)

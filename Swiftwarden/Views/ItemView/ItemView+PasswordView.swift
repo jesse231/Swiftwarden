@@ -67,7 +67,7 @@ extension ItemView {
                         }
 
                         if let notes = cipher?.notes {
-                            Field(title: "Note", content: notes, buttons: {})
+                            Field(title: "Note", content: notes, showButton: false, buttons: {})
                         }
                     }
                     .padding()

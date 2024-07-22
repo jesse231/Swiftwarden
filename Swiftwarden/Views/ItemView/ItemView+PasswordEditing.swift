@@ -35,6 +35,8 @@ extension ItemView {
         @State var uris: [Uris]
         @State var customFields: [CustomField]
         
+        @State var notes: String?
+        
         @State var showReprompt: Bool = false
         @Environment(\.api) var api: Api
         
@@ -51,6 +53,7 @@ extension ItemView {
             
             _editing = editing
             _account = StateObject(wrappedValue: account)
+            _notes = State(initialValue: cipher.wrappedValue?.notes)
             _customFields = State(initialValue: cipher.wrappedValue?.fields ?? [])
         }
         
@@ -100,14 +103,7 @@ extension ItemView {
                                 .padding(.top)
                             Divider()
                             CustomFieldsEdit(fields: $customFields)
-                            NotesEditView(Binding<String>(
-                                get: {
-                                    return cipher?.notes ?? ""
-                                },
-                                set: { newValue in
-                                    cipher?.notes = newValue != "" ? newValue : nil
-                                }
-                            ))
+                            NotesEditView(text: $notes)
                             Divider()
                             CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                                 .environmentObject(account)

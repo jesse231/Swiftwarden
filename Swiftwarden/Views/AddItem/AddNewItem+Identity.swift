@@ -36,7 +36,7 @@ extension AddNewItemPopup {
         
         @State private var fields: [CustomField] = []
         
-        @State private var notes = ""
+        @State private var notes: String?
         
         @State private var folder: String?
         @State private var favorite = false
@@ -216,9 +216,7 @@ extension AddNewItemPopup {
                             }
                         }
                         Group {
-                            CustomFieldsEdit(fields: $fields)
-                            Divider()
-                            NotesEditView($notes)
+                            UniversalEditItems(notes: $notes, fields: $fields)
                         }
                         Divider()
                         CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
