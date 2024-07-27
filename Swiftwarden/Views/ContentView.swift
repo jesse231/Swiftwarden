@@ -21,27 +21,28 @@ extension View {
 }
 
 class Account: ObservableObject {
-    @Published var user = User()
-    var selectedCiphers: [Cipher] = []
-    @Published var api: Api = Api()
+    var user = User()
+    var api: Api = Api()
+    
+    func logOut() {
+        self.user = User()
+        self.api = Api()
+    }
 }
 
 struct ContentView: View {
-    @State var loginSuccess = false
-    var account = Account()
+    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var account: Account
     var body: some View {
-        if loginSuccess {
-            MainView().environmentObject(account)
-                .environment(\.api, account.api)
+        if !appState.loggedIn {
+            LoginView(loginSuccess: $appState.loggedIn)
+                .frame(minWidth: 400, maxWidth: .infinity, maxHeight: .infinity)
+                .background(VisualEffectView().ignoresSafeArea())
+                .environmentObject(appState.account)
         } else {
-            LoginView(loginSuccess: $loginSuccess)
-                .environmentObject(account)
-            .onAppear {
-//                DispatchQueue.global().async {
-//                    let native = NativeMessenger()
-//                    native.listen()
-//                }
-            }
+            MainView()
+                .environmentObject(appState.account)
+                .environment(\.api, appState.account.api)
         }
 
     }

@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ListElement: View {
     @EnvironmentObject var account: Account
+    @Environment (\.route) var routeManager: RouteManager
+    @State var favorite = false
     var cipher: Cipher
     @Binding var globCipher: Cipher
     var body: some View {
@@ -48,7 +50,7 @@ struct ListElement: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             }
-            if globCipher.favorite ?? false {
+            if favorite {
                 Spacer()
                 Image(systemName: "star.fill")
                     .foregroundColor(Color.yellow)
@@ -56,6 +58,13 @@ struct ListElement: View {
                     .transition(.opacity)
             }
         }
+        .onReceive(routeManager.$lastSelected, perform: { val in
+            if let fav = val?.favorite, val?.id == cipher.id, favorite != fav {
+                withAnimation {
+                    favorite.toggle()
+                }
+            }
+        })
         
     
 
