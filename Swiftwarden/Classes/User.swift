@@ -398,7 +398,7 @@ class User: ObservableObject {
             try await api.updatePassword(encCipher: encCipher)
         }
         if let index = getIndex(of: cipher) {
-                self.data.passwords[index] = cipher
+            self.data.passwords[index] = cipher
         }
     }
     
