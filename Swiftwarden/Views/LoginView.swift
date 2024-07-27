@@ -1,18 +1,26 @@
 import SwiftUI
 import LocalAuthentication
 
+enum FocusField: Hashable {
+    case unlock
+    case password
+  }
+
+
 struct LoginView: View {
     @Binding var loginSuccess: Bool
     @State var email: String = (ProcessInfo.processInfo.environment["Username"] ?? "")
     @State var password: String = (ProcessInfo.processInfo.environment["Password"] ?? "")
     @State var server: String = (ProcessInfo.processInfo.environment["Server"] ?? "")
 
-    @State var storedEmail: String? = UserDefaults.standard.string(forKey: "email")
-    @State var storedServer: String? = UserDefaults.standard.string(forKey: "server")
-
     @State var attempt = false
     @State var errorMessage = "Your username or password is incorrect or your account does not exist."
     @State var isLoading = false
+    @State var isUnlocking = false
+    
+    @FocusState var focusedField: FocusField?
+    
+    @EnvironmentObject var appState: AppState
     let context = LAContext()
 
     @EnvironmentObject var account: Account
@@ -21,9 +29,10 @@ struct LoginView: View {
         Task {
             do {
                 withAnimation {
+                    focusedField = nil
                     isLoading = true
                 }
-                try await loginSuccess = login(storedEmail: storedEmail, storedServer: storedServer)
+                try await loginSuccess = login(storedEmail: appState.email, storedServer: appState.server)
                 context.invalidate()
             } catch let error as AuthError {
                 attempt = true
@@ -43,6 +52,7 @@ struct LoginView: View {
             attempt = false
             
             withAnimation {
+                focusedField = nil
                 isLoading = true
             }
             
@@ -63,6 +73,7 @@ struct LoginView: View {
                 }
                 
                 try await loginSuccess = login()
+                print(loginSuccess)
             } catch let error as AuthError {
                 print(error)
                 attempt = true
@@ -107,38 +118,46 @@ struct LoginView: View {
         }
 
         if storedEmail == nil {
-            let defaults = UserDefaults.standard
-            defaults.set(email, forKey: "email")
+            appState.email = email
         }
         if storedServer == nil {
-            let defaults = UserDefaults.standard
-            defaults.set(server, forKey: "server")
+            appState.server = server
         }
 
         return true
     }
 
     var body: some View {
-        if let storedEmail, let storedServer {
-            let storedPassword = KeyChain.getUser(account: storedEmail)
+        if let storedEmail = appState.email, let storedServer = appState.server {
             VStack {
                 HStack {
+                    if !isUnlocking {
                     GroupBox {
-                        SecureField("Master Password", text: $password)
-                            .textFieldStyle(.plain)
-                            .textContentType(nil)
-                            .onSubmit {
-                                unlock()
-                            }
+                            SecureField("Master Password", text: $password)
+                                .disabled(isLoading)
+                                .focused($focusedField, equals: .password)
+                                .textFieldStyle(.plain)
+                                .textContentType(nil)
+                                .onAppear {
+                                    focusedField = .password
+                                }
+                                .onSubmit {
+                                    unlock()
+                                }
                     }
+                    .transition(.scale)
                     .accessibilityIdentifier("Master Password")
                     .padding()
+                    }
                     if !isLoading {
                         Button {
                             authenticate(context: context) { _ in
                                 Task {
+                                    let storedPassword = KeyChain.getUser(account: storedEmail)
                                     do {
                                         withAnimation {
+                                            focusedField = .password
+                                            isUnlocking = true
                                             isLoading = true
                                         }
                                         try await loginSuccess = self.login(storedEmail: storedEmail, storedPassword: storedPassword, storedServer: storedServer)
@@ -146,10 +165,12 @@ struct LoginView: View {
                                         attempt = true
                                         errorMessage = error.message
                                         isLoading = false
+                                        isUnlocking = false
                                     } catch {
                                         attempt = true
                                         errorMessage = error.localizedDescription
                                         isLoading = false
+                                        isUnlocking = false
                                     }
                                 }
                             }
@@ -175,6 +196,7 @@ struct LoginView: View {
                             unlock()
                         } label: {
                             Text("Unlock")
+                                .focused($focusedField, equals: .unlock)
                                 .foregroundColor(.white)
                                 .font(.headline)
                                 .frame(width: 200, height: 30)
@@ -189,8 +211,8 @@ struct LoginView: View {
                             UserDefaults.standard.set(nil, forKey: "email")
                             UserDefaults.standard.set(nil, forKey: "server")
                             KeyChain.deleteUser(account: storedEmail)
-                            self.storedEmail = nil
-                            self.storedServer = nil
+                            self.appState.email = nil
+                            self.appState.server = nil
                             self.attempt = false
                             self.password = ""
                         }) {
@@ -210,7 +232,9 @@ struct LoginView: View {
             }.padding().frame(maxWidth: 300)
         } else {
             VStack {
-                Text("Log in").font(.title).bold()
+                Text("Log in")
+                    .font(.title)
+                    .bold()
                 Divider().padding(.bottom, 5)
                 GroupBox {
                     TextField("Email Address", text: $email)
