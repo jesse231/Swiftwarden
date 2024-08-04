@@ -30,6 +30,36 @@ class Account: ObservableObject {
     }
 }
 
+private struct RouterKey: EnvironmentKey {
+    static let defaultValue: RouteManager = .init()
+}
+
+private struct ApiManagerKey: EnvironmentKey {
+    static let defaultValue: Api = .init()
+}
+
+private struct AccountDataManagerKey: EnvironmentKey {
+    static let defaultValue: AccountData = .init()
+}
+
+extension EnvironmentValues {
+    
+    var route: RouteManager {
+        get { self[RouterKey.self] }
+        set { self[RouterKey.self] = newValue }
+    }
+    
+    var api: Api {
+        get { self[ApiManagerKey.self] }
+        set { self[ApiManagerKey.self] = newValue }
+    }
+    
+    var data: AccountData {
+        get { self[AccountDataManagerKey.self] }
+        set { self[AccountDataManagerKey.self] = newValue }
+    }
+}
+
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var account: Account
@@ -43,6 +73,7 @@ struct ContentView: View {
             MainView()
                 .environmentObject(appState.account)
                 .environmentObject(appState.account.user.data)
+                .environment(\.data, appState.account.user.data)
                 .environment(\.api, appState.account.api)
         }
     }

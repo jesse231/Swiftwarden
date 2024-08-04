@@ -13,33 +13,13 @@ class SearchObserver : ObservableObject {
                 self?.debouncedText = t
             } )
             .store(in: &subscriptions)
+        
     }
 }
 
 class RouteManager: ObservableObject {
     @Published var lastSelected: Cipher?
     @Published var selection = Set<Int>()
-}
-
-private struct RouterKey: EnvironmentKey {
-    static let defaultValue: RouteManager = .init()
-}
-
-private struct ApiManagerKey: EnvironmentKey {
-    static let defaultValue: Api = .init()
-}
-
-extension EnvironmentValues {
-    
-    var route: RouteManager {
-        get { self[RouterKey.self] }
-        set { self[RouterKey.self] = newValue }
-    }
-    
-    var api: Api {
-        get { self[ApiManagerKey.self] }
-        set { self[ApiManagerKey.self] = newValue }
-    }
 }
 
 struct MainView: View {
