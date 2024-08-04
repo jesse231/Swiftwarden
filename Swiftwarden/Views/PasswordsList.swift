@@ -6,19 +6,18 @@ import Nuke
 
 struct PasswordsList: View, Equatable {
     @EnvironmentObject var account: Account
+    @EnvironmentObject var data: AccountData
     @Environment (\.route) var routeManager: RouteManager
     @Binding var searchText: String
     @State private var deleteDialog = false
-    @State private var filtered: [Cipher] = []
     @State private var isLoading = false
     var imagePrefetcher = ImagePrefetcher()
     var folderID: String?
     let prefetcher = ImagePrefetcher()
     
     static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
-        lhs.searchText == rhs.searchText && lhs.display == rhs.display //&& lhs.selection == rhs.selection
+        lhs.searchText == rhs.searchText && lhs.display == rhs.display
     }
-    
     
     
     var display: PasswordListType
@@ -64,7 +63,7 @@ struct PasswordsList: View, Equatable {
         DispatchQueue.global().async {
             let loadedCiphers = passwordsToDisplay()
             DispatchQueue.main.async {
-                filtered = loadedCiphers
+                data.currentPasswords = loadedCiphers
                 isLoading = false
             }
         }
@@ -79,15 +78,11 @@ struct PasswordsList: View, Equatable {
     func favoriteButton(cipher: Cipher) -> some View {
         Button {
             Task {
-                do {
-                    withAnimation {
-                        account.user.toggleFavorite(cipher: cipher)
-                        if routeManager.lastSelected?.id == cipher.id {
-                            routeManager.lastSelected?.favorite?.toggle()
-                        }
+                withAnimation {
+                    account.user.toggleFavorite(cipher: cipher)
+                    if routeManager.lastSelected?.id == cipher.id {
+                        routeManager.lastSelected?.favorite?.toggle()
                     }
-                } catch {
-                    print(error)
                 }
             }
         } label: {
@@ -134,13 +129,11 @@ struct PasswordsList: View, Equatable {
     var body: some View {
         let selectionBinding = Binding<Set<Int>>(
             get: { routeManager.selection },
-            set: { routeManager.selection = $0
-            }
+            set: { routeManager.selection = $0}
         )
-        List(filtered.indices, id: \.self, selection: selectionBinding) { index in
-            let cipher = filtered[index]
-            let globalIndex = account.user.data.passwords.firstIndex(where: { $0.id == cipher.id }) ?? 0
-            ListElement(cipher: cipher, globCipher: $account.user.data.passwords[globalIndex])
+        List(account.user.data.currentPasswords.indices, id: \.self, selection: selectionBinding) { index in
+            let cipher = account.user.data.currentPasswords[index]
+            ListElement(cipher: cipher)
                 .id(cipher.id)
                 .padding(5)
                 .listRowSeparator(.hidden)
@@ -159,26 +152,28 @@ struct PasswordsList: View, Equatable {
                     }
                 }
         }
-        .animation(.default, value: filtered)
+        .animation(.default, value: data.currentPasswords)
         .onReceive(routeManager.$selection.dropFirst()) { select in
             if select.isEmpty {
                 routeManager.lastSelected = nil
             }
             if let index = select.max() {
-                routeManager.lastSelected = filtered[index]
+                routeManager.lastSelected = data.currentPasswords[index]
+            }
+        }
+        .onReceive(data.$currentPasswords) { newPasswords in
+            if display == .favorite {
+                for cipher in newPasswords {
+                    if !(cipher.favorite ?? false), let index = data.currentPasswords.firstIndex(of: cipher) {
+                        data.currentPasswords.remove(at: index)
+                        routeManager.selection = []
+                    }
+                }
             }
         }
         .onAppear {
             routeManager.selection = []
             loadData()
-        }
-        .onChange(of: searchText) { _ in
-            loadData()
-        }
-        .onReceive(account.user.data.$passwords) { data in
-            DispatchQueue.main.async {
-                loadData()
-            }
         }
         .toolbar {
             ToolbarItem {
@@ -193,4 +188,6 @@ struct PasswordsList: View, Equatable {
 
 #Preview {
     PasswordsList(searchText: .constant(""), display: .normal)
+        .environmentObject(Account())
+        .environmentObject(AccountData())
 }

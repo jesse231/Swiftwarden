@@ -10,9 +10,7 @@ import SwiftUI
 struct ListElement: View {
     @EnvironmentObject var account: Account
     @Environment (\.route) var routeManager: RouteManager
-    @State var favorite = false
     var cipher: Cipher
-    @Binding var globCipher: Cipher
     var body: some View {
         HStack {
             Icon(itemType: ItemType.intToItemType(cipher.type ?? 1), hostname: cipher.login?.domain)
@@ -20,7 +18,6 @@ struct ListElement: View {
             VStack {
                 if let name = cipher.name {
                     Text(name)
-//                        .id(UUID())
                         .font(.system(size: 15)).fontWeight(.semibold)
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
@@ -50,27 +47,21 @@ struct ListElement: View {
                         .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
             }
-            if favorite {
+            if cipher.favorite ?? false {
                 Spacer()
                 Image(systemName: "star.fill")
                     .foregroundColor(Color.yellow)
-                    .animation(.default, value: globCipher.favorite)
+                    .animation(.default, value: cipher.favorite)
                     .transition(.opacity)
             }
         }
-        .onReceive(routeManager.$lastSelected, perform: { val in
-            if let fav = val?.favorite, val?.id == cipher.id, favorite != fav {
-                withAnimation {
-                    favorite.toggle()
-                }
-            }
-        })
         
     
 
     }
 }
 
-//#Preview {
-//    ListElement(cipher: Cipher())
-//}
+#Preview {
+    ListElement(cipher: Cipher())
+        .environmentObject(Account())
+}

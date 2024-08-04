@@ -164,6 +164,9 @@ struct SideBar: View {
         .onAppear {
             folders = account.user.getFolders()
         }
+        .onChange(of: selection) { _ in
+            account.user.data.currentPasswords = []
+        }
         .listStyle(SidebarListStyle())
         .toolbar {
             ToolbarItem  {

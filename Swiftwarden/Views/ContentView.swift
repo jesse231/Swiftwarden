@@ -42,9 +42,9 @@ struct ContentView: View {
         } else {
             MainView()
                 .environmentObject(appState.account)
+                .environmentObject(appState.account.user.data)
                 .environment(\.api, appState.account.api)
         }
-
     }
 }
 

@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 
-class AccountData {
+class AccountData: ObservableObject {
     @Published var passwords: [Cipher] = []
+    @Published var currentPasswords: [Cipher] = []
     var folders: [Folder] = []
     var organizations: [Organization] = []
 }
@@ -40,6 +41,7 @@ class User: ObservableObject {
         if let ciphers = sync.ciphers {
             let decCiphers = decryptPasswords(dataList: ciphers)
             self.data.passwords = decCiphers
+            self.data.currentPasswords = decCiphers
         }
         
         if let folders = sync.folders {
@@ -200,8 +202,13 @@ class User: ObservableObject {
             return self.data.passwords.filter({$0.deletedDate == nil})
         }
     }
-    func getIndex(of cipher: Cipher) -> Array<Cipher>.Index? {
+    
+    func getGlobalIndex(of cipher: Cipher) -> Array<Cipher>.Index? {
         return self.data.passwords.firstIndex(where: {$0.bid == cipher.bid})
+    }
+    
+    func getFilteredIndex(of cipher: Cipher) -> Array<Cipher>.Index? {
+        return self.data.currentPasswords.firstIndex(where: {$0.id == cipher.id})
     }
     
     func getCiphersInFolder(folderID: String?) -> [Cipher] {
@@ -245,6 +252,9 @@ class User: ObservableObject {
                 let dateFormatter = ISO8601DateFormatter()
                 let dateString = dateFormatter.string(from: Date())
                 self.data.passwords[index].deletedDate = dateString
+                if let index = self.data.currentPasswords.firstIndex(of: cipher) {
+                    self.data.currentPasswords.remove(at: index)
+                }
             }
             }
         }
@@ -256,6 +266,9 @@ class User: ObservableObject {
                     try await api.deletePasswordPermanently(id: bid)
                 }
                 self.data.passwords.remove(at: index)
+                if let index = self.data.currentPasswords.firstIndex(of: cipher) {
+                    self.data.currentPasswords.remove(at: index)
+                }
             }
         }
     }
@@ -267,6 +280,9 @@ class User: ObservableObject {
             if let index = self.data.passwords.firstIndex(of: cipher) {
                     self.data.passwords[index].deletedDate = nil
             }
+            if let index = self.data.currentPasswords.firstIndex(of: cipher) {
+                self.data.currentPasswords.remove(at: index)
+            }
         }
     }
     
@@ -274,7 +290,9 @@ class User: ObservableObject {
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
-        self.data.passwords.append(modCipher)
+        DispatchQueue.main.async {
+            self.data.passwords.append(modCipher)
+        }
         return modCipher
     }
     
@@ -397,8 +415,12 @@ class User: ObservableObject {
             let encCipher = try self.encryptCipher(cipher: cipher)
             try await api.updatePassword(encCipher: encCipher)
         }
-        if let index = getIndex(of: cipher) {
+        if let index = getGlobalIndex(of: cipher) {
             self.data.passwords[index] = cipher
+        }
+        
+        if let index = getFilteredIndex(of: cipher) {
+            self.data.currentPasswords[index] = cipher
         }
     }
     
