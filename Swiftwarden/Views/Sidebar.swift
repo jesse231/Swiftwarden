@@ -106,7 +106,7 @@ struct SideBar: View {
                         label: folder.name,
                         icon: "folder.fill",
                         color: .gray,
-                        destination: {AnyView(PasswordsList(searchText: $searchResults, display: .folder, folderID: folder.id))},
+                        destination: {AnyView(PasswordsList(searchText: $searchResults, display: .folder(folder.id)))},
                         tag: folder.hashValue,
                         selection: $selection
                     )

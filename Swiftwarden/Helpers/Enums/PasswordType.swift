@@ -8,11 +8,11 @@
 import Foundation
 
 
-enum PasswordListType {
+enum PasswordListType: Equatable {
     case normal
     case trash
     case favorite
-    case folder
+    case folder(String)
     case login
     case card
     case identity

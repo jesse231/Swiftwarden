@@ -24,6 +24,7 @@ class RouteManager: ObservableObject {
 
 struct MainView: View {
     @StateObject private var searchObserver = SearchObserver()
+    @Environment (\.appState) var appState: AppState
     private var routeManager = RouteManager()
     @State private var showEdit: Bool = false
     @State var passwords: [Cipher]?
@@ -39,6 +40,9 @@ struct MainView: View {
         .environmentObject(routeManager)
         .environment(\.route, routeManager)
         .searchable(text: $searchObserver.searchText)
+        .onChange(of: searchObserver.debouncedText) { searchText in
+            appState.account.user.passwordsToDisplay(display: appState.selectedType, searchText: searchText)
+        }
     }
 }
 

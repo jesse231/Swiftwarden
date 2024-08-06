@@ -46,7 +46,7 @@ class User: ObservableObject {
         
         if let folders = sync.folders {
             var decFolders = Encryption.decryptFolders(dataList: folders)
-            decFolders.insert(Folder(object: "Folder", name: "No Folder"), at: 0)
+            decFolders.insert(Folder(id: "none", object: "Folder", name: "No Folder"), at: 0)
             self.data.folders = decFolders
         }
     }
@@ -64,7 +64,7 @@ class User: ObservableObject {
         self.keys = [:]
         self.api = Api()
         self.email = ""
-        self.data.folders = [Folder(object: "Folder", name: "No Folder")]
+        self.data.folders = [Folder(id: "None", object: "Folder", name: "No Folder")]
     }
     
     private func decryptPasswords(dataList: [Cipher]) -> [Cipher] {
@@ -441,6 +441,46 @@ class User: ObservableObject {
         var modCipher = cipher
         modCipher.favorite?.toggle()
         self.updateCipher(cipher: modCipher)
+    }
+    
+    func passwordsToDisplay(display: PasswordListType, searchText: String) {
+        var ciphers: [Cipher]
+        switch display {
+        case .normal:
+            ciphers = getCiphers()
+        case .trash:
+            ciphers = getTrash()
+        case .favorite:
+            ciphers = getFavorites()
+        case .login:
+            ciphers = getLogins()
+        case .card:
+            ciphers = getCards()
+        case .folder(let folderID):
+            if folderID.range(of: "none", options: .caseInsensitive) != nil {
+                ciphers = getCiphers()
+            } else {
+                ciphers = getCiphersInFolder(folderID: folderID)
+            }
+        case .identity:
+            ciphers = getIdentities()
+        case .secureNote:
+            ciphers = getSecureNotes()
+        }
+        
+        let filtered = ciphers.filter { cipher in
+            return cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
+        }
+        Task {
+            var urls: [URL] = []
+            for cipher in filtered {
+                if let url = URL(string: cipher.login?.domain ?? "") {
+                    urls.append(url)
+                }
+            }
+        }
+        data.currentPasswords = filtered
+        
     }
     
 }

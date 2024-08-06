@@ -4,75 +4,27 @@ import SwiftUI
 import CoreImage
 import Nuke
 
-struct PasswordsList: View, Equatable {
+struct PasswordsList: View {
     @EnvironmentObject var account: Account
     @EnvironmentObject var data: AccountData
     @Environment (\.route) var routeManager: RouteManager
+    @Environment (\.appState) var appState: AppState
     @Binding var searchText: String
     @State private var deleteDialog = false
     @State private var isLoading = false
     var imagePrefetcher = ImagePrefetcher()
-    var folderID: String?
     let prefetcher = ImagePrefetcher()
     
-    static func == (lhs: PasswordsList, rhs: PasswordsList) -> Bool {
-        lhs.searchText == rhs.searchText && lhs.display == rhs.display
-    }
     
     
     var display: PasswordListType
-    func passwordsToDisplay() -> [Cipher] {
-        var ciphers: [Cipher]
-        switch display {
-        case .normal:
-            ciphers = account.user.getCiphers()
-        case .trash:
-            ciphers = account.user.getTrash()
-        case .favorite:
-            ciphers = account.user.getFavorites()
-        case .login:
-            ciphers = account.user.getLogins()
-        case .card:
-            ciphers = account.user.getCards()
-        case .folder:
-            ciphers = account.user.getCiphersInFolder(folderID: folderID)
-        case .identity:
-            ciphers = account.user.getIdentities()
-        case .secureNote:
-            ciphers = account.user.getSecureNotes()
-        }
-        let filtered = ciphers.filter { cipher in
-            return cipher.name?.lowercased().contains(searchText.lowercased()) ?? false || searchText == ""
-        }
-        Task {
-            var urls: [URL] = []
-            for cipher in filtered {
-                if let url = URL(string: cipher.login?.domain ?? "") {
-                    urls.append(url)
-                }
-            }
-            prefetcher.startPrefetching(with: urls)
-        }
-        
-        return filtered
-    }
     
     private func loadData() {
         guard !isLoading else { return }
         isLoading = true
-        DispatchQueue.global().async {
-            let loadedCiphers = passwordsToDisplay()
-            DispatchQueue.main.async {
-                data.currentPasswords = loadedCiphers
-                isLoading = false
-            }
+        DispatchQueue.main.async {
+            account.user.passwordsToDisplay(display: display, searchText: searchText)
         }
-    }
-    
-    init(searchText: Binding<String>, display: PasswordListType, folderID: String? = nil) {
-        self._searchText = searchText
-        self.display = display
-        self.folderID = folderID
     }
     
     func favoriteButton(cipher: Cipher) -> some View {
@@ -174,6 +126,7 @@ struct PasswordsList: View, Equatable {
         .onAppear {
             routeManager.selection = []
             loadData()
+            appState.selectedType = display
         }
         .toolbar {
             ToolbarItem {

@@ -7,7 +7,8 @@ import Foundation
 
 // MARK: - Folder
 struct Folder: Codable & Hashable & Identifiable {
-    var id, object, revisionDate: String?
+    var id: String
+    var object, revisionDate: String?
     var name: String
 
 }

@@ -3,6 +3,7 @@ import Cocoa
 import AppKit
 class AppState: ObservableObject {
     @Published var loggedIn = false
+    @Published var selectedType: PasswordListType = .login
     @Published var email = UserDefaults.standard.string(forKey: "email") {
         didSet {
             let defaults = UserDefaults.standard

@@ -42,6 +42,10 @@ private struct AccountDataManagerKey: EnvironmentKey {
     static let defaultValue: AccountData = .init()
 }
 
+private struct AppStateManagerKey: EnvironmentKey {
+    static let defaultValue: AppState = .init()
+}
+
 extension EnvironmentValues {
     
     var route: RouteManager {
@@ -57,6 +61,11 @@ extension EnvironmentValues {
     var data: AccountData {
         get { self[AccountDataManagerKey.self] }
         set { self[AccountDataManagerKey.self] = newValue }
+    }
+    
+    var appState: AppState {
+        get { self[AppStateManagerKey.self] }
+        set { self[AppStateManagerKey.self] = newValue }
     }
 }
 
@@ -75,6 +84,7 @@ struct ContentView: View {
                 .environmentObject(appState.account.user.data)
                 .environment(\.data, appState.account.user.data)
                 .environment(\.api, appState.account.api)
+                .environment(\.appState, appState)
         }
     }
 }
