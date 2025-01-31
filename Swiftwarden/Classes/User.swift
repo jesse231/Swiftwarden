@@ -290,7 +290,7 @@ class User: ObservableObject {
         var modCipher = cipher
         let retCipher = try await api.createPassword(cipher: cipher)
         modCipher.id = retCipher.id
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [modCipher] in
             self.data.passwords.append(modCipher)
         }
         return modCipher

@@ -55,7 +55,7 @@ class KeyChain {
             kSecReturnData as String: true
         ]
 
-        let status = SecItemDelete(query as CFDictionary)
+        _ = SecItemDelete(query as CFDictionary)
 
     }
 

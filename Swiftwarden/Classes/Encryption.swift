@@ -292,7 +292,7 @@ class Encryption {
 
     static func decryptCipher(data: Cipher) throws -> Cipher {
         var dec = data
-         dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
+        dec.name = String(bytes: try decrypt(str: data.name ?? ""), encoding: .utf8)
         if let object = data.object, object == "cipherDetails"{
              if let pass = dec.login?.password {
                  dec.login?.password = String(bytes: try decrypt(str: pass), encoding: .utf8)
