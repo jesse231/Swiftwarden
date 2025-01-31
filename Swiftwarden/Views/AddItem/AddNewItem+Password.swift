@@ -62,23 +62,17 @@ extension AddNewItemPopup {
                 ScrollView {
                     VStack {
                         Group {
-                            GroupBox {
-                                TextField("Name", text: $name)
-                                    .textFieldStyle(.plain)
-                                    .padding(8)
-                            }
+                            EditingField(title: "Name", text: $name, showTitle: false){}
+                            .padding(8)
                             .padding(.bottom, 4)
-                            GroupBox {
-                                TextField("Username", text: $username)
-                                    .textFieldStyle(.plain)
-                                    .padding(8)
-                            }.padding(.bottom, 4)
-                            GroupBox {
-                                SecureField("Password", text: $password)
-                                    .textFieldStyle(.plain)
-                                    .padding(8)
-                            }.padding(.bottom, 12)
-                        }
+                            EditingField(title: "Username", text: $username, showTitle: false){}
+                            .padding(8)
+                            .padding(.bottom, 4)
+                            
+                            EditingField(title: "Password", text: $password, secure: true, showTitle: false){}
+                            .padding(8)
+                            .padding(.bottom, 12)
+                            }
                         Group {
                             Divider()
                             AddUrlList(urls: $uris)
@@ -87,9 +81,10 @@ extension AddNewItemPopup {
                             Divider()
                             NotesEditView(text: $notes)
                             Divider()
+                            CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
                         }
-                        CipherOptions(folder: $folder, favorite: $favorite, reprompt: $reprompt)
-                            .environmentObject(account)
+                        .padding(.leading, 4)
+                        .padding(.trailing, 8)
                     }
                     .padding(20)
                 }
@@ -103,5 +98,6 @@ extension AddNewItemPopup {
 
 #Preview {
     AddNewItemPopup.AddPassword(account: Account(), name: .constant(""), itemType: .constant(.password))
+        .environmentObject(Account())
 
 }

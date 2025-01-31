@@ -11,8 +11,10 @@ import Foundation
 struct EditingField<Content: View>: View {
     var title: String
     @Binding var text: String
-
+    
+    // Options
     var secure: Bool = false
+    var showTitle: Bool = true
     @State private var isHovered = false
     @State private var showPassword = false
 
@@ -21,22 +23,30 @@ struct EditingField<Content: View>: View {
     var body: some View {
         HStack {
             VStack {
-                Text(title)
-                    .font(.system(size: 10))
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 3)
+                if showTitle {
+                    Text(title)
+                        .font(.system(size: 10))
+                        .frame(maxWidth: .infinity, alignment: .topLeading)
+                        .foregroundColor(.gray)
+                        .padding(.bottom, 3)
+                }
                 GroupBox{
                     HStack {
                         if !secure || showPassword {
                             TextField(title, text: $text)
                                 .textFieldStyle(.plain)
+                                .textContentType(.username)
+                                .autocorrectionDisabled()
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .font(.system(size: 15))
                                 .frame(height: 30)
                         } else {
                             SecureField(title, text: $text)
                                 .textFieldStyle(.plain)
+                                // prevent macos password popup
+                                .textContentType(nil)
+                                .autocorrectionDisabled()
+                            
                                 .frame(maxWidth: .infinity, alignment: .topLeading)
                                 .font(.system(size: 15))
                                 .frame(height: 30)
