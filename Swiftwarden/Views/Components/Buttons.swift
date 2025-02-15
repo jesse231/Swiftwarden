@@ -17,6 +17,7 @@ struct FavoriteButton: View {
                 HoverSquare {
                     Image(systemName: favorite ? "star.fill" : "star")
                         .resizable()
+                        .transition(.opacity)
                         .foregroundColor(favorite ? .yellow : .primary)
                         .frame(width: 20, height: 20)
                 }
