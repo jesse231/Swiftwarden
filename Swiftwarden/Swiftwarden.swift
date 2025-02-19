@@ -24,6 +24,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var windowControllers: [NSWindowController] = []
 
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        let version = ProcessInfo.processInfo.operatingSystemVersion
+        guard version.majorVersion >= 12, version.majorVersion < 15 else {
+            return
+        }
         showBlurredWindow()
     }
 
@@ -54,8 +58,16 @@ struct SwiftwardenApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(appState)
+            if #available(macOS 15.0, *) {
+                ContentView()
+                    .toolbarBackgroundVisibility(
+                        .hidden, for: .windowToolbar
+                    )
+                    .environmentObject(appState)
+            } else {
+               ContentView()
+                    .environmentObject(appState)
+            }
         }
         .commands {
             SidebarCommands()
