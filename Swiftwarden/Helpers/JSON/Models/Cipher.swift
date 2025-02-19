@@ -31,6 +31,7 @@ struct Cipher: Codable & Hashable & Identifiable {
     var secureNote: SecureNote?
     var type: Int?
     var viewPassword: Bool?
+    var key: String?
 
     enum CodingKeys: String, CodingKey {
         case attachments = "attachments"
@@ -57,6 +58,7 @@ struct Cipher: Codable & Hashable & Identifiable {
         case secureNote = "secureNote"
         case type = "type"
         case viewPassword = "viewPassword"
+        case key = "key"
     }
 }
 

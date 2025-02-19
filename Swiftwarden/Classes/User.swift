@@ -84,6 +84,10 @@ class User: ObservableObject {
         var key: [UInt8]?
         if let id = dec.organizationID {
             key = self.keys[id]
+            
+        // Not sure why some ciphers have a key attatched to them
+        } else if let k = data.key {
+            key = try Encryption.decrypt(decKey: key, str: k)
         }
         
         dec.name = String(bytes: try Encryption.decrypt(decKey: key, str: data.name ?? ""), encoding: .utf8)
