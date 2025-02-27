@@ -96,9 +96,12 @@ struct LoginView: View {
         let pass = storedPassword ?? password
         var serv = storedServer ?? server
 
-        let base = URL(string: serv)
-        if let base, base.host == nil {
+        var base = URL(string: serv)
+
+        if let base, base.host == nil && base.host != "bitwarden.com" {
             serv = "https://" + serv
+        } else {
+            serv = ""
         }
 
         let api = try await Api(username: username, password: pass, base: URL(string: serv), identityPath: nil, apiPath: nil, iconPath: nil)
